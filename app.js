@@ -1,0 +1,438 @@
+// SharpLine frontend: hash-routed single page, no build step.
+
+const app = document.getElementById('app');
+const state = { sports: [], boards: new Map(), picks: null, injuries: null, propSort: { key: 'edge', dir: -1 }, propFilter: { stat: '', lean: '', min: '0', q: '' }, openProp: null };
+const INJURY_REFRESH_MS = 3 * 60 * 1000;
+
+// ---------------------------------------------------------------- utils
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmtOdds = (o) => (o == null ? '—' : o > 0 ? `+${o}` : `${o}`);
+const fmtLine = (x) => (x == null ? '—' : x > 0 ? `+${x}` : x === 0 ? 'PK' : `${x}`);
+const pct = (x, d = 0) => `${(x * 100).toFixed(d)}%`;
+const signedPct = (x) => `${x >= 0 ? '+' : ''}${(x * 100).toFixed(1)}%`;
+const fmtTime = (iso) => new Date(iso).toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+function ago(iso) {
+  const m = Math.round((Date.now() - new Date(iso)) / 60000);
+  if (m < 1) return 'just now';
+  if (m < 60) return `${m}m ago`;
+  if (m < 1440) return `${Math.round(m / 60)}h ago`;
+  return `${Math.round(m / 1440)}d ago`;
+}
+const STATIC = Boolean(window.SHARPLINE_STATIC);
+async function api(path) {
+  const r = await fetch(STATIC ? `${path}.json` : `/${path}`);
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.statusText);
+  return r.json();
+}
+async function board(id, fresh = false) {
+  if (fresh || !state.boards.has(id)) state.boards.set(id, await api(`api/board/${id}`));
+  return state.boards.get(id);
+}
+const srcBadge = (s, label) => `<span class="badge ${s === 'live' ? 'live' : s === 'none' ? 'none' : 'demo'}" title="${label}: ${s === 'live' ? 'live feed' : s === 'none' ? 'not connected' : 'sample data'}">${label} ${s === 'live' ? 'live' : s === 'none' ? 'off' : 'demo'}</span>`;
+
+// ---------------------------------------------------------------- shell
+function renderNav(active) {
+  const by = (t) => state.sports.filter((s) => s.tier === t);
+  const link = (s) => `<a class="nav-link tier${s.tier} ${active === s.id ? 'active' : ''}" href="#${s.id}">${s.short}</a>`;
+  document.getElementById('sportsNav').innerHTML = `
+    <a class="nav-link ${active === 'home' ? 'active' : ''}" href="#picks">Top Picks</a>
+    <span class="nav-sep"></span>${by(1).map(link).join('')}
+    <span class="nav-sep"></span>${by(2).map(link).join('')}
+    <span class="nav-sep"></span>${by(3).map(link).join('')}
+    <span class="nav-sep"></span><a class="nav-link ${active === 'injuries' ? 'active' : ''}" href="#injuries">Injuries</a>`;
+}
+
+async function renderTicker() {
+  try {
+    state.injuries = await api('api/injuries');
+  } catch { return; }
+  const items = state.injuries
+    .sort((a, b) => a.sport.tier - b.sport.tier)
+    .flatMap((g) => g.injuries.slice(0, g.sport.tier === 1 ? 8 : 4).map((i) => ({ ...i, sport: g.sport.short })))
+    .sort((a, b) => String(b.updated).localeCompare(String(a.updated)))
+    .slice(0, 24);
+  const html = items.map((i) => `<span class="ticker-item"><span class="muted">${esc(i.sport)}</span> <b>${esc(i.player)}</b> (${esc(i.team)} ${esc(i.pos)}) — <span class="status status-${esc(i.status).replace(/\s/g, '-')}">${esc(i.status)}</span> ${esc(i.note)} <span class="muted">· ${ago(i.updated)}</span></span>`).join('');
+  document.getElementById('ticker').innerHTML = `<div class="ticker-label"><span class="dot"></span>INJURY WIRE</div><div class="ticker-track">${html}${html}</div>`;
+}
+
+function renderBanner(sources) {
+  const el = document.getElementById('banner');
+  const demo = !sources || sources.lines === 'demo';
+  if (!demo && !sources?.errors?.length) { el.innerHTML = ''; return; }
+  const errs = (sources?.errors || []).map((e) => `<div class="small">⚠ ${esc(e)}</div>`).join('');
+  el.innerHTML = `<div class="banner"><div class="banner-inner"><span class="badge demo">Demo data</span><div>${demo ? 'Lines, props, splits and stats on this page are <b>sample data</b> so you can explore every feature. Add an <code>ODDS_API_KEY</code> in <code>.env</code> for live lines and props; injuries switch to ESPN automatically when the network allows.' : ''}${errs}</div></div></div>`;
+}
+
+// ---------------------------------------------------------------- router
+async function route() {
+  let [a = '', b = ''] = location.hash.replace(/^#/, '').split('-');
+  if (a === 'picks') a = '';
+  state.openProp = null;
+  app.innerHTML = `<div class="loading">Loading…</div>`;
+  try {
+    if (!a) { renderNav('home'); await homeView(); }
+    else if (a === 'injuries') { renderNav('injuries'); await allInjuriesView(); }
+    else if (state.sports.find((s) => s.id === a)) { renderNav(a); await sportView(a, b || 'lines'); }
+    else { location.hash = '#picks'; }
+  } catch (e) {
+    app.innerHTML = `<div class="empty">Couldn't load data: ${esc(e.message)}</div>`;
+  }
+  window.scrollTo({ top: 0 });
+}
+
+// ---------------------------------------------------------------- home
+async function homeView() {
+  state.picks = await api('api/picks');
+  const p = state.picks;
+  renderBanner(p.demo ? { lines: 'demo' } : null);
+  const featured = await Promise.all(['nfl', 'ncaab', 'nba', 'ncaaf'].map((id) => board(id)));
+
+  app.innerHTML = `
+    <div class="hero">
+      <h1>This week's best bets</h1>
+      <p>Ranked by the model out of ${p.considered} lines and props across every sport, with NFL and college basketball weighted first. <b>Best Value</b> means the biggest gap between the model's probability and the book's price. <b>Best Locks</b> means the highest win probability with a clean injury report.</p>
+    </div>
+    <div class="grid grid-2 section">
+      ${picksCol('Best Value', 'value', '💎', p.value, 'Highest expected value per unit staked')}
+      ${picksCol('Best Locks', 'lock', '🔒', p.locks, 'Highest model win probability, grade A/B')}
+    </div>
+    ${featured.map((b) => featuredBlock(b)).join('')}`;
+}
+
+function picksCol(title, kind, icon, list, sub) {
+  return `<section class="card picks-col">
+    <div class="pad" style="padding-bottom:8px"><h2><span class="icon ${kind}">${icon}</span>${title}</h2><div class="muted small" style="margin-top:4px">${sub}</div></div>
+    ${list.length ? list.map((c, i) => pickRow(c, i + 1)).join('') : '<div class="empty">No qualifying picks right now.</div>'}
+  </section>`;
+}
+
+function pickRow(c, n) {
+  return `<div class="pick">
+    <div class="pick-rank">${n}</div>
+    <div>
+      <div class="pick-title">${esc(c.label)}</div>
+      <div class="pick-meta">
+        <span class="badge tier">${esc(c.sportName)}</span><span class="chip">${esc(c.type)}</span>
+        <span class="muted small">${esc(c.matchup)}</span>
+        ${c.sharp ? '<span class="chip sharp" data-tip="Money % is well ahead of ticket % on this side">Sharp $ agrees</span>' : ''}
+        ${c.injury ? `<span class="status status-${esc(c.injury.status).replace(/\s/g, '-')}">${esc(c.injury.status)}</span>` : ''}
+      </div>
+      <details class="why"><summary>Why the model likes it</summary><div class="pick-reason">${esc(c.reason)}</div></details>
+    </div>
+    <div class="pick-side">
+      <span class="odds">${fmtOdds(c.odds)}</span>
+      <span class="grade grade-${c.grade}" data-tip="Confidence grade">${c.grade}</span>
+      <span class="small" data-tip="Model win probability · edge vs. book implied probability"><b>${pct(c.prob)}</b> <span class="pos">${signedPct(c.edge)}</span></span>
+    </div>
+  </div>`;
+}
+
+function featuredBlock(b) {
+  const games = [...b.games].filter((g) => g.analysis?.available)
+    .sort((x, y) => Math.max(y.analysis.spreadPick?.edge ?? 0, y.analysis.totalPick?.edge ?? 0) - Math.max(x.analysis.spreadPick?.edge ?? 0, x.analysis.totalPick?.edge ?? 0))
+    .slice(0, b.sport.tier === 1 ? 3 : 2);
+  if (!games.length) return '';
+  return `<section class="section">
+    <div class="section-head"><h2>${b.sport.tier === 1 ? '★ ' : ''}${esc(b.sport.name)} — top model edges</h2><a href="#${b.sport.id}">All ${esc(b.sport.short)} games, props &amp; splits →</a></div>
+    <div class="grid grid-3">${games.map((g) => gameCard(g, b.sport, { compact: true })).join('')}</div>
+  </section>`;
+}
+
+// ---------------------------------------------------------------- sport page
+const TABS = [['lines', 'Game Lines'], ['props', 'Player Props'], ['public', 'Public Money'], ['injuries', 'Injuries']];
+
+async function sportView(id, tab) {
+  const b = await board(id);
+  renderBanner(b.sources);
+  const tabs = TABS.filter(([t]) => t !== 'props' || b.sport.tier <= 2);
+  if (!tabs.find(([t]) => t === tab)) tab = 'lines';
+  const counts = { lines: b.games.length, props: b.props.length, public: b.games.filter((g) => g.public).length, injuries: b.injuries.length };
+  const s = b.sources;
+  app.innerHTML = `
+    <div class="page-head">
+      <div><h1>${esc(b.sport.name)}</h1><div class="muted small">Updated ${ago(b.updated)} · ${b.sport.tier === 1 ? 'Featured sport' : b.sport.tier === 2 ? 'Full coverage' : 'Lines & public money'}</div></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">${srcBadge(s.lines, 'Lines')}${b.sport.tier <= 2 ? srcBadge(s.props, 'Props') : ''}${srcBadge(s.injuries, 'Injuries')}${srcBadge(s.public, 'Splits')}</div>
+    </div>
+    <nav class="tabs">${tabs.map(([t, l]) => `<a class="tab ${t === tab ? 'active' : ''}" href="#${id}-${t}">${l}<span class="count">${counts[t]}</span></a>`).join('')}</nav>
+    <div id="tabBody"></div>`;
+  const body = document.getElementById('tabBody');
+  if (tab === 'lines') body.innerHTML = linesView(b);
+  if (tab === 'props') propsView(b, body);
+  if (tab === 'public') body.innerHTML = publicView(b);
+  if (tab === 'injuries') body.innerHTML = injuryCard(b.injuries, b.sources.injuries);
+}
+
+function linesView(b) {
+  if (!b.games.length) return `<div class="card empty">No ${esc(b.sport.name)} games on the board right now${b.sources.lines === 'demo' ? ' (the demo set has none for this sport; connect live odds to fill it).' : '.'}</div>`;
+  return `<div class="grid grid-2">${b.games.map((g) => gameCard(g, b.sport)).join('')}</div>`;
+}
+
+function gameCard(g, sport, { compact = false } = {}) {
+  const a = g.analysis || {};
+  const sp = g.spread, to = g.total, ml = g.moneyline;
+  const pickChip = (p) => (p ? `<span class="chip ${p.edge > 0.02 ? 'edge-pos' : ''}" data-tip="Model ${pct(p.prob)} vs book ${pct(p.prob - p.edge)}">${esc(p.label)} ${signedPct(p.edge)}</span>` : '');
+  const sig = (g.signals || []).map((s) => `<span class="chip ${s.type}" data-tip="${esc(s.text)}">${s.type === 'rlm' ? '↺ RLM' : '$ Sharp'} ${esc(s.side)}</span>`).join('');
+  const inj = (g.injuries || []).filter((i) => i.status !== 'Probable');
+  const row = (side) => {
+    const t = g[side];
+    const spLine = sp ? (side === 'home' ? sp.line : -sp.line) : null;
+    return `<tr>
+      <td><div class="team-cell"><span class="team-dot ${side}"></span><div><div class="team-name">${esc(t.abbr)}</div><div class="team-sub">${esc(t.name)}</div></div></div></td>
+      <td><span class="line-box">${fmtLine(spLine)}<small>${fmtOdds(sp?.[side + 'Odds'])}</small></span></td>
+      <td><span class="line-box">${to ? `${side === 'away' ? 'O' : 'U'} ${to.line}` : '—'}<small>${fmtOdds(side === 'away' ? to?.overOdds : to?.underOdds)}</small></span></td>
+      <td class="hide-sm"><span class="line-box">${fmtOdds(ml?.[side])}<small>ML</small></span></td>
+    </tr>`;
+  };
+  return `<article class="card game" data-game="${esc(g.id)}">
+    <div class="game-head"><span>${fmtTime(g.start)}</span><span>${g.books ? `${g.books} books · ` : ''}${sp?.open != null && sp.open !== sp.line ? `Open ${esc(g.home.abbr)} ${fmtLine(sp.open)} → ${fmtLine(sp.line)}` : 'Line unchanged'}</span></div>
+    <div class="game-body">
+      <table class="lines"><thead><tr><th>Team</th><th>Spread</th><th>Total</th><th class="hide-sm">Money</th></tr></thead><tbody>${row('away')}${row('home')}</tbody></table>
+      ${a.available ? `<div class="model-row">
+        <div class="model-cell"><div class="k">Model score</div><div class="v num">${g.away.abbr} ${a.projScore.away} – ${g.home.abbr} ${a.projScore.home}</div></div>
+        <div class="model-cell"><div class="k">Model line</div><div class="v num">${g.home.abbr} ${fmtLine(a.modelSpread)} · ${a.modelTotal}</div></div>
+        <div class="model-cell"><div class="k">Win prob</div><div class="v num">${g.away.abbr} ${pct(a.winProb.away)} · ${g.home.abbr} ${pct(a.winProb.home)}</div></div>
+      </div>` : `<div class="muted small" style="margin-top:8px">${esc(a.reason || 'No model for this matchup.')}</div>`}
+      <div class="game-foot">${pickChip(a.spreadPick)}${pickChip(a.totalPick)}${sig}
+        ${inj.length ? `<span class="chip" data-tip="${esc(inj.map((i) => `${i.player} (${i.team}) ${i.status}`).join(' · '))}">🩹 ${inj.length} injur${inj.length === 1 ? 'y' : 'ies'}</span>` : ''}
+      </div>
+      ${g.public && !compact ? `<div style="margin-top:12px">${splitBar('Spread · tickets', g.away.abbr, g.home.abbr, 100 - g.public.spread.homeTickets, g.public.spread.homeTickets)}${splitBar('Spread · money', g.away.abbr, g.home.abbr, 100 - g.public.spread.homeMoney, g.public.spread.homeMoney)}</div>` : ''}
+      ${a.notes?.length ? `<div class="game-foot"><button class="toggle-btn" data-toggle-coach>Coaching breakdown (${a.notes.length}) ▾</button></div>` : ''}
+    </div>
+    ${a.notes?.length ? `<div class="coaching" hidden>${coachingPanel(g, sport)}</div>` : ''}
+  </article>`;
+}
+
+function coachingPanel(g, sport) {
+  const a = g.analysis, c = a.coaching;
+  let rows = [];
+  if (c && sport.kind === 'football') rows = [['Plays / game', 'playsPerGame'], ['Pass rate', 'passRate', '%'], ['4th-down aggression', 'fourthDownAgg', ' pctl'], ['Red-zone TD rate', 'redZoneTd', '%'], ['2nd-half point diff', 'secondHalfDiff'], ['Blitz rate', 'blitzRate', '%'], ['Defensive scheme', 'defScheme'], ['ATS record', 'ats']];
+  if (c && sport.kind === 'basketball') rows = [['Tempo (poss/game)', 'tempo'], ['3PA rate', 'threeRate', '%'], ['Defensive scheme', 'defScheme'], ['Turnover rate', 'toRate', '%'], ['After-timeout pts/poss', 'atoPPP'], ['Close-game record', 'closeRecord'], ['Bench minutes', 'benchMinutes', '%'], ['ATS record', 'ats']];
+  const table = c ? `<p class="style-line"><span class="team-dot away" style="display:inline-block"></span> <b>${esc(g.away.abbr)}:</b> ${esc(c.away.style)}</p>
+    <p class="style-line"><span class="team-dot home" style="display:inline-block"></span> <b>${esc(g.home.abbr)}:</b> ${esc(c.home.style)}</p>
+    <table class="coach-table"><thead><tr><th>Coaching profile</th><th>${esc(g.away.abbr)}</th><th>${esc(g.home.abbr)}</th></tr></thead>
+    <tbody>${rows.map(([l, k, u = '']) => `<tr><td>${l}</td><td class="num">${esc(c.away[k])}${u}</td><td class="num">${esc(c.home[k])}${u}</td></tr>`).join('')}</tbody></table>` : '';
+  const impactLabel = { total: 'Total', spread: 'Side', variance: 'Variance', info: 'Trend' };
+  return `${table}<h3 style="margin:4px 0 8px">How the coaching matchup shapes this game</h3>
+    <ul class="notes">${a.notes.map((n) => `<li class="note"><b>${esc(n.title)}</b><span class="impact">${impactLabel[n.impact] || n.impact}${n.lean ? ` · ${esc(String(n.lean).toUpperCase())}` : ''}</span><div>${esc(n.text)}</div></li>`).join('')}</ul>
+    <p class="muted small" style="margin:10px 0 0">${esc(a.summary)}</p>`;
+}
+
+function splitBar(label, awayAbbr, homeAbbr, awayPct, homePct, labels) {
+  const [la, lh] = labels || [awayAbbr, homeAbbr];
+  return `<div class="split-row"><span>${esc(label.split(' · ')[1] || label)}</span>
+    <div class="bar" role="img" aria-label="${esc(label)}: ${esc(la)} ${awayPct}%, ${esc(lh)} ${homePct}%">
+      <span class="a" style="width:${awayPct}%" data-tip="${esc(la)} ${awayPct}% of ${esc(label)}">${awayPct >= 18 ? `${esc(la)} ${awayPct}%` : ''}</span>
+      <span class="h" style="width:${homePct}%" data-tip="${esc(lh)} ${homePct}% of ${esc(label)}">${homePct >= 18 ? `${esc(lh)} ${homePct}%` : ''}</span>
+    </div></div>`;
+}
+
+// ---------------------------------------------------------------- public money
+function publicView(b) {
+  const games = b.games.filter((g) => g.public);
+  if (!games.length) {
+    return `<div class="card pad"><h3>Public betting splits aren't connected</h3><p class="muted">Ticket and money percentages come from paid providers (Action Network, VSIN, Sports Insights). Set <code>PUBLIC_SPLITS_URL</code> in <code>.env</code> to a JSON feed and they'll show up here with sharp-money and reverse-line-move flags.</p></div>`;
+  }
+  return `<p class="muted" style="margin-top:0"><b>Tickets</b> = share of bets placed. <b>Money</b> = share of dollars wagered. When money runs well ahead of tickets, fewer but bigger (often sharper) bettors are on that side. A <b>reverse line move</b> means the line moved against the side most tickets are on.</p>
+  <div class="grid grid-2">${games.map((g) => {
+    const p = g.public;
+    return `<article class="card pad">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><h3><span class="team-dot away" style="display:inline-block"></span> ${esc(g.away.abbr)} @ <span class="team-dot home" style="display:inline-block"></span> ${esc(g.home.abbr)}</h3><span class="muted small">${fmtTime(g.start)}</span></div>
+      <div class="split"><div class="split-label"><span class="mk">Spread</span><span class="num">${esc(g.away.abbr)} ${fmtLine(-g.spread.line)} / ${esc(g.home.abbr)} ${fmtLine(g.spread.line)}</span></div>
+        ${splitBar('Spread · Tickets', g.away.abbr, g.home.abbr, 100 - p.spread.homeTickets, p.spread.homeTickets)}${splitBar('Spread · Money', g.away.abbr, g.home.abbr, 100 - p.spread.homeMoney, p.spread.homeMoney)}</div>
+      <div class="split"><div class="split-label"><span class="mk">Total</span><span class="num">O/U ${g.total.line}</span></div>
+        ${splitBar('Total · Tickets', '', '', p.total.overTickets, 100 - p.total.overTickets, ['Over', 'Under'])}${splitBar('Total · Money', '', '', p.total.overMoney, 100 - p.total.overMoney, ['Over', 'Under'])}</div>
+      ${p.moneyline ? `<div class="split"><div class="split-label"><span class="mk">Moneyline</span><span class="num">${fmtOdds(g.moneyline?.away)} / ${fmtOdds(g.moneyline?.home)}</span></div>
+        ${splitBar('Moneyline · Tickets', g.away.abbr, g.home.abbr, 100 - p.moneyline.homeTickets, p.moneyline.homeTickets)}${splitBar('Moneyline · Money', g.away.abbr, g.home.abbr, 100 - p.moneyline.homeMoney, p.moneyline.homeMoney)}</div>` : ''}
+      <div class="game-foot">${g.signals.length ? g.signals.map((s) => `<span class="chip wrap ${s.type}">${s.type === 'rlm' ? '↺' : '$'} ${esc(s.text)}</span>`).join('') : '<span class="muted small">No sharp/public divergence.</span>'}</div>
+    </article>`;
+  }).join('')}</div>`;
+}
+
+// ---------------------------------------------------------------- props
+function propsView(b, el) {
+  const stats = [...new Set(b.props.map((p) => p.statLabel))];
+  const f = state.propFilter;
+  el.innerHTML = `
+    <p class="muted" style="margin-top:0">The projection blends the player's last 5 games, last 10 and season average. It then adjusts for <b>how the opponent's defense handles the position</b>, plus game pace and expected game script. The result is compared with the book line and juice. Click any row for the game log and breakdown.</p>
+    <div class="filters">
+      <input type="search" id="pf-q" placeholder="Search player or team" value="${esc(f.q)}">
+      <select id="pf-stat"><option value="">All markets</option>${stats.map((s) => `<option ${f.stat === s ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select>
+      <select id="pf-lean"><option value="">Over &amp; Under</option><option ${f.lean === 'Over' ? 'selected' : ''}>Over</option><option ${f.lean === 'Under' ? 'selected' : ''}>Under</option></select>
+      <select id="pf-min"><option value="0">Any edge</option>${[0.03, 0.05, 0.08, 0.12].map((v) => `<option value="${v}" ${f.min === String(v) ? 'selected' : ''}>Edge ≥ ${v * 100}%</option>`).join('')}</select>
+    </div>
+    <div class="card table-wrap"><table class="props"><thead><tr>
+      <th data-sort="player">Player</th><th data-sort="stat">Prop</th><th class="r" data-sort="line">Line</th><th class="r" data-sort="proj">Model</th>
+      <th class="c" data-sort="lean">Lean</th><th class="r" data-sort="edge">Edge</th><th class="c" data-sort="hit">L10 hit</th><th data-sort="dvp">Opp. defense vs pos</th><th class="c" data-sort="grade">Grade</th>
+    </tr></thead><tbody id="propBody"></tbody></table></div>`;
+  const rerender = () => { el.querySelector('#propBody').innerHTML = propRows(b); };
+  el.querySelector('#pf-q').addEventListener('input', (e) => { f.q = e.target.value; rerender(); });
+  el.querySelector('#pf-stat').addEventListener('change', (e) => { f.stat = e.target.value; rerender(); });
+  el.querySelector('#pf-lean').addEventListener('change', (e) => { f.lean = e.target.value; rerender(); });
+  el.querySelector('#pf-min').addEventListener('change', (e) => { f.min = e.target.value; rerender(); });
+  el.querySelectorAll('th[data-sort]').forEach((th) => th.addEventListener('click', () => {
+    const k = th.dataset.sort;
+    state.propSort = { key: k, dir: state.propSort.key === k ? -state.propSort.dir : -1 };
+    rerender();
+  }));
+  el.querySelector('#propBody').addEventListener('click', (e) => {
+    const tr = e.target.closest('tr.row');
+    if (!tr) return;
+    state.openProp = state.openProp === tr.dataset.id ? null : tr.dataset.id;
+    rerender();
+  });
+  rerender();
+}
+
+function propRows(b) {
+  const f = state.propFilter, q = f.q.toLowerCase();
+  const key = {
+    player: (p) => p.player, stat: (p) => p.statLabel, line: (p) => p.line, proj: (p) => p.model?.projection ?? -1, lean: (p) => p.model?.lean ?? '',
+    edge: (p) => p.model?.edge ?? -1, hit: (p) => p.model?.hitRate ?? -1, dvp: (p) => p.model?.dvp ? p.model.dvp.rank / p.model.dvp.teams : -1, grade: (p) => p.model?.confidence ?? -1,
+  }[state.propSort.key];
+  const list = b.props
+    .filter((p) => (!q || `${p.player} ${p.team} ${p.opp}`.toLowerCase().includes(q)) && (!f.stat || p.statLabel === f.stat) && (!f.lean || p.model?.lean === f.lean) && (p.model?.edge ?? -1) >= Number(f.min))
+    .sort((x, y) => { const a = key(x), c = key(y); return (a > c ? 1 : a < c ? -1 : 0) * state.propSort.dir; });
+  if (!list.length) return `<tr><td colspan="9" class="empty">No props match these filters.</td></tr>`;
+  return list.map((p) => {
+    const m = p.model;
+    const row = `<tr class="row" data-id="${esc(p.id)}">
+      <td><div class="player-name">${esc(p.player)} ${m?.injury ? `<span class="status status-${esc(m.injury.status).replace(/\s/g, '-')}">${esc(m.injury.status)}</span>` : ''}</div><div class="muted small">${esc(p.team)} ${esc(p.pos)} · vs ${esc(p.opp)}</div></td>
+      <td>${esc(p.statLabel)}<div class="muted small">${esc(p.book)}</div></td>
+      <td class="r num">${p.line}<div class="muted small">o${fmtOdds(p.overOdds)} u${fmtOdds(p.underOdds)}</div></td>
+      <td class="r num"><b>${m ? m.projection : '—'}</b></td>
+      <td class="c">${m ? `<span class="lean ${m.lean}">${m.lean}</span>` : '—'}</td>
+      <td class="r num ${m && m.edge > 0 ? 'pos' : 'muted'}">${m ? signedPct(m.edge) : '—'}</td>
+      <td class="c num">${m ? `${m.hits}/${m.games}` : '—'}</td>
+      <td class="dvp">${m?.dvp ? dvpCell(m.dvp, p.pos) : '<span class="muted">—</span>'}</td>
+      <td class="c">${m ? `<span class="grade grade-${m.grade}">${m.grade}</span>` : '<span class="muted small">no stats</span>'}</td>
+    </tr>`;
+    return row + (state.openProp === p.id ? `<tr class="detail"><td colspan="9">${propDetail(p)}</td></tr>` : '');
+  }).join('');
+}
+
+function dvpCell(d, pos) {
+  // rank 1 = stingiest; bar length shows how soft the matchup is
+  const soft = d.rank / d.teams;
+  const label = soft > 0.67 ? 'Soft' : soft < 0.34 ? 'Tough' : 'Neutral';
+  return `<span class="dvp-bar" aria-hidden="true"><i style="width:${Math.round(soft * 100)}%"></i></span><b>${label}</b> <span class="muted">#${d.rank}/${d.teams} vs ${esc(pos)}</span>`;
+}
+
+function propDetail(p) {
+  const m = p.model;
+  if (!m) return `<div class="muted">No stat history for ${esc(p.player)} yet, so the model can't project this line. Connect a stats feed (see README).</div>`;
+  const f = m.factors;
+  const fx = (x) => `<span class="${x > 1.005 ? 'pos' : x < 0.995 ? 'neg' : 'muted'}">${x > 1 ? '+' : ''}${((x - 1) * 100).toFixed(1)}%</span>`;
+  return `<div class="prop-detail">
+    <div>
+      <h3>Last ${m.last10.length} games vs. the line (${p.line})</h3>
+      ${gameLogChart(m.last10, p.line, m.lean)}
+      <div class="chart-legend"><span><i style="background:var(--hit)"></i>${m.lean} hit</span><span><i style="background:var(--miss)"></i>Miss</span><span><i style="background:none;border-top:2px dashed var(--text-2);height:0;border-radius:0"></i>Book line</span></div>
+    </div>
+    <div>
+      <h3>Projection breakdown</h3>
+      <div class="factor-list">
+        <span>Last 5 avg</span><span class="num">${m.l5}</span>
+        <span>Last 10 avg</span><span class="num">${m.l10}</span>
+        <span>Season avg</span><span class="num">${m.season}</span>
+        <span>Weighted baseline</span><span class="num"><b>${m.baseline}</b></span>
+        <span>Opp. defense vs ${esc(p.pos)}${m.dvp ? ` (allows ${m.dvp.allowed} vs ${m.dvp.leagueAvg} avg)` : ''}</span><span class="num">${fx(f.defense)}</span>
+        <span>Pace / game total</span><span class="num">${fx(f.pace)}</span>
+        <span>Game script (spread)</span><span class="num">${fx(f.script)}</span>
+        <span><b>Model projection</b></span><span class="num"><b>${m.projection}</b></span>
+        <span>Model P(${m.lean}), blended with market</span><span class="num">${pct(m.prob, 1)}</span>
+        <span>Book implied (${fmtOdds(m.odds)})</span><span class="num">${pct(m.prob - m.edge, 1)}</span>
+        <span>Expected value / unit</span><span class="num ${m.ev > 0 ? 'pos' : 'neg'}">${m.ev > 0 ? '+' : ''}${m.ev.toFixed(3)}</span>
+      </div>
+      <p class="small" style="color:var(--text-2);margin:0">${esc(m.summary)}</p>
+    </div>
+  </div>`;
+}
+
+// Bar chart, most recent game on the right. Bars anchored to baseline, 4px rounded tops.
+function gameLogChart(values, line, lean) {
+  const vals = [...values].reverse();
+  const W = 520, H = 170, padL = 34, padB = 22, padT = 10;
+  const max = Math.max(line, ...vals) * 1.15 || 1;
+  const bw = (W - padL - 8) / vals.length;
+  const y = (v) => padT + (H - padT - padB) * (1 - v / max);
+  const ticks = [0, max / 2, max].map((t) => Math.round(t));
+  const bars = vals.map((v, i) => {
+    const hit = lean === 'Over' ? v > line : v < line;
+    const x = padL + i * bw + bw * 0.18, w = bw * 0.64, top = y(v), h = Math.max(1, H - padB - top);
+    const label = i === vals.length - 1 ? 'Last game' : `${vals.length - i} games ago`;
+    return `<g class="bar-g" data-tip="${label}: ${v} (${hit ? lean + ' hit' : 'miss'})">
+      <rect x="${x - bw * 0.18}" y="${padT}" width="${bw}" height="${H - padT - padB}" fill="transparent"/>
+      <path d="M${x},${H - padB} V${top + 4} q0,-4 4,-4 h${w - 8} q4,0 4,4 V${H - padB} Z" fill="var(${hit ? '--hit' : '--miss'})"/>
+      <text x="${x + w / 2}" y="${H - 6}" text-anchor="middle" font-size="10" fill="var(--muted)">${i === vals.length - 1 ? 'L1' : ''}</text>
+    </g>`;
+  }).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Game log: ${vals.join(', ')}; line ${line}">
+    ${ticks.map((t) => `<line x1="${padL}" x2="${W - 4}" y1="${y(t)}" y2="${y(t)}" stroke="var(--border)" stroke-width="1"/><text x="${padL - 6}" y="${y(t) + 3}" text-anchor="end" font-size="10" fill="var(--muted)">${t}</text>`).join('')}
+    ${bars}
+    <line x1="${padL}" x2="${W - 4}" y1="${y(line)}" y2="${y(line)}" stroke="var(--text-2)" stroke-width="2" stroke-dasharray="5 4"/>
+    <text x="${W - 6}" y="${y(line) - 5}" text-anchor="end" font-size="11" font-weight="700" fill="var(--text)">Line ${line}</text>
+  </svg>`;
+}
+
+// ---------------------------------------------------------------- injuries
+function injuryCard(list, source, sportLabel) {
+  if (!list.length) return `<div class="card empty">No injuries reported.</div>`;
+  return `<div class="section-head" style="margin-bottom:8px"><h2>${sportLabel ? esc(sportLabel) : 'Injury report'}</h2><span>${srcBadge(source, 'Feed')} <span class="muted small">auto-refreshes every 3 min</span></span></div>
+    <div class="card inj-list">${list.map((i) => `<div class="inj">
+      <span><span class="status status-${esc(i.status).replace(/\s/g, '-')}">${esc(i.status)}</span></span>
+      <span class="who"><b>${esc(i.player)}</b> <span class="muted">${esc(i.team)} · ${esc(i.pos)}</span><div class="small" style="color:var(--text-2)">${esc(i.note)}</div></span>
+      <span class="when muted small">${ago(i.updated)}</span></div>`).join('')}</div>`;
+}
+
+async function allInjuriesView() {
+  const data = state.injuries || (await api('api/injuries'));
+  renderBanner(data.every((d) => d.source === 'live') ? null : { lines: 'demo' });
+  app.innerHTML = `<div class="page-head"><div><h1>Injury wire</h1><div class="muted small">Every sport, newest first, flagged on the matching games and props</div></div></div>
+    ${data.filter((d) => d.injuries.length).sort((a, b) => a.sport.tier - b.sport.tier).map((d) => `<section class="section">${injuryCard(d.injuries, d.source, d.sport.name)}</section>`).join('')}`;
+}
+
+// ---------------------------------------------------------------- interactions
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-toggle-coach]');
+  if (!btn) return;
+  const panel = btn.closest('.game').querySelector('.coaching');
+  panel.hidden = !panel.hidden;
+  btn.textContent = btn.textContent.replace(/[▾▴]/, panel.hidden ? '▾' : '▴');
+});
+
+const tip = document.getElementById('tooltip');
+document.addEventListener('mouseover', (e) => {
+  const t = e.target.closest('[data-tip]');
+  if (!t) { tip.hidden = true; return; }
+  tip.textContent = t.dataset.tip;
+  tip.hidden = false;
+});
+document.addEventListener('mousemove', (e) => {
+  if (tip.hidden) return;
+  const x = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8);
+  tip.style.left = `${x}px`;
+  tip.style.top = `${e.clientY + 16}px`;
+});
+
+function initTheme() {
+  const root = document.documentElement;
+  try { const t = localStorage.getItem('theme'); if (t) root.dataset.theme = t; } catch {}
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    root.dataset.theme = dark ? 'light' : 'dark';
+    try { localStorage.setItem('theme', root.dataset.theme); } catch {}
+  });
+}
+
+// ---------------------------------------------------------------- boot
+(async function boot() {
+  initTheme();
+  state.sports = await api('api/sports');
+  window.addEventListener('hashchange', route);
+  await Promise.all([route(), renderTicker()]);
+  setInterval(async () => {
+    state.boards.clear();
+    await renderTicker();
+    if (/^#(injuries|[a-z]+-injuries)$/.test(location.hash)) route();
+  }, INJURY_REFRESH_MS);
+})();

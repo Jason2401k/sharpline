@@ -1,0 +1,33 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>SharpLine</title>
+  <meta name="description" content="Model-driven player props, coaching analysis, live injuries, public money splits and weekly best bets.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2322c55e'/><path d='M7 21l6-6 4 4 8-9' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+<meta name="claude:viewport-fit-sides" content="cover">
+<script>window.SHARPLINE_STATIC = true;</script>
+<header class="topbar">
+    <div class="topbar-inner">
+      <a href="#picks" class="brand" aria-label="SharpLine home">
+        <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><rect width="32" height="32" rx="7" fill="var(--brand)"/><path d="M7 21l6-6 4 4 8-9" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Sharp<b>Line</b></span>
+      </a>
+      <nav class="sports-nav" id="sportsNav" aria-label="Sports"></nav>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
+    </div>
+  </header>
+
+  <div class="ticker" id="ticker" aria-live="polite"></div>
+  <div id="banner"></div>
+  <main id="app" class="container"></main>
+
+  <footer class="footer container">
+    <p><b>For research and entertainment only.</b> Model projections are estimates, not guarantees. No pick wins every time. Bet only what you can afford to lose and only where it's legal for you (21+).</p>
+    <p>Gambling problem? Call or text <b>1-800-GAMBLER</b> · <a href="https://www.ncpgambling.org/" target="_blank" rel="noopener">ncpgambling.org</a></p>
+  </footer>
+
+  <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+  <script type="module" src="app.js"></script>
+
+</body></html>
