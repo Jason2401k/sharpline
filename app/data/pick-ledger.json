@@ -50,13 +50,13 @@
    "rawProb": 0.694,
    "edge": 0.03,
    "score": 783,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -78,7 +78,7 @@
    "rawProb": 0.61,
    "edge": 0.105,
    "score": 574,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -88,7 +88,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -109,14 +109,14 @@
    "prob": 0.621,
    "rawProb": 0.621,
    "edge": 0.086,
-   "score": 605,
-   "book": "Draft Kings",
+   "score": 572,
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -137,8 +137,8 @@
    "prob": 0.612,
    "rawProb": 0.612,
    "edge": 0.088,
-   "score": 578,
-   "book": "Draft Kings",
+   "score": 547,
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -146,7 +146,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -167,14 +167,14 @@
    "prob": 0.612,
    "rawProb": 0.612,
    "edge": 0.077,
-   "score": 575,
-   "book": "Draft Kings",
+   "score": 544,
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -196,13 +196,13 @@
    "rawProb": 0.624,
    "edge": 0.016,
    "score": 595,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -224,13 +224,13 @@
    "rawProb": 0.702,
    "edge": -0.002,
    "score": 792,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -252,7 +252,7 @@
    "rawProb": 0.605,
    "edge": 0.081,
    "score": 554,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -260,7 +260,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -288,7 +288,7 @@
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -316,7 +316,7 @@
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -338,7 +338,7 @@
    "rawProb": 0.644,
    "edge": 0.12,
    "score": 675,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -346,7 +346,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -368,7 +368,7 @@
    "rawProb": 0.614,
    "edge": 0.095,
    "score": 586,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -376,7 +376,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -404,7 +404,7 @@
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -432,7 +432,7 @@
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -454,13 +454,13 @@
    "rawProb": 0.598,
    "edge": 0.079,
    "score": 531,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -482,13 +482,13 @@
    "rawProb": 0.606,
    "edge": 0.078,
    "score": 556,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -510,7 +510,7 @@
    "rawProb": 0.593,
    "edge": 0.088,
    "score": 517,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -519,7 +519,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -541,13 +541,13 @@
    "rawProb": 0.616,
    "edge": 0.097,
    "score": 592,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -569,7 +569,7 @@
    "rawProb": 0.628,
    "edge": 0.099,
    "score": 629,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -578,7 +578,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -600,13 +600,13 @@
    "rawProb": 0.628,
    "edge": 0.094,
    "score": 668,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": true,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -628,7 +628,7 @@
    "rawProb": 0.597,
    "edge": 0.078,
    "score": 528,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -636,35 +636,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401879246:spread",
-   "eventId": "401879246",
-   "sport": "epl",
-   "sportName": "Soccer",
-   "espn": "soccer/eng.1",
-   "market": "spread",
-   "start": "2026-11-01T16:30Z",
-   "matchup": "ARS @ LIV",
-   "home": "LIV",
-   "away": "ARS",
-   "label": "LIV +0.5",
-   "side": "home",
-   "line": 0.5,
-   "odds": -165,
-   "prob": 0.591,
-   "rawProb": 0.591,
-   "edge": -0.031,
-   "score": 491,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": []
-   },
-   "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -686,7 +658,7 @@
    "rawProb": 0.604,
    "edge": 0.08,
    "score": 551,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -695,7 +667,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   },
   {
@@ -717,7 +689,7 @@
    "rawProb": 0.597,
    "edge": 0.073,
    "score": 527,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -725,7 +697,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T02:14:34.105Z",
+   "updatedAt": "2026-10-28T02:20:51.140Z",
    "status": "pending"
   }
  ]
