@@ -1,3 +1,4 @@
+@charset "utf-8";
 :root {
   --bg: #f4f6fa;
   --surface: #ffffff;
@@ -73,12 +74,13 @@ body::before { content: ''; position: fixed; inset: 0 0 auto; height: env(safe-a
 .nav-link:hover { background: var(--surface-2); color: var(--text); }
 .nav-link.active { background: var(--brand-soft); color: var(--brand); }
 .nav-link.tier1 { color: var(--text); font-weight: 700; }
-.nav-link.tier1::before { content: '★ '; color: var(--brand); }
+.nav-link.tier1::before { content: '\2605\00a0'; color: var(--brand); }
 .nav-link.tier3 { font-weight: 500; font-size: 13px; color: var(--muted); }
 .nav-sep { width: 1px; height: 20px; background: var(--border); margin: 0 6px; flex-shrink: 0; }
 .theme-toggle { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; width: 34px; height: 34px; cursor: pointer; flex-shrink: 0; }
 
 /* ---------- ticker ---------- */
+.ticker[hidden] { display: none; }
 .ticker { background: var(--surface-2); border-bottom: 1px solid var(--border); overflow: hidden; white-space: nowrap; font-size: 12.5px; height: 32px; display: flex; align-items: center; }
 .ticker-label { background: var(--neg); color: #fff; font-weight: 700; padding: 0 10px; height: 100%; display: flex; align-items: center; gap: 6px; flex-shrink: 0; z-index: 1; }
 .ticker-label .dot { width: 7px; height: 7px; border-radius: 50%; background: #fff; animation: pulse 1.4s infinite; }
@@ -247,3 +249,16 @@ table.props tr.detail td { background: var(--surface-2); padding: 16px; }
 }
 .chip.wrap { white-space: normal; line-height: 1.4; }
 .grid > * { min-width: 0; }
+
+.notice { display: grid; gap: 6px; justify-items: start; max-width: 760px; }
+.notice h3 { font-size: 17px; }
+.notice p { margin: 0; }
+.connect-steps { margin: 6px 0 0; padding-left: 20px; color: var(--text-2); display: grid; gap: 4px; }
+
+/* 1-1000 confidence score */
+.score { display: inline-flex; align-items: baseline; gap: 1px; padding: 3px 8px; border-radius: 7px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 700; font-size: 15px; font-variant-numeric: tabular-nums; }
+.score small { font-size: 10px; font-weight: 600; opacity: .7; }
+.score-sm { font-size: 13px; padding: 2px 6px; }
+.score-high { background: var(--ok-bg); color: var(--ok-ink); }
+.score-mid { background: var(--info-bg); color: var(--info-ink); }
+.score-low { background: var(--surface-2); color: var(--text-2); }

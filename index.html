@@ -1,13 +1,18 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>SharpLine</title>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SharpLine</title>
   <meta name="description" content="Model-driven player props, coaching analysis, live injuries, public money splits and weekly best bets.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2322c55e'/><path d='M7 21l6-6 4 4 8-9' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-<meta name="claude:viewport-fit-sides" content="cover">
-<script>window.SHARPLINE_STATIC = true;</script>
-<header class="topbar">
+  <script>window.SHARPLINE_STATIC = true;</script>
+</head>
+<body>
+  <header class="topbar">
     <div class="topbar-inner">
       <a href="#picks" class="brand" aria-label="SharpLine home">
         <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><rect width="32" height="32" rx="7" fill="var(--brand)"/><path d="M7 21l6-6 4 4 8-9" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -18,7 +23,6 @@
     </div>
   </header>
 
-  <div class="ticker" id="ticker" aria-live="polite"></div>
   <div id="banner"></div>
   <main id="app" class="container"></main>
 
@@ -29,5 +33,5 @@
 
   <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
   <script type="module" src="app.js"></script>
-
-</body></html>
+</body>
+</html>
