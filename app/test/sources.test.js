@@ -64,3 +64,24 @@ test('SportsBettingDime rows with no bets yet carry no splits', async () => {
     assert.deepEqual(row.total, { overTickets: 62, overMoney: 55 });
   } finally { globalThis.fetch = orig; }
 });
+
+test('schedule keeps tonight\'s late games after midnight UTC', async () => {
+  const { fetchSchedule } = await import('../src/sources/espn-live.js');
+  const asked = [];
+  const ev = (id, date, state) => ({ id, date, competitions: [{ status: { type: { state } }, competitors: [
+    { homeAway: 'home', team: { id: '1', abbreviation: 'VGK', displayName: 'Vegas Golden Knights' } },
+    { homeAway: 'away', team: { id: '2', abbreviation: 'OTT', displayName: 'Ottawa Senators' } }],
+    odds: [{ details: 'VGK -162', moneyline: { home: { close: { odds: '-162' } }, away: { close: { odds: '+136' } } } }] }] });
+  const orig = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    const d = String(url).match(/dates=(\d+)/)[1];
+    asked.push(d);
+    const events = d === '20261027' ? [ev('late', '2026-10-28T02:00Z', 'pre'), ev('live', '2026-10-28T00:00Z', 'in')] : [];
+    return { ok: true, json: async () => ({ events }) };
+  };
+  try {
+    const { games } = await fetchSchedule(SPORTS.find((s) => s.id === 'nhl'), { days: 2, now: new Date('2026-10-28T01:15:00Z') });
+    assert.ok(asked.includes('20261027'), 'asks for the previous (Eastern) date');
+    assert.deepEqual(games.map((g) => g.id), ['espn-late'], 'keeps the late game, drops the one in progress');
+  } finally { globalThis.fetch = orig; }
+});

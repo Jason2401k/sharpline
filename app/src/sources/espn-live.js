@@ -29,7 +29,9 @@ async function pool(items, n, fn) {
 
 // Upcoming games over the next `days` days. Games without a posted line are counted, not shown.
 export async function fetchSchedule(sport, { days = 7, now = new Date() } = {}) {
-  const dates = Array.from({ length: days }, (_, i) => ymd(new Date(now.getTime() + i * 86400000)));
+  // ESPN groups games by US Eastern date, which runs 4-5 hours behind UTC. Starting a day early
+  // keeps tonight's late games after 8 PM ET; games already under way are filtered out below.
+  const dates = Array.from({ length: days + 1 }, (_, i) => ymd(new Date(now.getTime() + (i - 1) * 86400000)));
   const boards = await pool(dates, 4, (d) => getJson(`${SITE}/${sport.espn}/scoreboard?dates=${d}${GROUPS[sport.id] || ''}`, { ttlMs: TTL.board }));
   const seen = new Set();
   const games = [];
