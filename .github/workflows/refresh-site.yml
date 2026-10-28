@@ -1,12 +1,8 @@
-# Rebuilds the site with fresh games, lines, public splits and injuries every hour and
-# publishes it to GitHub Pages. One-time setup: Settings -> Pages -> Source: GitHub Actions.
+# Rebuilds the site with fresh games, lines, public splits and injuries and publishes it to
+# GitHub Pages. Runs only when started by hand: Actions tab -> "Refresh site data" -> Run workflow.
 name: Refresh site data
 
 on:
-  schedule:
-    - cron: '17 * * * *'   # hourly, at :17 to avoid the top-of-hour rush
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:

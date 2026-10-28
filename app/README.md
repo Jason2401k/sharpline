@@ -23,16 +23,16 @@ With no live data connected, the site shows **no games** and a "Not connected" n
 
 `npm run build:static` writes a static snapshot of the current data to `dist/` for hosting without Node.
 
-## Hosting: GitHub Pages, refreshed hourly
+## Hosting: GitHub Pages, refreshed on demand
 
-`.github/workflows/refresh-site.yml` (at the repo root) runs every hour, plus on every push to `main` and on demand:
+`.github/workflows/refresh-site.yml` (at the repo root) runs when you start it (Actions tab → **Refresh site data** → **Run workflow**):
 
 1. runs the tests;
 2. builds a static snapshot with fresh games, lines, splits and injuries (`npm run build:static -- --pages`);
 3. checks that live lines actually loaded, and stops if they didn't, so a data outage never replaces a good site with an empty one;
 4. publishes the snapshot to GitHub Pages.
 
-One-time setup: **Settings → Pages → Source: GitHub Actions**. Optional KenPom: **Settings → Secrets and variables → Actions → New repository secret**, named `KENPOM_CSV`, with your exported CSV pasted in as the value. The workflow writes it to `data/kenpom.csv` during the build, and it never lands in the repo.
+One-time setup: **Settings → Pages → Source: GitHub Actions**. Optional KenPom: **Settings → Secrets and variables → Actions → New repository secret**, named `KENPOM_CSV`, with your exported CSV pasted in as the value. The workflow writes it to `data/kenpom.csv` during each refresh, and it never lands in the repo.
 
 To run the live app with a server instead (refreshes every few minutes), see `npm start` above.
 
