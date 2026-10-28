@@ -50,13 +50,13 @@
    "rawProb": 0.694,
    "edge": 0.03,
    "score": 448,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -78,7 +78,7 @@
    "rawProb": 0.61,
    "edge": 0.105,
    "score": 302,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -88,7 +88,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -110,13 +110,13 @@
    "rawProb": 0.621,
    "edge": 0.086,
    "score": 305,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -138,7 +138,7 @@
    "rawProb": 0.612,
    "edge": 0.088,
    "score": 288,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -146,7 +146,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -168,13 +168,13 @@
    "rawProb": 0.612,
    "edge": 0.077,
    "score": 287,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -196,13 +196,13 @@
    "rawProb": 0.624,
    "edge": 0.016,
    "score": 319,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -224,13 +224,13 @@
    "rawProb": 0.702,
    "edge": -0.002,
    "score": 456,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -252,7 +252,7 @@
    "rawProb": 0.605,
    "edge": 0.081,
    "score": 289,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -260,7 +260,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -288,7 +288,7 @@
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -316,7 +316,7 @@
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -338,7 +338,7 @@
    "rawProb": 0.644,
    "edge": 0.12,
    "score": 370,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -346,7 +346,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -368,7 +368,7 @@
    "rawProb": 0.614,
    "edge": 0.095,
    "score": 309,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -376,7 +376,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -404,7 +404,7 @@
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -432,7 +432,7 @@
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -454,13 +454,13 @@
    "rawProb": 0.598,
    "edge": 0.079,
    "score": 274,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -478,17 +478,17 @@
    "side": "under",
    "line": 63.5,
    "odds": -112,
-   "prob": 0.607,
-   "rawProb": 0.607,
+   "prob": 0.606,
+   "rawProb": 0.606,
    "edge": 0.078,
-   "score": 293,
-   "book": "DraftKings",
+   "score": 291,
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -510,7 +510,7 @@
    "rawProb": 0.593,
    "edge": 0.088,
    "score": 265,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -519,7 +519,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -539,15 +539,15 @@
    "odds": -108,
    "prob": 0.616,
    "rawProb": 0.616,
-   "edge": 0.096,
+   "edge": 0.097,
    "score": 314,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -567,9 +567,9 @@
    "odds": -112,
    "prob": 0.628,
    "rawProb": 0.628,
-   "edge": 0.1,
+   "edge": 0.099,
    "score": 338,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -578,7 +578,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -600,13 +600,13 @@
    "rawProb": 0.628,
    "edge": 0.094,
    "score": 359,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": true,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -628,7 +628,7 @@
    "rawProb": 0.597,
    "edge": 0.078,
    "score": 272,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -636,7 +636,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -664,7 +664,7 @@
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -686,7 +686,7 @@
    "rawProb": 0.604,
    "edge": 0.08,
    "score": 287,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -695,7 +695,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   },
   {
@@ -717,7 +717,7 @@
    "rawProb": 0.597,
    "edge": 0.073,
    "score": 272,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -725,7 +725,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T01:54:23.248Z",
+   "updatedAt": "2026-10-28T02:14:34.105Z",
    "status": "pending"
   }
  ]
