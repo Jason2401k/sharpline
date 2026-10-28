@@ -147,3 +147,15 @@ test('confidence score is 1-1000 and rises with probability and data quality', a
   assert.ok(s(0.65, { injury: { status: 'Questionable' } }) < s(0.65));
   assert.ok(s(0.65, { games: 3 }) < s(0.65, { games: 8 }));
 });
+
+test('live games never become picks', async () => {
+  const { buildPicks } = await import('../src/model/picks.js');
+  const pick = { label: 'H -3', side: 'home', odds: -110, prob: 0.7, edge: 0.18, ev: 0.3, grade: 'A', confidence: 0.9, score: 500 };
+  const game = (live) => ({ id: live ? 'L' : 'P', start: '2026-11-01T18:00:00Z', live, home: { abbr: live ? 'LH' : 'PH' }, away: { abbr: live ? 'LA' : 'PA' }, signals: [],
+    analysis: { available: true, lowSample: false, spreadPick: { ...pick }, totalPick: null, notes: [], summary: '' } });
+  const boards = [{ sport: SPORTS.find((s) => s.id === 'nfl'), games: [game(true), game(false)], props: [] }];
+  const p = buildPicks(boards);
+  const all = [...p.value, ...p.locks];
+  assert.ok(all.length > 0);
+  assert.ok(all.every((c) => !c.matchup.includes('LH')), 'live game excluded');
+});

@@ -65,23 +65,29 @@ test('SportsBettingDime rows with no bets yet carry no splits', async () => {
   } finally { globalThis.fetch = orig; }
 });
 
-test('schedule keeps tonight\'s late games after midnight UTC', async () => {
+test('schedule keeps tonight\'s games after midnight UTC, with pre-game lines for live games', async () => {
   const { fetchSchedule } = await import('../src/sources/espn-live.js');
   const asked = [];
-  const ev = (id, date, state) => ({ id, date, competitions: [{ status: { type: { state } }, competitors: [
+  const odds = { provider: { name: 'DraftKings' }, details: 'VGK -162', moneyline: { home: { close: { odds: '-162' } }, away: { close: { odds: '+136' } } } };
+  const ev = (id, date, state, withOdds) => ({ id, date, competitions: [{ status: { type: { state, shortDetail: state === 'in' ? '11:24 - 2nd' : '' } }, competitors: [
     { homeAway: 'home', team: { id: '1', abbreviation: 'VGK', displayName: 'Vegas Golden Knights' } },
     { homeAway: 'away', team: { id: '2', abbreviation: 'OTT', displayName: 'Ottawa Senators' } }],
-    odds: [{ details: 'VGK -162', moneyline: { home: { close: { odds: '-162' } }, away: { close: { odds: '+136' } } } }] }] });
+    odds: withOdds ? [odds] : undefined }] });
   const orig = globalThis.fetch;
   globalThis.fetch = async (url) => {
-    const d = String(url).match(/dates=(\d+)/)[1];
+    const u = String(url);
+    if (u.includes('/summary?event=live')) return { ok: true, json: async () => ({ pickcenter: [odds] }) };
+    const d = u.match(/dates=(\d+)/)[1];
     asked.push(d);
-    const events = d === '20261027' ? [ev('late', '2026-10-28T02:00Z', 'pre'), ev('live', '2026-10-28T00:00Z', 'in')] : [];
+    const events = d === '20261027' ? [ev('late', '2026-10-28T02:00Z', 'pre', true), ev('live', '2026-10-28T00:00Z', 'in', false), ev('done', '2026-10-27T23:00Z', 'post', false)] : [];
     return { ok: true, json: async () => ({ events }) };
   };
   try {
     const { games } = await fetchSchedule(SPORTS.find((s) => s.id === 'nhl'), { days: 2, now: new Date('2026-10-28T01:15:00Z') });
     assert.ok(asked.includes('20261027'), 'asks for the previous (Eastern) date');
-    assert.deepEqual(games.map((g) => g.id), ['espn-late'], 'keeps the late game, drops the one in progress');
+    assert.deepEqual(games.map((g) => g.id), ['espn-live', 'espn-late'], 'keeps live and upcoming games, drops finished');
+    assert.equal(games[0].live, true);
+    assert.equal(games[0].status, '11:24 - 2nd');
+    assert.equal(games[0].moneyline.home, -162, 'live game carries its pre-game line from the summary');
   } finally { globalThis.fetch = orig; }
 });

@@ -13,7 +13,8 @@ export function buildPicks(boards, { limit = 6 } = {}) {
     const w = TIER_WEIGHT[b.sport.tier];
     for (const g of b.games) {
       const a = g.analysis;
-      if (!a?.available || a.lowSample) continue;
+      // Live games show their pre-game line for reference only; it can't be bet anymore.
+      if (!a?.available || a.lowSample || g.live) continue;
       const sharpSides = new Set((g.signals || []).map((s) => `${s.market}:${s.side}`));
       if (a.spreadPick) {
         const sideAbbr = g[a.spreadPick.side].abbr;

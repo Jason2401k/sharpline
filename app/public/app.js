@@ -142,7 +142,7 @@ function pickRow(c, n) {
 }
 
 function featuredBlock(b) {
-  const games = [...b.games].filter((g) => g.analysis?.available)
+  const games = [...b.games].filter((g) => g.analysis?.available && !g.live)
     .sort((x, y) => Math.max(y.analysis.spreadPick?.edge ?? 0, y.analysis.totalPick?.edge ?? 0) - Math.max(x.analysis.spreadPick?.edge ?? 0, x.analysis.totalPick?.edge ?? 0))
     .slice(0, b.sport.tier === 1 ? 3 : 2);
   if (!games.length) return '';
@@ -206,7 +206,7 @@ function gameCard(g, sport, { compact = false } = {}) {
     </tr>`;
   };
   return `<article class="card game" data-game="${esc(g.id)}">
-    <div class="game-head"><span>${fmtTime(g.start)}</span><span>${g.books ? `${g.books} books · ` : g.book ? `${esc(g.book)} · ` : ''}${sp?.open != null && sp.open !== sp.line ? `Open ${esc(g.home.abbr)} ${fmtLine(sp.open)} → ${fmtLine(sp.line)}` : 'Line unchanged'}</span></div>
+    <div class="game-head"><span>${g.live ? `<span class="live-tag" data-tip="Game in progress. Lines and model numbers below are from before the game started.">LIVE</span> ${esc(g.status || '')} · pre-game numbers` : fmtTime(g.start)}</span><span>${g.books ? `${g.books} books · ` : g.book ? `${esc(g.book)} · ` : ''}${sp?.open != null && sp.open !== sp.line ? `Open ${esc(g.home.abbr)} ${fmtLine(sp.open)} → ${fmtLine(sp.line)}` : 'Line unchanged'}</span></div>
     <div class="game-body">
       <table class="lines"><thead><tr><th>Team</th><th>Spread</th><th>Total</th><th class="hide-sm">Money</th></tr></thead><tbody>${row('away')}${row('home')}</tbody></table>
       ${a.available ? `<div class="model-row">

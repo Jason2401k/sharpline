@@ -262,3 +262,7 @@ table.props tr.detail td { background: var(--surface-2); padding: 16px; }
 .score-high { background: var(--ok-bg); color: var(--ok-ink); }
 .score-mid { background: var(--info-bg); color: var(--info-ink); }
 .score-low { background: var(--surface-2); color: var(--text-2); }
+
+/* games in progress */
+.live-tag { display: inline-flex; align-items: center; gap: 5px; padding: 1px 7px; border-radius: 5px; background: var(--out-bg); color: var(--out-ink); font-weight: 800; font-size: 11px; letter-spacing: .05em; }
+.live-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }

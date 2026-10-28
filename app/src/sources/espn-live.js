@@ -27,21 +27,23 @@ async function pool(items, n, fn) {
   return out;
 }
 
-// Upcoming games over the next `days` days. Games without a posted line are counted, not shown.
+// Games over the next `days` days that have a sportsbook line: upcoming games, plus games in
+// progress (flagged `live`) with their pre-game line. Finished games are dropped. Games with no
+// line are counted in `unpriced`, not shown.
 export async function fetchSchedule(sport, { days = 7, now = new Date() } = {}) {
   // ESPN groups games by US Eastern date, which runs 4-5 hours behind UTC. Starting a day early
-  // keeps tonight's late games after 8 PM ET; games already under way are filtered out below.
+  // keeps tonight's games after 8 PM ET.
   const dates = Array.from({ length: days + 1 }, (_, i) => ymd(new Date(now.getTime() + (i - 1) * 86400000)));
   const boards = await pool(dates, 4, (d) => getJson(`${SITE}/${sport.espn}/scoreboard?dates=${d}${GROUPS[sport.id] || ''}`, { ttlMs: TTL.board }));
   const seen = new Set();
-  const games = [];
-  let unpriced = 0;
+  const found = [];
   for (const b of boards) {
     for (const ev of b?.events || []) {
       if (seen.has(ev.id)) continue;
       seen.add(ev.id);
       const c = ev.competitions?.[0];
-      if (!c || c.status?.type?.state !== 'pre') continue;
+      const state = c?.status?.type?.state;
+      if (!c || (state !== 'pre' && state !== 'in')) continue;
       const side = (h) => c.competitors.find((x) => x.homeAway === h);
       const H = side('home'), A = side('away');
       if (!H || !A) continue;
@@ -52,20 +54,37 @@ export async function fetchSchedule(sport, { days = 7, now = new Date() } = {}) 
         awayRecord: x.records?.find((r) => r.type === 'road')?.summary || null,
       });
       const game = { id: `espn-${ev.id}`, start: ev.date, home: team(H), away: team(A), neutral: Boolean(c.neutralSite) };
-      const o = c.odds?.[0];
-      const ps = o?.pointSpread, tot = o?.total, ml = o?.moneyline;
-      const spreadLine = num(ps?.home?.close?.line) ?? spreadFromDetails(o, game);
-      if (spreadLine != null) game.spread = { line: spreadLine, homeOdds: num(ps?.home?.close?.odds) ?? -110, awayOdds: num(ps?.away?.close?.odds) ?? -110, open: num(ps?.home?.open?.line) ?? spreadLine };
-      const totalLine = num(tot?.over?.close?.line) ?? num(o?.overUnder);
-      if (totalLine != null) game.total = { line: totalLine, overOdds: num(tot?.over?.close?.odds) ?? -110, underOdds: num(tot?.under?.close?.odds) ?? -110, open: num(tot?.over?.open?.line) ?? totalLine };
-      if (ml?.home?.close?.odds) game.moneyline = { home: num(ml.home.close.odds), away: num(ml.away?.close?.odds), homeOpen: num(ml.home.open?.odds), awayOpen: num(ml.away?.open?.odds), draw: num(ml.draw?.close?.odds) };
-      if (!game.spread && !game.total && !game.moneyline) { unpriced++; continue; }
-      game.book = o?.provider?.name || 'Sportsbook';
-      games.push(game);
+      if (state === 'in') { game.live = true; game.status = c.status.type.shortDetail || 'In progress'; }
+      found.push({ game, odds: c.odds?.[0], eventId: ev.id });
     }
+  }
+
+  // The scoreboard drops odds once a game starts; the game summary keeps the pre-game line.
+  await pool(found.filter((f) => f.game.live && !f.odds), 4, async (f) => {
+    const sum = await getJson(`${SITE}/${sport.espn}/summary?event=${f.eventId}`, { ttlMs: TTL.board });
+    f.odds = sum?.pickcenter?.[0];
+  });
+
+  const games = [];
+  let unpriced = 0;
+  for (const { game, odds } of found) {
+    applyOdds(game, odds);
+    if (!game.spread && !game.total && !game.moneyline) { if (!game.live) unpriced++; continue; }
+    game.book = odds?.provider?.name || 'Sportsbook';
+    games.push(game);
   }
   games.sort((a, b) => a.start.localeCompare(b.start));
   return { games, unpriced };
+}
+
+// DraftKings spread/total/moneyline (current + opening) from an ESPN odds object.
+function applyOdds(game, o) {
+  const ps = o?.pointSpread, tot = o?.total, ml = o?.moneyline;
+  const spreadLine = num(ps?.home?.close?.line) ?? spreadFromDetails(o, game);
+  if (spreadLine != null) game.spread = { line: spreadLine, homeOdds: num(ps?.home?.close?.odds) ?? -110, awayOdds: num(ps?.away?.close?.odds) ?? -110, open: num(ps?.home?.open?.line) ?? spreadLine };
+  const totalLine = num(tot?.over?.close?.line) ?? num(o?.overUnder);
+  if (totalLine != null) game.total = { line: totalLine, overOdds: num(tot?.over?.close?.odds) ?? -110, underOdds: num(tot?.under?.close?.odds) ?? -110, open: num(tot?.over?.open?.line) ?? totalLine };
+  if (ml?.home?.close?.odds) game.moneyline = { home: num(ml.home.close.odds), away: num(ml.away?.close?.odds), homeOpen: num(ml.home.open?.odds), awayOpen: num(ml.away?.open?.odds), draw: num(ml.draw?.close?.odds) };
 }
 
 function spreadFromDetails(o, game) {
