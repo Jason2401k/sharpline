@@ -25,12 +25,14 @@ export const profitPerUnit = (odds) => (odds < 0 ? 100 / -odds : odds / 100);
 // Expected value per 1 unit staked.
 export const expectedValue = (prob, odds) => prob * profitPerUnit(odds) - (1 - prob);
 
-// Confidence on a 1-1000 scale; 1000 would be the most confident pick ever, so it's capped at 999.
-// Driven mostly by the model's win probability (a 50/50 bet scores ~0, a sure thing ~1000), then
+// Confidence on a 1-1000 scale, capped at 999. Driven mostly by the model's win probability on a
+// stretched curve (55% -> ~350, 60% -> ~530, 65% -> ~670, 70% -> ~800, 75% -> ~910), then
 // adjusted for data quality: sharp-money agreement, size of the edge, sample size, injury tags.
+// Plays under STRONG_SCORE (about a 58% win chance) are treated as toss-ups and hidden.
+export const STRONG_SCORE = 500;
 const INJURY_HIT = { Questionable: 0.12, Doubtful: 0.3, 'Day-To-Day': 0.08, Probable: 0.02 };
 export function confidenceScore(prob, { sharp = false, edge = 0, games = null, injury = null } = {}) {
-  const base = clamp((prob - 0.5) / 0.5, 0, 1) ** 0.75;
+  const base = clamp((prob - 0.5) / 0.25, 0, 1) ** 0.6;
   let quality = 0.9 + (sharp ? 0.06 : 0) + clamp(edge, 0, 0.1) * 0.4;
   if (games != null && games < 6) quality -= 0.05;
   quality -= INJURY_HIT[injury?.status] ?? 0;

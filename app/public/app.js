@@ -18,6 +18,7 @@ function ago(iso) {
   return `${Math.round(m / 1440)}d ago`;
 }
 const STATIC = Boolean(window.SHARPLINE_STATIC);
+const STRONG = 500; // matches STRONG_SCORE in src/model/math.js: below this a play is a toss-up
 async function api(path) {
   const bust = state.bust ? `?v=${state.bust}` : '';
   const r = await fetch(STATIC ? `${path}.json${bust}` : `/${path}`, state.bust ? { cache: 'no-store' } : undefined);
@@ -93,32 +94,24 @@ async function homeView() {
       <div class="section">${notConnected('Picks need live sportsbook lines', 'Best Value and Best Locks are ranked from the real lines and props for this week. Once live odds are connected they appear here, with NFL and college basketball weighted first.')}</div>`;
     return;
   }
-  const featured = await Promise.all(['nfl', 'ncaab', 'nba', 'ncaaf'].map((id) => board(id)));
-
+  const top = p.top || [];
+  const strong = p.strongScore || 500;
   app.innerHTML = `
     <div class="hero">
-      <h1>This week's best bets</h1>
-      <p>Ranked by the model out of ${p.considered} lines and props across every sport, with NFL and college basketball weighted first. <b>Best Value</b> means the biggest gap between the model's probability and the book's price. <b>Best Locks</b> are the highest confidence scores with a clean injury report. Every pick is scored from 1 to 1000, where 1000 would be the most confident pick ever.</p>
-      ${p.live ? `<p class="small muted">Built from real sportsbook lines and ESPN team stats. Player props join the picks once a props feed is connected. Games with too few games played this season are left out.</p>` : ''}
+      <h1>Top 10 plays</h1>
+      <p>The highest-confidence plays on the board right now, across every sport. Only plays scoring <b>${strong}+</b> with a real edge over the sportsbook's price make the list; toss-ups are left out.</p>
     </div>
-    <div class="grid grid-2 section">
-      ${picksCol('Best Value', 'value', '💎', p.value, 'Highest expected value per unit staked')}
-      ${picksCol('Best Locks', 'lock', '🔒', p.locks, 'Highest model win probability, grade A/B')}
-    </div>
-    ${featured.map((b) => featuredBlock(b)).join('')}`;
-}
-
-function picksCol(title, kind, icon, list, sub) {
-  return `<section class="card picks-col">
-    <div class="pad" style="padding-bottom:8px"><h2><span class="icon ${kind}">${icon}</span>${title}</h2><div class="muted small" style="margin-top:4px">${sub}</div></div>
-    ${list.length ? list.map((c, i) => pickRow(c, i + 1)).join('') : '<div class="empty">No qualifying picks right now.</div>'}
-  </section>`;
+    <section class="card picks-col section top-list">
+      ${top.length ? top.map((c, i) => pickRow(c, i + 1)).join('') : `<div class="empty">No plays clear ${strong} right now. More lines go up closer to game time, so check back after a refresh.</div>`}
+    </section>
+    ${top.length && top.length < 10 ? `<p class="muted small">Only ${top.length} play${top.length === 1 ? ' clears' : 's clear'} ${strong} right now. The list fills in as books post more lines.</p>` : ''}
+    <p class="muted small">Each play shows its confidence (1–1000) and the model's win chance. Even top plays lose sometimes; the Record tab tracks how they actually do.</p>`;
 }
 
 // Confidence on a 1-1000 scale (1000 = most confident ever).
 function scoreBadge(score, small = false) {
   if (score == null) return '';
-  const band = score >= 700 ? 'high' : score >= 400 ? 'mid' : 'low';
+  const band = score >= 800 ? 'high' : score >= STRONG ? 'mid' : 'low';
   return `<span class="score score-${band}${small ? ' score-sm' : ''}" data-tip="Confidence ${score} out of 1000 (1000 = most confident ever)">${score}<small>/1000</small></span>`;
 }
 
@@ -138,20 +131,9 @@ function pickRow(c, n) {
     <div class="pick-side">
       <span class="odds">${fmtOdds(c.odds)}</span>
       ${scoreBadge(c.score)}
-      <span class="small" data-tip="Model win probability · edge vs. book implied probability"><b>${pct(c.prob)}</b> <span class="pos">${signedPct(c.edge)}</span></span>
+      <span class="small" data-tip="Model win probability · edge vs. book implied probability"><b>${pct(c.prob)}</b> <span class="${c.edge > 0 ? 'pos' : 'neg'}">${signedPct(c.edge)}</span></span>
     </div>
   </div>`;
-}
-
-function featuredBlock(b) {
-  const games = [...b.games].filter((g) => g.analysis?.available && !g.live)
-    .sort((x, y) => Math.max(y.analysis.spreadPick?.edge ?? 0, y.analysis.totalPick?.edge ?? 0) - Math.max(x.analysis.spreadPick?.edge ?? 0, x.analysis.totalPick?.edge ?? 0))
-    .slice(0, b.sport.tier === 1 ? 3 : 2);
-  if (!games.length) return '';
-  return `<section class="section">
-    <div class="section-head"><h2>${b.sport.tier === 1 ? '★ ' : ''}${esc(b.sport.name)} — top model edges</h2><a href="#${b.sport.id}">All ${esc(b.sport.short)} games, props &amp; splits →</a></div>
-    <div class="grid grid-3">${games.map((g) => gameCard(g, b.sport, { compact: true })).join('')}</div>
-  </section>`;
 }
 
 // ---------------------------------------------------------------- sport page
@@ -194,7 +176,7 @@ function linesView(b) {
 function gameCard(g, sport, { compact = false } = {}) {
   const a = g.analysis || {};
   const sp = g.spread, to = g.total, ml = g.moneyline;
-  const pickChip = (p) => (p ? `<span class="chip ${p.edge > 0.02 ? 'edge-pos' : ''}" data-tip="Model ${pct(p.prob)} vs book ${pct(p.prob - p.edge)} · confidence ${p.score ?? '—'}/1000">${esc(p.label)} ${signedPct(p.edge)}${p.score != null ? ` · ${p.score}` : ''}</span>` : '');
+  const pickChip = (p) => (p && (p.score ?? 0) >= STRONG ? `<span class="chip ${p.edge > 0.02 ? 'edge-pos' : ''}" data-tip="Model ${pct(p.prob)} vs book ${pct(p.prob - p.edge)} · confidence ${p.score ?? '—'}/1000">${esc(p.label)} ${signedPct(p.edge)}${p.score != null ? ` · ${p.score}` : ''}</span>` : '');
   const sig = (g.signals || []).map((s) => `<span class="chip ${s.type}" data-tip="${esc(s.text)}">${s.type === 'rlm' ? '↺ RLM' : '$ Sharp'} ${esc(s.side)}</span>`).join('');
   const inj = (g.injuries || []).filter((i) => i.status !== 'Probable');
   const row = (side) => {
@@ -216,7 +198,7 @@ function gameCard(g, sport, { compact = false } = {}) {
         <div class="model-cell"><div class="k">Model line</div><div class="v num">${g.home.abbr} ${fmtLine(a.modelSpread)} · ${a.modelTotal}</div></div>
         <div class="model-cell"><div class="k">Win prob</div><div class="v num">${g.away.abbr} ${pct(a.winProb.away)} · ${g.home.abbr} ${pct(a.winProb.home)}</div></div>
       </div>${a.sampleNote ? `<div class="muted small" style="margin-top:6px">ⓘ ${esc(a.sampleNote)} Not used for picks.</div>` : ''}` : `<div class="muted small" style="margin-top:8px">${esc(a.reason || 'No model for this matchup.')}</div>`}
-      <div class="game-foot">${pickChip(a.spreadPick)}${pickChip(a.totalPick)}${sig}
+      <div class="game-foot">${pickChip(a.spreadPick) || pickChip(a.totalPick) ? `${pickChip(a.spreadPick)}${pickChip(a.totalPick)}` : a.available ? '<span class="chip" data-tip="No side scores 500+ in this game">No strong lean</span>' : ''}${sig}
         ${inj.length ? `<span class="chip" data-tip="${esc(inj.map((i) => `${i.player} (${i.team}) ${i.status}`).join(' · '))}">🩹 ${inj.length} injur${inj.length === 1 ? 'y' : 'ies'}</span>` : ''}
       </div>
       ${g.public?.spread && !compact ? `<div style="margin-top:12px">${splitBar('Spread · tickets', g.away.abbr, g.home.abbr, 100 - g.public.spread.homeTickets, g.public.spread.homeTickets)}${splitBar('Spread · money', g.away.abbr, g.home.abbr, 100 - g.public.spread.homeMoney, g.public.spread.homeMoney)}</div>` : ''}

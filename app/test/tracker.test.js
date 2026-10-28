@@ -27,25 +27,25 @@ const now = new Date('2026-10-28T12:00:00Z');
 
 test('only pre-game picks scoring 250+ are logged, and they update until kickoff', () => {
   const ledger = { picks: [] };
-  let r = recordPicks(ledger, [mkBoard(300)], now);
+  let r = recordPicks(ledger, [mkBoard(600)], now);
   assert.equal(r.added, 1);
   assert.equal(ledger.picks[0].id, 'espn-1:spread');
   assert.equal(ledger.picks[0].line, 3.5, 'away line stored from the pick side');
-  assert.ok(MIN_SCORE === 250);
-  r = recordPicks(ledger, [mkBoard(320)], now);
+  assert.ok(MIN_SCORE === 500);
+  r = recordPicks(ledger, [mkBoard(640)], now);
   assert.equal(r.updated, 1);
-  assert.equal(ledger.picks[0].score, 320);
-  r = recordPicks(ledger, [mkBoard(200)], now);
+  assert.equal(ledger.picks[0].score, 640);
+  r = recordPicks(ledger, [mkBoard(400)], now);
   assert.equal(r.removed, 1, 'drops out if it no longer qualifies before kickoff');
   assert.equal(ledger.picks.length, 0);
-  recordPicks(ledger, [mkBoard(300)], now);
+  recordPicks(ledger, [mkBoard(600)], now);
   r = recordPicks(ledger, [mkBoard(100, { live: true })], now);
   assert.equal(ledger.picks.length, 1, 'frozen once the game is live');
 });
 
 test('grading from ESPN final scores, and units', async () => {
   const ledger = { picks: [] };
-  recordPicks(ledger, [mkBoard(300)], now);
+  recordPicks(ledger, [mkBoard(600)], now);
   const fetchJson = async () => ({ header: { competitions: [{ status: { type: { state: 'post', completed: true } }, competitors: [{ homeAway: 'home', score: '27' }, { homeAway: 'away', score: '24' }] }] } });
   const graded = await gradePicks(ledger, new Date('2026-11-02T12:00:00Z'), fetchJson);
   assert.equal(graded, 1);

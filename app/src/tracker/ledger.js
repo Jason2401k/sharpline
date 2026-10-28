@@ -6,9 +6,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { getJson } from '../sources/http.js';
-import { profitPerUnit } from '../model/math.js';
+import { profitPerUnit, STRONG_SCORE } from '../model/math.js';
 
-export const MIN_SCORE = 250;
+export const MIN_SCORE = STRONG_SCORE; // same cutoff as the old 250 on the original scale
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SITE = 'https://site.api.espn.com/apis/site/v2/sports';
 const VOID_AFTER_MS = 4 * 86400000; // postponed/cancelled games are voided after 4 days

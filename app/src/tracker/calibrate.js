@@ -60,7 +60,7 @@ export function summarize(ledger, sportNames = {}) {
     for (const p of graded) { const k = keyFn(p); if (!m.has(k)) m.set(k, []); m.get(k).push(p); }
     return [...m.entries()].map(([k, list]) => ({ key: k, label: labelFn(k), ...tally(list) })).sort((a, b) => b.picks - a.picks);
   };
-  const band = (s) => (s >= 400 ? '400+' : s >= 300 ? '300–399' : '250–299');
+  const band = (s) => (s >= 800 ? '800+' : s >= 650 ? '650–799' : '500–649');
 
   // Calibration buckets by the probability the model gave at the time (before any later learning).
   const buckets = [[0.5, 0.55], [0.55, 0.6], [0.6, 0.65], [0.65, 0.7], [0.7, 1.01]].map(([lo, hi]) => {
@@ -82,7 +82,7 @@ export function summarize(ledger, sportNames = {}) {
   };
 
   return {
-    minScore: ledger?.minScore ?? 250, started: ledger?.started, updated: new Date().toISOString(),
+    minScore: ledger?.minScore ?? 500, started: ledger?.started, updated: new Date().toISOString(),
     overall: tally(graded),
     pending: picks.filter((p) => p.status === 'pending').length,
     bySport: by((p) => p.sport, (k) => sportNames[k] || k),

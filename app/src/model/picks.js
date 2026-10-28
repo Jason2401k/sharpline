@@ -3,7 +3,7 @@
 // with a clean injury report. Every pick carries its confidence score.
 
 import { TIER_WEIGHT } from '../config.js';
-import { round } from './math.js';
+import { round, STRONG_SCORE } from './math.js';
 
 const RISKY = new Set(['Out', 'Doubtful', 'Questionable']);
 
@@ -44,7 +44,13 @@ export function buildPicks(boards, { limit = 6 } = {}) {
     .filter((c) => c.edge >= 0.03 && c.ev > 0 && !lockIds.has(c.id) && !['Out', 'Doubtful'].includes(c.injury?.status))
     .sort((x, y) => score(y) - score(x));
 
-  return { value: diversify(value, limit).map(finalize), locks: lockList.map(finalize), considered: cands.length };
+  // Top plays: highest confidence across every sport. Toss-ups (< STRONG_SCORE) are left out, and so
+  // are plays priced so steeply that they lose money over time even when they usually win (edge <= 1%).
+  const top = cands
+    .filter((c) => c.score >= STRONG_SCORE && c.edge > 0.01 && !RISKY.has(c.injury?.status))
+    .sort((x, y) => y.score - x.score || y.prob - x.prob);
+
+  return { top: diversify(top, 10).map(finalize), strongScore: STRONG_SCORE, value: diversify(value, limit).map(finalize), locks: lockList.map(finalize), considered: cands.length };
 }
 
 function gameCand(sport, g, type, p, weight, sharp, reason) {

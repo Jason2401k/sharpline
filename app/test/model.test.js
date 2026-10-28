@@ -159,3 +159,19 @@ test('live games never become picks', async () => {
   assert.ok(all.length > 0);
   assert.ok(all.every((c) => !c.matchup.includes('LH')), 'live game excluded');
 });
+
+test('stretched confidence scale: strong plays read high, toss-ups stay low', async () => {
+  const { confidenceScore, STRONG_SCORE } = await import('../src/model/math.js');
+  assert.ok(confidenceScore(0.55) < STRONG_SCORE, '55% is a toss-up');
+  assert.ok(confidenceScore(0.6) >= STRONG_SCORE, '60% clears the bar');
+  assert.ok(confidenceScore(0.7) > 750);
+  assert.ok(confidenceScore(0.9) <= 999);
+});
+
+test('top 10: ranked by confidence, toss-ups and overpriced plays excluded', async () => {
+  const { buildPicks } = await import('../src/model/picks.js');
+  const mk = (id, score, edge, prob = 0.65) => ({ id, start: '2026-11-01T18:00:00Z', home: { abbr: `H${id}` }, away: { abbr: `A${id}` }, signals: [],
+    analysis: { available: true, lowSample: false, notes: [], summary: '', totalPick: null, spreadPick: { label: `H${id} -3`, side: 'home', odds: -110, prob, edge, ev: edge, grade: 'A', confidence: 0.9, score } } });
+  const p = buildPicks([{ sport: SPORTS.find((s) => s.id === 'nfl'), props: [], games: [mk(1, 700, 0.08), mk(2, 900, -0.01), mk(3, 450, 0.1), mk(4, 800, 0.05)] }]);
+  assert.deepEqual(p.top.map((c) => c.score), [800, 700]);
+});

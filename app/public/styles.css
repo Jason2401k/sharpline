@@ -301,3 +301,9 @@ table.rec { min-width: 900px; }
 .factor-rows { display: grid; gap: 8px; margin-top: 10px; }
 .factor-row { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr); gap: 10px; font-size: 13px; }
 @media (max-width: 640px) { .factor-row { grid-template-columns: 1fr; gap: 2px; } }
+
+/* top 10 list */
+.top-list .pick { grid-template-columns: 36px 1fr auto; padding: 16px 18px; }
+.top-list .pick-rank { font-size: 20px; color: var(--text-2); }
+.top-list .pick-title { font-size: 16px; }
+.top-list .score { font-size: 19px; padding: 4px 10px; }

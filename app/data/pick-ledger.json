@@ -1,7 +1,7 @@
 {
  "version": 1,
  "started": "2026-10-28T01:37:08Z",
- "minScore": 250,
+ "minScore": 500,
  "picks": [
   {
    "id": "espn-401892593:spread",
@@ -21,7 +21,7 @@
    "prob": 0.645,
    "rawProb": 0.645,
    "edge": 0.002,
-   "score": 356,
+   "score": 650,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
@@ -49,7 +49,7 @@
    "prob": 0.694,
    "rawProb": 0.694,
    "edge": 0.03,
-   "score": 448,
+   "score": 783,
    "book": "Draft Kings",
    "factors": {
     "sharp": false,
@@ -77,7 +77,7 @@
    "prob": 0.61,
    "rawProb": 0.61,
    "edge": 0.105,
-   "score": 302,
+   "score": 574,
    "book": "Draft Kings",
    "factors": {
     "sharp": false,
@@ -109,7 +109,7 @@
    "prob": 0.621,
    "rawProb": 0.621,
    "edge": 0.086,
-   "score": 305,
+   "score": 605,
    "book": "Draft Kings",
    "factors": {
     "sharp": false,
@@ -137,7 +137,7 @@
    "prob": 0.612,
    "rawProb": 0.612,
    "edge": 0.088,
-   "score": 288,
+   "score": 578,
    "book": "Draft Kings",
    "factors": {
     "sharp": false,
@@ -167,7 +167,7 @@
    "prob": 0.612,
    "rawProb": 0.612,
    "edge": 0.077,
-   "score": 287,
+   "score": 575,
    "book": "Draft Kings",
    "factors": {
     "sharp": false,
@@ -195,7 +195,7 @@
    "prob": 0.624,
    "rawProb": 0.624,
    "edge": 0.016,
-   "score": 319,
+   "score": 595,
    "book": "Draft Kings",
    "factors": {
     "sharp": false,
@@ -223,7 +223,7 @@
    "prob": 0.702,
    "rawProb": 0.702,
    "edge": -0.002,
-   "score": 456,
+   "score": 792,
    "book": "Draft Kings",
    "factors": {
     "sharp": false,
@@ -251,7 +251,7 @@
    "prob": 0.605,
    "rawProb": 0.605,
    "edge": 0.081,
-   "score": 289,
+   "score": 554,
    "book": "Draft Kings",
    "factors": {
     "sharp": false,
@@ -281,7 +281,7 @@
    "prob": 0.678,
    "rawProb": 0.678,
    "edge": -0.004,
-   "score": 415,
+   "score": 734,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
@@ -309,7 +309,7 @@
    "prob": 0.621,
    "rawProb": 0.621,
    "edge": -0.015,
-   "score": 311,
+   "score": 582,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
@@ -337,7 +337,7 @@
    "prob": 0.644,
    "rawProb": 0.644,
    "edge": 0.12,
-   "score": 370,
+   "score": 675,
    "book": "Draft Kings",
    "factors": {
     "sharp": false,
@@ -367,7 +367,7 @@
    "prob": 0.614,
    "rawProb": 0.614,
    "edge": 0.095,
-   "score": 309,
+   "score": 586,
    "book": "Draft Kings",
    "factors": {
     "sharp": false,
@@ -397,7 +397,7 @@
    "prob": 0.628,
    "rawProb": 0.628,
    "edge": -0.027,
-   "score": 324,
+   "score": 602,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
@@ -425,7 +425,7 @@
    "prob": 0.597,
    "rawProb": 0.597,
    "edge": -0.04,
-   "score": 263,
+   "score": 510,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
@@ -453,7 +453,7 @@
    "prob": 0.598,
    "rawProb": 0.598,
    "edge": 0.079,
-   "score": 274,
+   "score": 531,
    "book": "Draft Kings",
    "factors": {
     "sharp": false,
@@ -481,7 +481,7 @@
    "prob": 0.606,
    "rawProb": 0.606,
    "edge": 0.078,
-   "score": 291,
+   "score": 556,
    "book": "Draft Kings",
    "factors": {
     "sharp": false,
@@ -509,7 +509,7 @@
    "prob": 0.593,
    "rawProb": 0.593,
    "edge": 0.088,
-   "score": 265,
+   "score": 517,
    "book": "Draft Kings",
    "factors": {
     "sharp": false,
@@ -540,7 +540,7 @@
    "prob": 0.616,
    "rawProb": 0.616,
    "edge": 0.097,
-   "score": 314,
+   "score": 592,
    "book": "Draft Kings",
    "factors": {
     "sharp": false,
@@ -568,7 +568,7 @@
    "prob": 0.628,
    "rawProb": 0.628,
    "edge": 0.099,
-   "score": 338,
+   "score": 629,
    "book": "Draft Kings",
    "factors": {
     "sharp": false,
@@ -599,7 +599,7 @@
    "prob": 0.628,
    "rawProb": 0.628,
    "edge": 0.094,
-   "score": 359,
+   "score": 668,
    "book": "Draft Kings",
    "factors": {
     "sharp": true,
@@ -627,7 +627,7 @@
    "prob": 0.597,
    "rawProb": 0.597,
    "edge": 0.078,
-   "score": 272,
+   "score": 528,
    "book": "Draft Kings",
    "factors": {
     "sharp": false,
@@ -657,7 +657,7 @@
    "prob": 0.591,
    "rawProb": 0.591,
    "edge": -0.031,
-   "score": 251,
+   "score": 491,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
@@ -685,7 +685,7 @@
    "prob": 0.604,
    "rawProb": 0.604,
    "edge": 0.08,
-   "score": 287,
+   "score": 551,
    "book": "Draft Kings",
    "factors": {
     "sharp": false,
@@ -716,7 +716,7 @@
    "prob": 0.597,
    "rawProb": 0.597,
    "edge": 0.073,
-   "score": 272,
+   "score": 527,
    "book": "Draft Kings",
    "factors": {
     "sharp": false,
