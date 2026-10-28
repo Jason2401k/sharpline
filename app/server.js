@@ -8,7 +8,7 @@ const ROOT = path.dirname(fileURLToPath(import.meta.url));
 loadEnv(path.join(ROOT, '.env'));
 
 const { SPORTS } = await import('./src/config.js');
-const { getBoard, getPicks, getInjuries } = await import('./src/service.js');
+const { getBoard, getPicks, getInjuries, getRecord } = await import('./src/service.js');
 
 const PUBLIC = path.join(ROOT, 'public');
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.ico': 'image/x-icon' };
@@ -17,6 +17,8 @@ const routes = {
   '/api/sports': async () => SPORTS,
   '/api/picks': getPicks,
   '/api/injuries': getInjuries,
+  '/api/record': async () => getRecord(),
+  '/api/site': async () => ({ repo: null, workflow: null }),
   '/api/health': async () => ({ ok: true, oddsApi: Boolean(process.env.ODDS_API_KEY), liveInjuries: process.env.LIVE_INJURIES !== '0' }),
 };
 

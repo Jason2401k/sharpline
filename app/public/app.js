@@ -2,7 +2,6 @@
 
 const app = document.getElementById('app');
 const state = { sports: [], boards: new Map(), picks: null, injuries: null, propSort: { key: 'edge', dir: -1 }, propFilter: { stat: '', lean: '', min: '0', q: '' }, openProp: null };
-const INJURY_REFRESH_MS = 3 * 60 * 1000;
 
 // ---------------------------------------------------------------- utils
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -20,7 +19,8 @@ function ago(iso) {
 }
 const STATIC = Boolean(window.SHARPLINE_STATIC);
 async function api(path) {
-  const r = await fetch(STATIC ? `${path}.json` : `/${path}`);
+  const bust = state.bust ? `?v=${state.bust}` : '';
+  const r = await fetch(STATIC ? `${path}.json${bust}` : `/${path}`, state.bust ? { cache: 'no-store' } : undefined);
   if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.statusText);
   return r.json();
 }
@@ -48,7 +48,8 @@ function renderNav(active) {
     <span class="nav-sep"></span>${by(1).map(link).join('')}
     <span class="nav-sep"></span>${by(2).map(link).join('')}
     <span class="nav-sep"></span>${by(3).map(link).join('')}
-    <span class="nav-sep"></span><a class="nav-link ${active === 'injuries' ? 'active' : ''}" href="#injuries">Injuries</a>`;
+    <span class="nav-sep"></span><a class="nav-link ${active === 'injuries' ? 'active' : ''}" href="#injuries">Injuries</a>
+    <a class="nav-link ${active === 'record' ? 'active' : ''}" href="#record">Record</a>`;
 }
 
 function renderBanner(sources) {
@@ -73,6 +74,7 @@ async function route() {
   try {
     if (!a) { renderNav('home'); await homeView(); }
     else if (a === 'injuries') { renderNav('injuries'); await allInjuriesView(); }
+    else if (a === 'record') { renderNav('record'); await recordView(); }
     else if (state.sports.find((s) => s.id === a)) { renderNav(a); await sportView(a, b || 'lines'); }
     else { location.hash = '#picks'; }
   } catch (e) {
@@ -414,7 +416,7 @@ function injuryCard(list, source, sportLabel) {
   if (!list.length && source === 'unavailable') return `<div class="card pad notice"><h3>No injury report${sportLabel ? ` for ${esc(sportLabel)}` : ''}</h3><p class="muted">ESPN doesn't publish a current injury report for this sport, so there's nothing to show here.</p></div>`;
   if (!list.length && source === 'none') return `<div class="card pad notice"><span class="badge none">Not connected</span><h3>Injury feed offline${sportLabel ? ` for ${esc(sportLabel)}` : ''}</h3><p class="muted">Injuries come from ESPN's public feed, which couldn't be reached. They show up here automatically when it can.</p></div>`;
   if (!list.length) return `<div class="card empty">No injuries reported.</div>`;
-  return `<div class="section-head" style="margin-bottom:8px"><h2>${sportLabel ? esc(sportLabel) : 'Injury report'}</h2><span>${srcBadge(source, 'Feed')} <span class="muted small">auto-refreshes every 3 min</span></span></div>
+  return `<div class="section-head" style="margin-bottom:8px"><h2>${sportLabel ? esc(sportLabel) : 'Injury report'}</h2><span>${srcBadge(source, 'Feed')} <span class="muted small">updated on each refresh</span></span></div>
     <div class="card inj-list">${list.map((i) => `<div class="inj">
       <span><span class="status status-${esc(i.status).replace(/\s/g, '-')}">${esc(i.status)}</span></span>
       <span class="who"><b>${esc(i.player)}</b> <span class="muted">${esc(i.team)} · ${esc(i.pos)}</span><div class="small" style="color:var(--text-2)">${esc(i.note)}</div></span>
@@ -469,9 +471,218 @@ function initTheme() {
   state.sports = await api('api/sports');
   window.addEventListener('hashchange', route);
   await route();
-  setInterval(async () => {
-    state.boards.clear();
-    state.injuries = null;
-    if (/^#(injuries|[a-z]+-injuries)$/.test(location.hash)) route();
-  }, INJURY_REFRESH_MS);
+  initRefresh(); // data only changes when the Refresh button is clicked
 })();
+
+// ---------------------------------------------------------------- pick record
+const money = (u) => `${u > 0 ? '+' : ''}${u.toFixed(2)}u`;
+const pctOrDash = (x, d = 1) => (x == null ? '—' : pct(x, d));
+const resultPill = (s) => `<span class="result result-${s}">${{ win: 'Win', loss: 'Loss', push: 'Push', void: 'Void', pending: 'Pending' }[s] || esc(s)}</span>`;
+
+async function recordView() {
+  const r = await api('api/record');
+  document.getElementById('banner').innerHTML = '';
+  const o = r.overall;
+  const since = r.started ? new Date(r.started).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+  const tile = (k, v, sub = '') => `<div class="tile"><div class="k">${k}</div><div class="v num">${v}</div>${sub ? `<div class="muted small">${sub}</div>` : ''}</div>`;
+  const graded = o.wins + o.losses + o.pushes;
+  app.innerHTML = `
+    <div class="page-head"><div><h1>Pick Record</h1><div class="muted small">Every pick scoring ${r.minScore}+ since ${since}, logged before kickoff and graded from final scores.</div></div></div>
+    <div class="tiles">
+      ${tile('Record', `${o.wins}-${o.losses}${o.pushes ? `-${o.pushes}` : ''}`, `${graded} graded · ${r.pending} pending`)}
+      ${tile('Win rate', pctOrDash(o.winPct), 'pushes excluded')}
+      ${tile('Units', graded ? money(o.units) : '—', '1 unit risked per pick')}
+      ${tile('ROI', o.roi == null ? '—' : signedPct(o.roi), 'units ÷ units risked')}
+    </div>
+    ${graded ? '' : `<div class="card pad notice" style="margin-top:14px"><h3>No graded picks yet</h3><p class="muted">${r.pending ? `${r.pending} pick${r.pending === 1 ? ' is' : 's are'} logged and waiting on results. Each one is graded on the first refresh after its game ends.` : 'Picks scoring 250 or more are logged on each refresh before their games start.'} The model starts learning from the results once they come in.</p></div>`}
+    ${graded ? `<div class="grid grid-3 section">${breakdown('By sport', r.bySport)}${breakdown('By market', r.byMarket)}${breakdown('By confidence score', r.byBand)}</div>` : ''}
+    <div class="grid grid-2 section">
+      <section class="card pad">${calibrationChart(r.buckets)}</section>
+      <section class="card pad">${learnedPanel(r)}</section>
+    </div>
+    ${graded ? `<section class="section card pad"><h2>Does it help when…</h2><div class="factor-rows">${r.factors.map((f) => `<div class="factor-row"><b>${esc(f.name)}</b><span>Yes: ${f.with.wins}-${f.with.losses} (${pctOrDash(f.with.winPct)}, ${money(f.with.units)})</span><span class="muted">No: ${f.without.wins}-${f.without.losses} (${pctOrDash(f.without.winPct)}, ${money(f.without.units)})</span></div>`).join('')}</div></section>` : ''}
+    <section class="section">
+      <div class="section-head"><h2>All picks</h2>
+        <div class="filters" style="margin:0"><select id="rec-filter"><option value="">All</option><option value="pending">Pending</option><option value="graded">Graded</option></select></div></div>
+      <div class="card table-wrap"><table class="props rec"><thead><tr><th>Game time</th><th>Pick</th><th>Matchup</th><th class="r">Odds</th><th class="c">Score</th><th class="r">Model</th><th class="c">Result</th><th class="r">Final</th><th class="r">Units</th></tr></thead><tbody id="rec-body"></tbody></table></div>
+    </section>`;
+  const body = document.getElementById('rec-body');
+  const draw = (f) => {
+    const list = r.picks.filter((p) => !f || (f === 'pending' ? p.status === 'pending' : p.status !== 'pending'));
+    body.innerHTML = list.length ? list.map((p) => `<tr>
+      <td class="muted">${fmtTime(p.start)}</td>
+      <td><b>${esc(p.label)}</b><div class="muted small">${esc(p.sportName)} · ${p.market === 'spread' ? 'Spread' : 'Total'}${p.factors?.sharp ? ' · sharp $ agreed' : ''}</div></td>
+      <td>${esc(p.matchup)}</td>
+      <td class="r num">${fmtOdds(p.odds)}</td>
+      <td class="c">${scoreBadge(p.score, true)}</td>
+      <td class="r num">${pct(p.prob)}</td>
+      <td class="c">${resultPill(p.status)}</td>
+      <td class="r num">${p.final ? `${esc(p.away)} ${p.final.away}–${p.final.home} ${esc(p.home)}` : '—'}</td>
+      <td class="r num ${p.units > 0 ? 'pos' : p.units < 0 ? 'neg' : 'muted'}">${p.units == null ? '—' : money(p.units)}</td>
+    </tr>`).join('') : '<tr><td colspan="9" class="empty">No picks here yet.</td></tr>';
+  };
+  document.getElementById('rec-filter').addEventListener('change', (e) => draw(e.target.value));
+  draw('');
+}
+
+function breakdown(title, rows) {
+  return `<section class="card pad"><h3 style="margin-bottom:8px">${title}</h3>
+    <table class="mini"><thead><tr><th></th><th class="r">W-L-P</th><th class="r">Win %</th><th class="r">Units</th></tr></thead>
+    <tbody>${rows.map((x) => `<tr><td>${esc(x.label)}</td><td class="r num">${x.wins}-${x.losses}-${x.pushes}</td><td class="r num">${pctOrDash(x.winPct, 0)}</td><td class="r num ${x.units > 0 ? 'pos' : x.units < 0 ? 'neg' : ''}">${money(x.units)}</td></tr>`).join('')}</tbody></table></section>`;
+}
+
+// Predicted vs actual win rate. Points on the dashed line = well calibrated.
+function calibrationChart(buckets) {
+  const W = 420, H = 260, L = 44, B = 34, T = 12, R = 12;
+  const x = (p) => L + ((p - 0.45) / 0.35) * (W - L - R);
+  const y = (p) => T + (1 - p) * (H - T - B);
+  const has = buckets.filter((b) => b.n > 0);
+  const maxN = Math.max(1, ...has.map((b) => b.n));
+  const grid = [0, 0.25, 0.5, 0.75, 1].map((v) => `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--border)"/><text x="${L - 6}" y="${y(v) + 3}" text-anchor="end" font-size="10" fill="var(--muted)">${v * 100}%</text>`).join('');
+  const xt = [0.5, 0.6, 0.7, 0.8].map((v) => `<text x="${x(v)}" y="${H - B + 16}" text-anchor="middle" font-size="10" fill="var(--muted)">${v * 100}%</text>`).join('');
+  const dots = has.map((b) => {
+    const r = 5 + 9 * Math.sqrt(b.n / maxN);
+    return `<g data-tip="Model said ${pct(b.predicted)} · actually won ${pct(b.actual)} · ${b.n} pick${b.n === 1 ? '' : 's'}"><circle cx="${x(b.predicted)}" cy="${y(b.actual)}" r="${r + 6}" fill="transparent"/><circle cx="${x(b.predicted)}" cy="${y(b.actual)}" r="${r}" fill="var(--accent)" stroke="var(--surface)" stroke-width="2"/><text x="${x(b.predicted)}" y="${y(b.actual) - r - 5}" text-anchor="middle" font-size="10" fill="var(--text-2)">${b.n}</text></g>`;
+  }).join('');
+  return `<h2>Is the confidence honest?</h2>
+    <p class="muted small" style="margin:4px 0 8px">Each dot groups picks by the win chance the model gave them. Dots on the dashed line mean the model's percentages are accurate; below the line means it was overconfident. The number is how many picks.</p>
+    <svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Calibration: predicted versus actual win rate">
+      ${grid}${xt}
+      <line x1="${x(0.45)}" y1="${y(0.45)}" x2="${x(0.8)}" y2="${y(0.8)}" stroke="var(--text-2)" stroke-width="1.5" stroke-dasharray="5 4"/>
+      ${dots}
+      <text x="${(L + W - R) / 2}" y="${H - 4}" text-anchor="middle" font-size="11" fill="var(--text-2)">Model's win chance</text>
+      <text x="12" y="${(T + H - B) / 2}" text-anchor="middle" font-size="11" fill="var(--text-2)" transform="rotate(-90 12 ${(T + H - B) / 2})">Actually won</text>
+    </svg>
+    ${has.length ? '' : '<p class="muted small">Dots appear once picks are graded.</p>'}`;
+}
+
+function learnedPanel(r) {
+  const L = r.learning;
+  const line = (g) => {
+    const dir = g.shift < -0.005 ? 'lowered' : g.shift > 0.005 ? 'raised' : 'unchanged';
+    const exp = g.expected != null ? ` (won ${g.wins} vs ${g.expected * g.n >= 0 ? (g.expected * g.n).toFixed(1) : '—'} expected)` : '';
+    return `<li class="note"><b>${esc(g.sportName)} ${g.market === 'spread' ? 'spreads' : 'totals'}</b><span class="impact">${g.n} graded</span><div>Win chances ${dir}${dir === 'unchanged' ? '' : `: a 60% call now reads <b>${pct(g.at60)}</b>`}${exp}.</div></li>`;
+  };
+  return `<h2>What the model has learned</h2>
+    <p class="muted small" style="margin:4px 0 10px">After each refresh the model compares its win chances with real results, per sport and market, and corrects future picks. Corrections stay small until a group has about ${L.priorPicks} graded picks, so one bad week can't swing it.</p>
+    ${L.groups.length ? `<ul class="notes">${L.groups.map(line).join('')}</ul>
+      <p class="muted small" style="margin-top:10px">Across all picks: a 60% call now reads ${pct(L.global.at60)} (${L.global.n} graded).</p>` : '<div class="muted">Nothing yet. Learning starts with the first graded picks.</div>'}`;
+}
+
+// ---------------------------------------------------------------- refresh button
+// On the hosted site the button starts the GitHub "Refresh site data" workflow with a key you
+// paste once; the key is kept only in this browser. Running locally, it just reloads the data.
+const TOKEN_KEY = 'sharpline.githubKey';
+const getToken = () => { try { return localStorage.getItem(TOKEN_KEY) || ''; } catch { return ''; } };
+const setToken = (t) => { try { t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY); } catch {} };
+let siteInfo = null;
+
+async function initRefresh() {
+  const btn = document.getElementById('refreshBtn');
+  try { siteInfo = await api('api/site'); } catch { siteInfo = {}; }
+  const repo = siteInfo?.repo || repoFromLocation();
+  updatedLabel();
+  btn.addEventListener('click', async () => {
+    if (!STATIC) { await reloadData('Refreshed'); return; }
+    if (!repo) { showRefreshPanel(null, 'This copy of the site isn\'t linked to a GitHub repo.'); return; }
+    if (!getToken()) { showRefreshPanel(repo); return; }
+    await runRefresh(repo);
+  });
+}
+
+function repoFromLocation() {
+  const m = location.hostname.match(/^([^.]+)\.github\.io$/);
+  const name = location.pathname.split('/').filter(Boolean)[0];
+  return m && name ? `${m[1]}/${name}` : null;
+}
+
+function updatedLabel(text) {
+  const el = document.getElementById('refreshStatus');
+  if (text) { el.textContent = text; return; }
+  el.textContent = siteInfo?.builtAt ? `Updated ${ago(siteInfo.builtAt)}` : '';
+}
+
+function showRefreshPanel(repo, error) {
+  const panel = document.getElementById('refreshPanel');
+  const actionsUrl = repo ? `https://github.com/${repo}/actions/workflows/${siteInfo?.workflow || 'refresh-site.yml'}` : null;
+  panel.innerHTML = `<div class="refresh-panel card pad">
+    <div style="display:flex;justify-content:space-between;gap:8px;align-items:start"><h3>Connect the Refresh button</h3><button class="toggle-btn" id="rp-close" aria-label="Close">✕</button></div>
+    ${error ? `<p class="neg small">${esc(error)}</p>` : ''}
+    <p class="muted small">The site is rebuilt by a GitHub job. To start it from this button, paste a GitHub key once. It's saved only in this browser and can only run this repo's refresh, not change anything else.</p>
+    <ol class="connect-steps small">
+      <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → new fine-grained token</a>.</li>
+      <li>Name it "SharpLine refresh". Repository access: <b>Only select repositories</b> → <b>${esc(repo || 'your repo')}</b>.</li>
+      <li>Permissions → Repository → <b>Actions: Read and write</b>. Click <b>Generate token</b> and copy it.</li>
+    </ol>
+    <div class="filters" style="margin-top:10px"><input type="password" id="rp-token" placeholder="Paste token (starts with github_pat_)" autocomplete="off" style="flex:1"><button class="toggle-btn" id="rp-save">Save &amp; refresh</button></div>
+    ${actionsUrl ? `<p class="muted small" style="margin:8px 0 0">Or run it on GitHub instead: <a href="${actionsUrl}" target="_blank" rel="noopener">Actions → Refresh site data → Run workflow</a>.</p>` : ''}
+    ${getToken() ? '<p class="small" style="margin:8px 0 0"><a href="#" id="rp-forget">Forget the saved key on this device</a></p>' : ''}
+  </div>`;
+  panel.hidden = false;
+  document.getElementById('rp-close').onclick = () => { panel.hidden = true; };
+  const forget = document.getElementById('rp-forget');
+  if (forget) forget.onclick = (e) => { e.preventDefault(); setToken(''); panel.hidden = true; updatedLabel('Key removed'); };
+  document.getElementById('rp-save').onclick = async () => {
+    const t = document.getElementById('rp-token').value.trim();
+    if (!t) return;
+    setToken(t);
+    panel.hidden = true;
+    await runRefresh(repo);
+  };
+}
+
+async function gh(path, opts = {}) {
+  const r = await fetch(`https://api.github.com/repos/${path}`, { ...opts, headers: { Accept: 'application/vnd.github+json', Authorization: `Bearer ${getToken()}`, 'X-GitHub-Api-Version': '2022-11-28', ...(opts.headers || {}) } });
+  if (!r.ok && r.status !== 204) { const e = new Error(`GitHub said ${r.status}`); e.status = r.status; throw e; }
+  return r.status === 204 ? null : r.json();
+}
+
+let refreshing = false;
+async function runRefresh(repo) {
+  if (refreshing) return;
+  refreshing = true;
+  const btn = document.getElementById('refreshBtn');
+  btn.disabled = true; btn.classList.add('spinning');
+  const wf = siteInfo?.workflow || 'refresh-site.yml';
+  const startedAt = Date.now();
+  const tick = (msg) => updatedLabel(`${msg} ${Math.round((Date.now() - startedAt) / 1000)}s`);
+  try {
+    tick('Starting…');
+    await gh(`${repo}/actions/workflows/${wf}/dispatches`, { method: 'POST', body: JSON.stringify({ ref: 'main' }) });
+    let run = null;
+    for (let i = 0; i < 60 && !run; i++) {
+      await sleep(3000); tick('Starting…');
+      const runs = await gh(`${repo}/actions/workflows/${wf}/runs?event=workflow_dispatch&per_page=3`);
+      run = runs.workflow_runs.find((x) => Date.parse(x.created_at) >= startedAt - 15000);
+    }
+    if (!run) throw new Error('The refresh job didn\'t start. Try again in a minute.');
+    while (run.status !== 'completed') {
+      await sleep(5000); tick('Refreshing…');
+      run = await gh(`${repo}/actions/runs/${run.id}`);
+    }
+    if (run.conclusion !== 'success') throw Object.assign(new Error(`Refresh ${run.conclusion}. The site wasn't changed.`), { url: run.html_url });
+    // GitHub Pages takes a few seconds to serve the new build.
+    for (let i = 0; i < 24; i++) {
+      tick('Publishing…');
+      const info = await fetch(`api/site.json?v=${Date.now()}`, { cache: 'no-store' }).then((r) => r.json()).catch(() => null);
+      if (info?.builtAt && Date.parse(info.builtAt) > startedAt) { siteInfo = info; break; }
+      await sleep(5000);
+    }
+    await reloadData();
+  } catch (e) {
+    if (e.status === 401 || e.status === 403 || e.status === 404) { setToken(''); showRefreshPanel(repo, 'GitHub didn\'t accept that key. Check it has Actions: Read and write on this repo, then paste it again.'); updatedLabel(); }
+    else { updatedLabel('Refresh failed'); if (e.url) window.open(e.url, '_blank', 'noopener'); console.error(e); }
+  } finally {
+    refreshing = false; btn.disabled = false; btn.classList.remove('spinning');
+  }
+}
+
+async function reloadData(msg) {
+  state.bust = Date.now();
+  state.boards.clear(); state.injuries = null; state.picks = null;
+  try { siteInfo = await api('api/site'); } catch {}
+  await route();
+  updatedLabel(msg);
+  if (msg) setTimeout(() => updatedLabel(), 4000);
+}
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

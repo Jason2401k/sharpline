@@ -18,10 +18,15 @@
         <span>Sharp<b>Line</b></span>
       </a>
       <nav class="sports-nav" id="sportsNav" aria-label="Sports"></nav>
+      <div class="refresh">
+        <span class="refresh-status muted small" id="refreshStatus" aria-live="polite"></span>
+        <button class="refresh-btn" id="refreshBtn" title="Pull fresh games, lines, splits and injuries, and grade finished picks"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Refresh</span></button>
+      </div>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
     </div>
   </header>
 
+  <div id="refreshPanel" class="container" hidden></div>
   <div id="banner"></div>
   <main id="app" class="container"></main>
 

@@ -10,7 +10,10 @@ import { analyzeGame } from './model/game.js';
 import { projectProp } from './model/props.js';
 import { publicSignals } from './model/public.js';
 import { buildPicks } from './model/picks.js';
-import { confidenceScore } from './model/math.js';
+import { confidenceScore, impliedProb, expectedValue, round } from './model/math.js';
+import { loadLedger, ledgerPath } from './tracker/ledger.js';
+import { buildCalibration, summarize } from './tracker/calibrate.js';
+import fs from 'node:fs';
 import { fetchGames, fetchProps } from './sources/odds-api.js';
 import { fetchInjuries } from './sources/espn.js';
 import { fetchSchedule, fetchStandings, buildLiveTeams } from './sources/espn-live.js';
@@ -116,6 +119,17 @@ export async function getBoard(sportId) {
     const signals = publicSignals(g) || [];
     // 1-1000 confidence on each side the model leans to.
     const sharpOn = (market, side) => signals.some((s) => s.market === market && s.side === side);
+    // Apply what the tracker has learned from graded picks, then score.
+    const cal = calibration();
+    for (const [market, pick] of [['spread', analysis.spreadPick], ['total', analysis.totalPick]]) {
+      if (!pick) continue;
+      pick.rawProb = pick.prob;
+      pick.calShift = round(cal.shift(sport.id, market), 3);
+      if (!pick.calShift) continue;
+      pick.prob = round(cal.adjust(sport.id, market, pick.prob), 3);
+      pick.edge = round(pick.prob - impliedProb(pick.odds), 3);
+      pick.ev = round(expectedValue(pick.prob, pick.odds), 3);
+    }
     if (analysis.spreadPick) analysis.spreadPick.score = confidenceScore(analysis.spreadPick.prob, { edge: analysis.spreadPick.edge, games: analysis.minGames, sharp: sharpOn('spread', g[analysis.spreadPick.side].abbr) });
     if (analysis.totalPick) analysis.totalPick.score = confidenceScore(analysis.totalPick.prob, { edge: analysis.totalPick.edge, games: analysis.minGames, sharp: sharpOn('total', analysis.totalPick.side) });
     return { ...g, analysis, signals, injuries: gameInjuries };
@@ -169,6 +183,21 @@ function attachKenpom(teams, sources) {
 
 export async function getAllBoards() {
   return Promise.all(SPORTS.map((s) => getBoard(s.id)));
+}
+
+// Calibration learned from the pick ledger (re-read when the file changes).
+let calCache = { mtime: -1, cal: buildCalibration(null) };
+function calibration() {
+  const file = ledgerPath();
+  const mtime = fs.existsSync(file) ? fs.statSync(file).mtimeMs : 0;
+  if (mtime !== calCache.mtime) calCache = { mtime, cal: buildCalibration(mtime ? loadLedger(file) : null) };
+  return calCache.cal;
+}
+
+export function resetBoards() { boardCache.clear(); }
+
+export function getRecord() {
+  return summarize(loadLedger(), Object.fromEntries(SPORTS.map((s) => [s.id, s.short])));
 }
 
 export async function getPicks() {

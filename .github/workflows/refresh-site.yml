@@ -1,12 +1,13 @@
-# Rebuilds the site with fresh games, lines, public splits and injuries and publishes it to
-# GitHub Pages. Runs only when started by hand: Actions tab -> "Refresh site data" -> Run workflow.
+# Rebuilds the site with fresh games, lines, public splits and injuries, grades and logs picks
+# in app/data/pick-ledger.json, and publishes to GitHub Pages. Runs only when started by hand:
+# the site's Refresh button, or Actions tab -> "Refresh site data" -> Run workflow.
 name: Refresh site data
 
 on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write   # commit the pick ledger
   pages: write
   id-token: write
 
@@ -36,10 +37,22 @@ jobs:
           else
             echo "No KENPOM_CSV secret; college basketball uses ESPN stats only"
           fi
-      - name: Build snapshot with live data
-        run: node scripts/build-static.js --pages
+      - name: Build snapshot with live data, grade and log picks
+        run: node scripts/build-static.js --pages --record
       - name: Check the snapshot has live data
         run: node scripts/check-snapshot.js dist-pages
+      - name: Save the pick ledger
+        run: |
+          git config user.name "sharpline-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/pick-ledger.json
+          if git diff --cached --quiet; then
+            echo "Ledger unchanged"
+          else
+            git commit -m "Update pick ledger"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
       - uses: actions/upload-pages-artifact@v3
         with:
           path: app/dist-pages
