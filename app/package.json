@@ -1,0 +1,17 @@
+{
+  "name": "sharpline",
+  "version": "1.0.0",
+  "description": "Sports betting research site: model-driven props, coaching analysis, injuries, public money and weekly picks.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test test/*.test.js",
+    "build:static": "node scripts/build-static.js",
+    "check:snapshot": "node scripts/check-snapshot.js"
+  },
+  "engines": { "node": ">=18" },
+  "license": "UNLICENSED",
+  "private": true
+}

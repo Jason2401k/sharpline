@@ -1,0 +1,59 @@
+# Rebuilds the site with fresh games, lines, public splits and injuries every hour and
+# publishes it to GitHub Pages. One-time setup: Settings -> Pages -> Source: GitHub Actions.
+name: Refresh site data
+
+on:
+  schedule:
+    - cron: '17 * * * *'   # hourly, at :17 to avoid the top-of-hour rush
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Test
+        run: npm test
+      - name: Add KenPom ratings (optional repo secret KENPOM_CSV)
+        env:
+          KENPOM_CSV_CONTENT: ${{ secrets.KENPOM_CSV }}
+        run: |
+          if [ -n "$KENPOM_CSV_CONTENT" ]; then
+            mkdir -p data && printf '%s\n' "$KENPOM_CSV_CONTENT" > data/kenpom.csv && echo "KenPom file added"
+          else
+            echo "No KENPOM_CSV secret; college basketball uses ESPN stats only"
+          fi
+      - name: Build snapshot with live data
+        run: node scripts/build-static.js --pages
+      - name: Check the snapshot has live data
+        run: node scripts/check-snapshot.js dist-pages
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: app/dist-pages
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
