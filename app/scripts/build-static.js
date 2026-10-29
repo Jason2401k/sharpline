@@ -57,9 +57,13 @@ const html = fs.readFileSync(path.join(ROOT, 'public/index.html'), 'utf8');
 const head = html.match(/<head>([\s\S]*?)<\/head>/)[1].replace(/\s*<meta charset[^>]*>|\s*<meta name="viewport"[^>]*>/g, '');
 const body = html.match(/<body>([\s\S]*?)<\/body>/)[1];
 const flag = '<script>window.SHARPLINE_STATIC = true;</script>';
-write('index.html', PAGES
+// Version stamp on the code files so browsers load new code after each refresh instead of a
+// cached copy (GitHub Pages lets browsers cache files for 10 minutes).
+const ver = Date.now().toString(36);
+const stamp = (h) => h.replace('href="styles.css"', `href="styles.css?v=${ver}"`).replace('src="app.js"', `src="app.js?v=${ver}"`);
+write('index.html', stamp(PAGES
   ? html.replace('</head>', `  ${flag}\n</head>`)
-  : `${head.trim()}\n<meta name="claude:viewport-fit-sides" content="cover">\n${flag}\n${body.trim()}\n`);
+  : `${head.trim()}\n<meta name="claude:viewport-fit-sides" content="cover">\n${flag}\n${body.trim()}\n`));
 for (const f of ['app.js', 'styles.css']) fs.copyFileSync(path.join(ROOT, 'public', f), path.join(OUT, f));
 
 console.log(`Static snapshot written to ${path.relative(ROOT, OUT)}/`);
