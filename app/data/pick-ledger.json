@@ -192,7 +192,7 @@
    "rawProb": 0.644,
    "edge": 0.076,
    "score": 537,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -200,7 +200,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-29T18:24:49.425Z",
+   "updatedAt": "2026-10-29T19:08:21.695Z",
    "status": "pending"
   },
   {
@@ -222,13 +222,13 @@
    "rawProb": 0.628,
    "edge": 0.049,
    "score": 509,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": true,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-29T18:24:49.425Z",
+   "updatedAt": "2026-10-29T19:08:21.695Z",
    "status": "pending"
   },
   {
@@ -262,7 +262,7 @@
     ]
    },
    "recordedAt": "2026-10-29T17:27:49.343Z",
-   "updatedAt": "2026-10-29T18:24:49.425Z",
+   "updatedAt": "2026-10-29T19:08:21.695Z",
    "status": "pending"
   },
   {
@@ -292,11 +292,11 @@
    "factors": {
     "sharp": false,
     "notes": [
-     "Defense rank 27/32"
+     "Defense rank 26/32"
     ]
    },
    "recordedAt": "2026-10-29T17:27:49.343Z",
-   "updatedAt": "2026-10-29T18:24:49.425Z",
+   "updatedAt": "2026-10-29T19:08:21.695Z",
    "status": "pending"
   },
   {
@@ -330,7 +330,7 @@
     ]
    },
    "recordedAt": "2026-10-29T17:25:30.265Z",
-   "updatedAt": "2026-10-29T18:24:49.425Z",
+   "updatedAt": "2026-10-29T19:08:21.695Z",
    "status": "pending"
   }
  ]
