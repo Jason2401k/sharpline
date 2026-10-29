@@ -192,13 +192,13 @@
    "rawProb": 0.68,
    "edge": -0.033,
    "score": 633,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T17:25:30.265Z",
+   "updatedAt": "2026-10-29T17:27:49.343Z",
    "status": "pending"
   },
   {
@@ -220,13 +220,13 @@
    "rawProb": 0.75,
    "edge": -0.016,
    "score": 820,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T17:25:30.265Z",
+   "updatedAt": "2026-10-29T17:27:49.343Z",
    "status": "pending"
   },
   {
@@ -248,13 +248,13 @@
    "rawProb": 0.737,
    "edge": -0.044,
    "score": 840,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": true,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T17:25:30.265Z",
+   "updatedAt": "2026-10-29T17:27:49.343Z",
    "status": "pending"
   },
   {
@@ -276,13 +276,13 @@
    "rawProb": 0.641,
    "edge": -0.045,
    "score": 513,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T17:25:30.265Z",
+   "updatedAt": "2026-10-29T17:27:49.343Z",
    "status": "pending"
   },
   {
@@ -304,13 +304,13 @@
    "rawProb": 0.693,
    "edge": -0.019,
    "score": 670,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T17:25:30.265Z",
+   "updatedAt": "2026-10-29T17:27:49.343Z",
    "status": "pending"
   },
   {
@@ -332,13 +332,13 @@
    "rawProb": 0.691,
    "edge": -0.07,
    "score": 665,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T17:25:30.265Z",
+   "updatedAt": "2026-10-29T17:27:49.343Z",
    "status": "pending"
   },
   {
@@ -360,13 +360,13 @@
    "rawProb": 0.676,
    "edge": -0.069,
    "score": 622,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-29T17:25:30.265Z",
-   "updatedAt": "2026-10-29T17:25:30.265Z",
+   "updatedAt": "2026-10-29T17:27:49.343Z",
    "status": "pending"
   },
   {
@@ -388,13 +388,13 @@
    "rawProb": 0.666,
    "edge": -0.097,
    "score": 591,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-29T17:25:30.265Z",
-   "updatedAt": "2026-10-29T17:25:30.265Z",
+   "updatedAt": "2026-10-29T17:27:49.343Z",
    "status": "pending"
   },
   {
@@ -422,7 +422,7 @@
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T17:25:30.265Z",
+   "updatedAt": "2026-10-29T17:27:49.343Z",
    "status": "pending"
   },
   {
@@ -444,7 +444,7 @@
    "rawProb": 0.644,
    "edge": 0.076,
    "score": 537,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -452,7 +452,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-29T17:25:30.265Z",
+   "updatedAt": "2026-10-29T17:27:49.343Z",
    "status": "pending"
   },
   {
@@ -474,47 +474,81 @@
    "rawProb": 0.628,
    "edge": 0.049,
    "score": 509,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": true,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-29T17:25:30.265Z",
+   "updatedAt": "2026-10-29T17:27:49.343Z",
    "status": "pending"
   },
   {
-   "id": "espn-401873024:prop:4361307:receptions",
-   "eventId": "401873024",
+   "id": "espn-401873026:prop:3043078:carries",
+   "eventId": "401873026",
    "sport": "nfl",
    "sportName": "NFL",
    "espn": "football/nfl",
    "market": "prop",
    "start": "2026-11-01T18:00Z",
-   "matchup": "ARI @ DAL",
-   "home": "DAL",
-   "away": "ARI",
-   "label": "Trey McBride Over 7.5 Receptions",
+   "matchup": "BAL @ BUF",
+   "home": "BUF",
+   "away": "BAL",
+   "label": "Derrick Henry Over 18.5 Rush Attempts",
    "side": "over",
-   "line": 7.5,
-   "athleteId": "4361307",
-   "player": "Trey McBride",
-   "stat": "receptions",
-   "statLabel": "Receptions",
+   "line": 18.5,
+   "athleteId": "3043078",
+   "player": "Derrick Henry",
+   "stat": "carries",
+   "statLabel": "Rush Attempts",
    "odds": -110,
-   "prob": 0.593,
-   "rawProb": 0.637,
-   "edge": 0.069,
-   "score": 512,
+   "prob": 0.6,
+   "rawProb": 0.644,
+   "edge": 0.076,
+   "score": 537,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": [
-     "Defense rank 19/32"
+     "Defense rank 21/32"
     ]
    },
-   "recordedAt": "2026-10-29T17:25:30.265Z",
-   "updatedAt": "2026-10-29T17:25:30.265Z",
+   "recordedAt": "2026-10-29T17:27:49.343Z",
+   "updatedAt": "2026-10-29T17:27:49.343Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401873026:prop:4429615:receptions",
+   "eventId": "401873026",
+   "sport": "nfl",
+   "sportName": "NFL",
+   "espn": "football/nfl",
+   "market": "prop",
+   "start": "2026-11-01T18:00Z",
+   "matchup": "BAL @ BUF",
+   "home": "BUF",
+   "away": "BAL",
+   "label": "Zay Flowers Over 6.5 Receptions",
+   "side": "over",
+   "line": 6.5,
+   "athleteId": "4429615",
+   "player": "Zay Flowers",
+   "stat": "receptions",
+   "statLabel": "Receptions",
+   "odds": -110,
+   "prob": 0.606,
+   "rawProb": 0.649,
+   "edge": 0.082,
+   "score": 557,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Defense rank 27/32"
+    ]
+   },
+   "recordedAt": "2026-10-29T17:27:49.343Z",
+   "updatedAt": "2026-10-29T17:27:49.343Z",
    "status": "pending"
   },
   {
@@ -536,10 +570,10 @@
    "stat": "completions",
    "statLabel": "Completions",
    "odds": -110,
-   "prob": 0.593,
-   "rawProb": 0.637,
-   "edge": 0.069,
-   "score": 512,
+   "prob": 0.595,
+   "rawProb": 0.639,
+   "edge": 0.071,
+   "score": 520,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
@@ -548,41 +582,7 @@
     ]
    },
    "recordedAt": "2026-10-29T17:25:30.265Z",
-   "updatedAt": "2026-10-29T17:25:30.265Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401873028:prop:4882093:rush_yds",
-   "eventId": "401873028",
-   "sport": "nfl",
-   "sportName": "NFL",
-   "espn": "football/nfl",
-   "market": "prop",
-   "start": "2026-11-01T18:00Z",
-   "matchup": "IND @ JAX",
-   "home": "JAX",
-   "away": "IND",
-   "label": "Bhayshul Tuten Over 60.5 Rushing Yds",
-   "side": "over",
-   "line": 60.5,
-   "athleteId": "4882093",
-   "player": "Bhayshul Tuten",
-   "stat": "rush_yds",
-   "statLabel": "Rushing Yds",
-   "odds": -110,
-   "prob": 0.591,
-   "rawProb": 0.635,
-   "edge": 0.067,
-   "score": 505,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": [
-     "Defense rank 22/32"
-    ]
-   },
-   "recordedAt": "2026-10-29T17:25:30.265Z",
-   "updatedAt": "2026-10-29T17:25:30.265Z",
+   "updatedAt": "2026-10-29T17:27:49.343Z",
    "status": "pending"
   }
  ]
