@@ -200,7 +200,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-29T19:13:50.137Z",
+   "updatedAt": "2026-10-29T19:15:22.619Z",
    "status": "pending"
   },
   {
@@ -228,75 +228,7 @@
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-29T19:13:50.137Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401873026:prop:3043078:carries",
-   "eventId": "401873026",
-   "sport": "nfl",
-   "sportName": "NFL",
-   "espn": "football/nfl",
-   "market": "prop",
-   "start": "2026-11-01T18:00Z",
-   "matchup": "BAL @ BUF",
-   "home": "BUF",
-   "away": "BAL",
-   "label": "Derrick Henry Over 18.5 Rush Attempts",
-   "side": "over",
-   "line": 18.5,
-   "athleteId": "3043078",
-   "player": "Derrick Henry",
-   "stat": "carries",
-   "statLabel": "Rush Attempts",
-   "odds": -110,
-   "prob": 0.597,
-   "rawProb": 0.641,
-   "edge": 0.073,
-   "score": 527,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": [
-     "Defense rank 21/32"
-    ]
-   },
-   "recordedAt": "2026-10-29T17:27:49.343Z",
-   "updatedAt": "2026-10-29T19:13:50.137Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401873026:prop:4429615:receptions",
-   "eventId": "401873026",
-   "sport": "nfl",
-   "sportName": "NFL",
-   "espn": "football/nfl",
-   "market": "prop",
-   "start": "2026-11-01T18:00Z",
-   "matchup": "BAL @ BUF",
-   "home": "BUF",
-   "away": "BAL",
-   "label": "Zay Flowers Over 6.5 Receptions",
-   "side": "over",
-   "line": 6.5,
-   "athleteId": "4429615",
-   "player": "Zay Flowers",
-   "stat": "receptions",
-   "statLabel": "Receptions",
-   "odds": -110,
-   "prob": 0.605,
-   "rawProb": 0.648,
-   "edge": 0.081,
-   "score": 554,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": [
-     "Defense rank 27/32"
-    ]
-   },
-   "recordedAt": "2026-10-29T17:27:49.343Z",
-   "updatedAt": "2026-10-29T19:13:50.137Z",
+   "updatedAt": "2026-10-29T19:15:22.619Z",
    "status": "pending"
   },
   {
@@ -318,19 +250,53 @@
    "stat": "completions",
    "statLabel": "Completions",
    "odds": -110,
-   "prob": 0.593,
-   "rawProb": 0.637,
-   "edge": 0.069,
-   "score": 512,
+   "prob": 0.595,
+   "rawProb": 0.639,
+   "edge": 0.071,
+   "score": 520,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": [
-     "Defense rank 26/32"
+     "Defense rank 27/32"
     ]
    },
    "recordedAt": "2026-10-29T17:25:30.265Z",
-   "updatedAt": "2026-10-29T19:13:50.137Z",
+   "updatedAt": "2026-10-29T19:15:22.619Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401873032:prop:4430737:rush_yds",
+   "eventId": "401873032",
+   "sport": "nfl",
+   "sportName": "NFL",
+   "espn": "football/nfl",
+   "market": "prop",
+   "start": "2026-11-01T21:05Z",
+   "matchup": "LAC @ LAR",
+   "home": "LAR",
+   "away": "LAC",
+   "label": "Kyren Williams Over 59.5 Rushing Yds",
+   "side": "over",
+   "line": 59.5,
+   "athleteId": "4430737",
+   "player": "Kyren Williams",
+   "stat": "rush_yds",
+   "statLabel": "Rushing Yds",
+   "odds": -110,
+   "prob": 0.594,
+   "rawProb": 0.638,
+   "edge": 0.07,
+   "score": 516,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Defense rank 27/32"
+    ]
+   },
+   "recordedAt": "2026-10-29T19:15:22.619Z",
+   "updatedAt": "2026-10-29T19:15:22.619Z",
    "status": "pending"
   }
  ]
