@@ -475,7 +475,7 @@ async function recordView() {
   const tile = (k, v, sub = '') => `<div class="tile"><div class="k">${k}</div><div class="v num">${v}</div>${sub ? `<div class="muted small">${sub}</div>` : ''}</div>`;
   const graded = o.wins + o.losses + o.pushes;
   app.innerHTML = `
-    <div class="page-head"><div><h1>Pick Record</h1><div class="muted small">Every pick scoring ${r.minScore}+ since ${since}, logged before kickoff and graded from final scores.</div></div></div>
+    <div class="page-head"><div><h1>Pick Record</h1><div class="muted small">Every play that qualifies for Top Picks (confidence ${r.minScore}+ with a real edge) since ${since}, logged before kickoff and graded from final scores.</div></div></div>
     <div class="tiles">
       ${tile('Record', `${o.wins}-${o.losses}${o.pushes ? `-${o.pushes}` : ''}`, `${graded} graded · ${r.pending} pending`)}
       ${tile('Win rate', pctOrDash(o.winPct), 'pushes excluded')}

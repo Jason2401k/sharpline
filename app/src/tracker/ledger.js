@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { getJson } from '../sources/http.js';
 import { profitPerUnit, STRONG_SCORE } from '../model/math.js';
 import { boxLines } from '../sources/espn-props.js';
+import { isStrongPlay } from '../model/picks.js';
 
 export const MIN_SCORE = STRONG_SCORE; // same cutoff as the old 250 on the original scale
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -41,7 +42,7 @@ export function recordPicks(ledger, boards, now = new Date()) {
         const id = `${g.id}:${market}`;
         const existing = byId.get(id);
         const pick = market === 'spread' ? a?.spreadPick : a?.totalPick;
-        const ok = a?.available && !a.lowSample && pick && pick.score >= MIN_SCORE;
+        const ok = a?.available && !a.lowSample && pick && isStrongPlay(pick);
         if (!ok) {
           if (existing?.status === 'pending') { byId.delete(id); removed++; }
           continue;
@@ -72,7 +73,7 @@ export function recordPicks(ledger, boards, now = new Date()) {
       const id = `${g.id}:prop:${pr.playerId}:${pr.stat}`;
       const existing = byId.get(id);
       const m = pr.model;
-      if (!m || m.score < MIN_SCORE) {
+      if (!m || !isStrongPlay(m)) {
         if (existing?.status === 'pending') { byId.delete(id); removed++; }
         continue;
       }

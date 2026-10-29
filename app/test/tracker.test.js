@@ -25,7 +25,14 @@ const mkBoard = (score, { live = false, start = '2026-11-01T18:00:00Z' } = {}) =
 });
 const now = new Date('2026-10-28T12:00:00Z');
 
-test('only pre-game picks scoring 250+ are logged, and they update until kickoff', () => {
+test('the Record logs exactly the plays that qualify for Top Picks', () => {
+  const ledger = { picks: [] };
+  const b = mkBoard(800);
+  b.games[0].analysis.spreadPick.edge = -0.02; // high confidence but overpriced
+  assert.equal(recordPicks(ledger, [b], now).added, 0);
+});
+
+test('only pre-game picks scoring 500+ are logged, and they update until kickoff', () => {
   const ledger = { picks: [] };
   let r = recordPicks(ledger, [mkBoard(600)], now);
   assert.equal(r.added, 1);

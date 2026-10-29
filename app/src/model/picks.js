@@ -7,6 +7,10 @@ import { round, STRONG_SCORE } from './math.js';
 
 const RISKY = new Set(['Out', 'Doubtful', 'Questionable']);
 
+// One rule for "a strong play", shared by the Top 10 and the pick Record: confidence 500+, a real
+// edge over the book's price (> 1%), and no risky injury tag on the player.
+export const isStrongPlay = (p) => p.score >= STRONG_SCORE && p.edge > 0.01 && !RISKY.has(p.injury?.status);
+
 export function buildPicks(boards, { limit = 6 } = {}) {
   const cands = [];
   for (const b of boards) {
@@ -47,7 +51,7 @@ export function buildPicks(boards, { limit = 6 } = {}) {
   // Top plays: highest confidence across every sport. Toss-ups (< STRONG_SCORE) are left out, and so
   // are plays priced so steeply that they lose money over time even when they usually win (edge <= 1%).
   const top = cands
-    .filter((c) => c.score >= STRONG_SCORE && c.edge > 0.01 && !RISKY.has(c.injury?.status))
+    .filter(isStrongPlay)
     .sort((x, y) => y.score - x.score || y.prob - x.prob);
 
   return { top: diversify(top, 10).map(finalize), strongScore: STRONG_SCORE, value: diversify(value, limit).map(finalize), locks: lockList.map(finalize), considered: cands.length };
