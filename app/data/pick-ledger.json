@@ -97,7 +97,13 @@
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
    "updatedAt": "2026-10-28T17:01:15.086Z",
-   "status": "pending"
+   "status": "loss",
+   "final": {
+    "home": 117,
+    "away": 129
+   },
+   "units": -1,
+   "gradedAt": "2026-10-29T17:25:20.966Z"
   },
   {
    "id": "espn-401892598:spread",
@@ -125,7 +131,13 @@
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
    "updatedAt": "2026-10-29T00:19:30.740Z",
-   "status": "pending"
+   "status": "loss",
+   "final": {
+    "home": 5,
+    "away": 2
+   },
+   "units": -1,
+   "gradedAt": "2026-10-29T17:25:20.966Z"
   },
   {
    "id": "espn-401892599:spread",
@@ -153,7 +165,13 @@
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
    "updatedAt": "2026-10-29T00:19:30.740Z",
-   "status": "pending"
+   "status": "win",
+   "final": {
+    "home": 5,
+    "away": 4
+   },
+   "units": 0.46,
+   "gradedAt": "2026-10-29T17:25:20.966Z"
   },
   {
    "id": "espn-401892602:spread",
@@ -170,17 +188,17 @@
    "side": "home",
    "line": 1.5,
    "odds": -205,
-   "prob": 0.655,
+   "prob": 0.639,
    "rawProb": 0.68,
-   "edge": -0.017,
-   "score": 676,
-   "book": "DraftKings",
+   "edge": -0.033,
+   "score": 633,
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T00:19:30.740Z",
+   "updatedAt": "2026-10-29T17:25:30.265Z",
    "status": "pending"
   },
   {
@@ -198,17 +216,17 @@
    "side": "away",
    "line": 1.5,
    "odds": -270,
-   "prob": 0.728,
+   "prob": 0.714,
    "rawProb": 0.75,
-   "edge": -0.002,
-   "score": 852,
-   "book": "DraftKings",
+   "edge": -0.016,
+   "score": 820,
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T00:19:30.740Z",
+   "updatedAt": "2026-10-29T17:25:30.265Z",
    "status": "pending"
   },
   {
@@ -222,21 +240,21 @@
    "matchup": "WSH @ NSH",
    "home": "NSH",
    "away": "WSH",
-   "label": "NSH +1.5",
-   "side": "home",
+   "label": "WSH +1.5",
+   "side": "away",
    "line": 1.5,
-   "odds": -245,
-   "prob": 0.668,
-   "rawProb": 0.693,
-   "edge": -0.042,
-   "score": 709,
-   "book": "DraftKings",
+   "odds": -290,
+   "prob": 0.7,
+   "rawProb": 0.737,
+   "edge": -0.044,
+   "score": 840,
+   "book": "Draft Kings",
    "factors": {
-    "sharp": false,
+    "sharp": true,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T00:19:30.740Z",
+   "updatedAt": "2026-10-29T17:25:30.265Z",
    "status": "pending"
   },
   {
@@ -253,46 +271,18 @@
    "label": "MTL +1.5",
    "side": "away",
    "line": 1.5,
-   "odds": -192,
-   "prob": 0.623,
-   "rawProb": 0.649,
-   "edge": -0.035,
-   "score": 588,
-   "book": "DraftKings",
+   "odds": -180,
+   "prob": 0.598,
+   "rawProb": 0.641,
+   "edge": -0.045,
+   "score": 513,
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T00:19:30.740Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401892607:spread",
-   "eventId": "401892607",
-   "sport": "nhl",
-   "sportName": "NHL",
-   "espn": "hockey/nhl",
-   "market": "spread",
-   "start": "2026-10-30T00:00Z",
-   "matchup": "NYI @ MIN",
-   "home": "MIN",
-   "away": "NYI",
-   "label": "NYI +1.5",
-   "side": "away",
-   "line": 1.5,
-   "odds": -162,
-   "prob": 0.597,
-   "rawProb": 0.624,
-   "edge": -0.021,
-   "score": 510,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": []
-   },
-   "recordedAt": "2026-10-29T00:19:30.740Z",
-   "updatedAt": "2026-10-29T00:19:30.740Z",
+   "updatedAt": "2026-10-29T17:25:30.265Z",
    "status": "pending"
   },
   {
@@ -309,18 +299,18 @@
    "label": "ANA +1.5",
    "side": "home",
    "line": 1.5,
-   "odds": -218,
-   "prob": 0.675,
-   "rawProb": 0.7,
-   "edge": -0.011,
-   "score": 727,
-   "book": "DraftKings",
+   "odds": -205,
+   "prob": 0.653,
+   "rawProb": 0.693,
+   "edge": -0.019,
+   "score": 670,
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T00:19:30.740Z",
+   "updatedAt": "2026-10-29T17:25:30.265Z",
    "status": "pending"
   },
   {
@@ -337,18 +327,74 @@
    "label": "LA +1.5",
    "side": "home",
    "line": 1.5,
-   "odds": -278,
-   "prob": 0.675,
-   "rawProb": 0.7,
-   "edge": -0.06,
-   "score": 727,
-   "book": "DraftKings",
+   "odds": -258,
+   "prob": 0.651,
+   "rawProb": 0.691,
+   "edge": -0.07,
+   "score": 665,
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T00:19:30.740Z",
+   "updatedAt": "2026-10-29T17:25:30.265Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401892611:spread",
+   "eventId": "401892611",
+   "sport": "nhl",
+   "sportName": "NHL",
+   "espn": "hockey/nhl",
+   "market": "spread",
+   "start": "2026-10-30T22:00Z",
+   "matchup": "NJ @ VGK",
+   "home": "VGK",
+   "away": "NJ",
+   "label": "NJ +1.5",
+   "side": "away",
+   "line": 1.5,
+   "odds": -238,
+   "prob": 0.635,
+   "rawProb": 0.676,
+   "edge": -0.069,
+   "score": 622,
+   "book": "Draft Kings",
+   "factors": {
+    "sharp": false,
+    "notes": []
+   },
+   "recordedAt": "2026-10-29T17:25:30.265Z",
+   "updatedAt": "2026-10-29T17:25:30.265Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401892613:spread",
+   "eventId": "401892613",
+   "sport": "nhl",
+   "sportName": "NHL",
+   "espn": "hockey/nhl",
+   "market": "spread",
+   "start": "2026-10-31T00:00Z",
+   "matchup": "SEA @ CGY",
+   "home": "CGY",
+   "away": "SEA",
+   "label": "CGY +1.5",
+   "side": "home",
+   "line": 1.5,
+   "odds": -258,
+   "prob": 0.624,
+   "rawProb": 0.666,
+   "edge": -0.097,
+   "score": 591,
+   "book": "Draft Kings",
+   "factors": {
+    "sharp": false,
+    "notes": []
+   },
+   "recordedAt": "2026-10-29T17:25:30.265Z",
+   "updatedAt": "2026-10-29T17:25:30.265Z",
    "status": "pending"
   },
   {
@@ -366,17 +412,17 @@
    "side": "over",
    "line": 2.5,
    "odds": -170,
-   "prob": 0.623,
-   "rawProb": 0.649,
-   "edge": -0.007,
-   "score": 588,
+   "prob": 0.602,
+   "rawProb": 0.646,
+   "edge": -0.028,
+   "score": 526,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T00:19:30.740Z",
+   "updatedAt": "2026-10-29T17:25:30.265Z",
    "status": "pending"
   },
   {
@@ -394,11 +440,11 @@
    "side": "home",
    "line": 30.5,
    "odds": -110,
-   "prob": 0.617,
+   "prob": 0.6,
    "rawProb": 0.644,
-   "edge": 0.093,
-   "score": 594,
-   "book": "DraftKings",
+   "edge": 0.076,
+   "score": 537,
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -406,96 +452,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-29T00:19:30.740Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401858507:spread",
-   "eventId": "401858507",
-   "sport": "ncaaf",
-   "sportName": "CFB",
-   "espn": "football/college-football",
-   "market": "spread",
-   "start": "2026-10-31T16:30Z",
-   "matchup": "MICH @ RUTG",
-   "home": "RUTG",
-   "away": "MICH",
-   "label": "RUTG +14.5",
-   "side": "home",
-   "line": 14.5,
-   "odds": -108,
-   "prob": 0.591,
-   "rawProb": 0.618,
-   "edge": 0.072,
-   "score": 507,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": [
-     "4th-down aggression"
-    ]
-   },
-   "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T00:19:30.740Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401878761:spread",
-   "eventId": "401878761",
-   "sport": "epl",
-   "sportName": "Soccer",
-   "espn": "soccer/eng.1",
-   "market": "spread",
-   "start": "2026-10-31T17:30Z",
-   "matchup": "CRY @ TOT",
-   "home": "TOT",
-   "away": "CRY",
-   "label": "CRY +1.5",
-   "side": "away",
-   "line": 1.5,
-   "odds": -185,
-   "prob": 0.603,
-   "rawProb": 0.63,
-   "edge": -0.046,
-   "score": 529,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": []
-   },
-   "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-29T00:19:30.740Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401869846:total",
-   "eventId": "401869846",
-   "sport": "ncaaf",
-   "sportName": "CFB",
-   "espn": "football/college-football",
-   "market": "total",
-   "start": "2026-10-31T22:30Z",
-   "matchup": "APP @ GASO",
-   "home": "GASO",
-   "away": "APP",
-   "label": "Under 56.5",
-   "side": "under",
-   "line": 56.5,
-   "odds": -112,
-   "prob": 0.601,
-   "rawProb": 0.628,
-   "edge": 0.073,
-   "score": 539,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": [
-     "Conservative play-calling",
-     "Conservative play-calling"
-    ]
-   },
-   "recordedAt": "2026-10-29T00:19:30.740Z",
-   "updatedAt": "2026-10-29T00:19:30.740Z",
+   "updatedAt": "2026-10-29T17:25:30.265Z",
    "status": "pending"
   },
   {
@@ -513,17 +470,119 @@
    "side": "away",
    "line": 20.5,
    "odds": -115,
-   "prob": 0.601,
+   "prob": 0.584,
    "rawProb": 0.628,
-   "edge": 0.066,
-   "score": 538,
-   "book": "DraftKings",
+   "edge": 0.049,
+   "score": 509,
+   "book": "Draft Kings",
    "factors": {
-    "sharp": false,
+    "sharp": true,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-29T00:19:30.740Z",
+   "updatedAt": "2026-10-29T17:25:30.265Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401873024:prop:4361307:receptions",
+   "eventId": "401873024",
+   "sport": "nfl",
+   "sportName": "NFL",
+   "espn": "football/nfl",
+   "market": "prop",
+   "start": "2026-11-01T18:00Z",
+   "matchup": "ARI @ DAL",
+   "home": "DAL",
+   "away": "ARI",
+   "label": "Trey McBride Over 7.5 Receptions",
+   "side": "over",
+   "line": 7.5,
+   "athleteId": "4361307",
+   "player": "Trey McBride",
+   "stat": "receptions",
+   "statLabel": "Receptions",
+   "odds": -110,
+   "prob": 0.593,
+   "rawProb": 0.637,
+   "edge": 0.069,
+   "score": 512,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Defense rank 19/32"
+    ]
+   },
+   "recordedAt": "2026-10-29T17:25:30.265Z",
+   "updatedAt": "2026-10-29T17:25:30.265Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401873028:prop:3917792:completions",
+   "eventId": "401873028",
+   "sport": "nfl",
+   "sportName": "NFL",
+   "espn": "football/nfl",
+   "market": "prop",
+   "start": "2026-11-01T18:00Z",
+   "matchup": "IND @ JAX",
+   "home": "JAX",
+   "away": "IND",
+   "label": "Daniel Jones Over 18.5 Completions",
+   "side": "over",
+   "line": 18.5,
+   "athleteId": "3917792",
+   "player": "Daniel Jones",
+   "stat": "completions",
+   "statLabel": "Completions",
+   "odds": -110,
+   "prob": 0.593,
+   "rawProb": 0.637,
+   "edge": 0.069,
+   "score": 512,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Defense rank 26/32"
+    ]
+   },
+   "recordedAt": "2026-10-29T17:25:30.265Z",
+   "updatedAt": "2026-10-29T17:25:30.265Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401873028:prop:4882093:rush_yds",
+   "eventId": "401873028",
+   "sport": "nfl",
+   "sportName": "NFL",
+   "espn": "football/nfl",
+   "market": "prop",
+   "start": "2026-11-01T18:00Z",
+   "matchup": "IND @ JAX",
+   "home": "JAX",
+   "away": "IND",
+   "label": "Bhayshul Tuten Over 60.5 Rushing Yds",
+   "side": "over",
+   "line": 60.5,
+   "athleteId": "4882093",
+   "player": "Bhayshul Tuten",
+   "stat": "rush_yds",
+   "statLabel": "Rushing Yds",
+   "odds": -110,
+   "prob": 0.591,
+   "rawProb": 0.635,
+   "edge": 0.067,
+   "score": 505,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Defense rank 22/32"
+    ]
+   },
+   "recordedAt": "2026-10-29T17:25:30.265Z",
+   "updatedAt": "2026-10-29T17:25:30.265Z",
    "status": "pending"
   }
  ]
