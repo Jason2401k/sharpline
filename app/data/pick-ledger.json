@@ -174,258 +174,6 @@
    "gradedAt": "2026-10-29T17:25:20.966Z"
   },
   {
-   "id": "espn-401892602:spread",
-   "eventId": "401892602",
-   "sport": "nhl",
-   "sportName": "NHL",
-   "espn": "hockey/nhl",
-   "market": "spread",
-   "start": "2026-10-29T23:00Z",
-   "matchup": "UTA @ PIT",
-   "home": "PIT",
-   "away": "UTA",
-   "label": "PIT +1.5",
-   "side": "home",
-   "line": 1.5,
-   "odds": -205,
-   "prob": 0.639,
-   "rawProb": 0.68,
-   "edge": -0.033,
-   "score": 633,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": []
-   },
-   "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T17:27:49.343Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401892604:spread",
-   "eventId": "401892604",
-   "sport": "nhl",
-   "sportName": "NHL",
-   "espn": "hockey/nhl",
-   "market": "spread",
-   "start": "2026-10-30T00:00Z",
-   "matchup": "BOS @ STL",
-   "home": "STL",
-   "away": "BOS",
-   "label": "BOS +1.5",
-   "side": "away",
-   "line": 1.5,
-   "odds": -270,
-   "prob": 0.714,
-   "rawProb": 0.75,
-   "edge": -0.016,
-   "score": 820,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": []
-   },
-   "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T17:27:49.343Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401892605:spread",
-   "eventId": "401892605",
-   "sport": "nhl",
-   "sportName": "NHL",
-   "espn": "hockey/nhl",
-   "market": "spread",
-   "start": "2026-10-30T00:00Z",
-   "matchup": "WSH @ NSH",
-   "home": "NSH",
-   "away": "WSH",
-   "label": "WSH +1.5",
-   "side": "away",
-   "line": 1.5,
-   "odds": -290,
-   "prob": 0.7,
-   "rawProb": 0.737,
-   "edge": -0.044,
-   "score": 840,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": true,
-    "notes": []
-   },
-   "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T17:27:49.343Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401892606:spread",
-   "eventId": "401892606",
-   "sport": "nhl",
-   "sportName": "NHL",
-   "espn": "hockey/nhl",
-   "market": "spread",
-   "start": "2026-10-30T00:00Z",
-   "matchup": "MTL @ DAL",
-   "home": "DAL",
-   "away": "MTL",
-   "label": "MTL +1.5",
-   "side": "away",
-   "line": 1.5,
-   "odds": -180,
-   "prob": 0.598,
-   "rawProb": 0.641,
-   "edge": -0.045,
-   "score": 513,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": []
-   },
-   "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T17:27:49.343Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401892608:spread",
-   "eventId": "401892608",
-   "sport": "nhl",
-   "sportName": "NHL",
-   "espn": "hockey/nhl",
-   "market": "spread",
-   "start": "2026-10-30T02:00Z",
-   "matchup": "BUF @ ANA",
-   "home": "ANA",
-   "away": "BUF",
-   "label": "ANA +1.5",
-   "side": "home",
-   "line": 1.5,
-   "odds": -205,
-   "prob": 0.653,
-   "rawProb": 0.693,
-   "edge": -0.019,
-   "score": 670,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": []
-   },
-   "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T17:27:49.343Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401892609:spread",
-   "eventId": "401892609",
-   "sport": "nhl",
-   "sportName": "NHL",
-   "espn": "hockey/nhl",
-   "market": "spread",
-   "start": "2026-10-30T02:00Z",
-   "matchup": "OTT @ LA",
-   "home": "LA",
-   "away": "OTT",
-   "label": "LA +1.5",
-   "side": "home",
-   "line": 1.5,
-   "odds": -258,
-   "prob": 0.651,
-   "rawProb": 0.691,
-   "edge": -0.07,
-   "score": 665,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": []
-   },
-   "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T17:27:49.343Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401892611:spread",
-   "eventId": "401892611",
-   "sport": "nhl",
-   "sportName": "NHL",
-   "espn": "hockey/nhl",
-   "market": "spread",
-   "start": "2026-10-30T22:00Z",
-   "matchup": "NJ @ VGK",
-   "home": "VGK",
-   "away": "NJ",
-   "label": "NJ +1.5",
-   "side": "away",
-   "line": 1.5,
-   "odds": -238,
-   "prob": 0.635,
-   "rawProb": 0.676,
-   "edge": -0.069,
-   "score": 622,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": []
-   },
-   "recordedAt": "2026-10-29T17:25:30.265Z",
-   "updatedAt": "2026-10-29T17:27:49.343Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401892613:spread",
-   "eventId": "401892613",
-   "sport": "nhl",
-   "sportName": "NHL",
-   "espn": "hockey/nhl",
-   "market": "spread",
-   "start": "2026-10-31T00:00Z",
-   "matchup": "SEA @ CGY",
-   "home": "CGY",
-   "away": "SEA",
-   "label": "CGY +1.5",
-   "side": "home",
-   "line": 1.5,
-   "odds": -258,
-   "prob": 0.624,
-   "rawProb": 0.666,
-   "edge": -0.097,
-   "score": 591,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": []
-   },
-   "recordedAt": "2026-10-29T17:25:30.265Z",
-   "updatedAt": "2026-10-29T17:27:49.343Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401879248:total",
-   "eventId": "401879248",
-   "sport": "epl",
-   "sportName": "Soccer",
-   "espn": "soccer/eng.1",
-   "market": "total",
-   "start": "2026-10-31T12:30Z",
-   "matchup": "MAN @ CHE",
-   "home": "CHE",
-   "away": "MAN",
-   "label": "Over 2.5",
-   "side": "over",
-   "line": 2.5,
-   "odds": -170,
-   "prob": 0.602,
-   "rawProb": 0.646,
-   "edge": -0.028,
-   "score": 526,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": []
-   },
-   "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-29T17:27:49.343Z",
-   "status": "pending"
-  },
-  {
    "id": "espn-401859185:spread",
    "eventId": "401859185",
    "sport": "ncaaf",
@@ -452,7 +200,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-29T17:27:49.343Z",
+   "updatedAt": "2026-10-29T17:43:20.538Z",
    "status": "pending"
   },
   {
@@ -480,7 +228,7 @@
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-29T17:27:49.343Z",
+   "updatedAt": "2026-10-29T17:43:20.538Z",
    "status": "pending"
   },
   {
@@ -510,11 +258,11 @@
    "factors": {
     "sharp": false,
     "notes": [
-     "Defense rank 21/32"
+     "Defense rank 23/32"
     ]
    },
    "recordedAt": "2026-10-29T17:27:49.343Z",
-   "updatedAt": "2026-10-29T17:27:49.343Z",
+   "updatedAt": "2026-10-29T17:43:20.538Z",
    "status": "pending"
   },
   {
@@ -548,7 +296,7 @@
     ]
    },
    "recordedAt": "2026-10-29T17:27:49.343Z",
-   "updatedAt": "2026-10-29T17:27:49.343Z",
+   "updatedAt": "2026-10-29T17:43:20.538Z",
    "status": "pending"
   },
   {
@@ -570,10 +318,10 @@
    "stat": "completions",
    "statLabel": "Completions",
    "odds": -110,
-   "prob": 0.595,
-   "rawProb": 0.639,
-   "edge": 0.071,
-   "score": 520,
+   "prob": 0.596,
+   "rawProb": 0.64,
+   "edge": 0.072,
+   "score": 523,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
@@ -582,7 +330,7 @@
     ]
    },
    "recordedAt": "2026-10-29T17:25:30.265Z",
-   "updatedAt": "2026-10-29T17:27:49.343Z",
+   "updatedAt": "2026-10-29T17:43:20.538Z",
    "status": "pending"
   }
  ]
