@@ -113,18 +113,18 @@
    "label": "NJ +1.5",
    "side": "away",
    "line": 1.5,
-   "odds": -198,
-   "prob": 0.639,
-   "rawProb": 0.665,
-   "edge": -0.025,
-   "score": 633,
-   "book": "Draft Kings",
+   "odds": -192,
+   "prob": 0.635,
+   "rawProb": 0.661,
+   "edge": -0.023,
+   "score": 622,
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T17:01:15.086Z",
+   "updatedAt": "2026-10-29T00:19:30.740Z",
    "status": "pending"
   },
   {
@@ -146,13 +146,13 @@
    "rawProb": 0.691,
    "edge": -0.02,
    "score": 704,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T17:01:15.086Z",
+   "updatedAt": "2026-10-29T00:19:30.740Z",
    "status": "pending"
   },
   {
@@ -174,13 +174,13 @@
    "rawProb": 0.68,
    "edge": -0.017,
    "score": 676,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-28T17:01:15.086Z",
+   "updatedAt": "2026-10-29T00:19:30.740Z",
    "status": "pending"
   },
   {
@@ -197,18 +197,18 @@
    "label": "BOS +1.5",
    "side": "away",
    "line": 1.5,
-   "odds": -245,
-   "prob": 0.715,
-   "rawProb": 0.738,
-   "edge": 0.005,
-   "score": 824,
-   "book": "Draft Kings",
+   "odds": -270,
+   "prob": 0.728,
+   "rawProb": 0.75,
+   "edge": -0.002,
+   "score": 852,
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-28T17:01:15.086Z",
+   "updatedAt": "2026-10-29T00:19:30.740Z",
    "status": "pending"
   },
   {
@@ -230,13 +230,13 @@
    "rawProb": 0.693,
    "edge": -0.042,
    "score": 709,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-28T17:01:15.086Z",
+   "updatedAt": "2026-10-29T00:19:30.740Z",
    "status": "pending"
   },
   {
@@ -253,18 +253,46 @@
    "label": "MTL +1.5",
    "side": "away",
    "line": 1.5,
-   "odds": -185,
-   "prob": 0.617,
-   "rawProb": 0.644,
-   "edge": -0.032,
-   "score": 571,
-   "book": "Draft Kings",
+   "odds": -192,
+   "prob": 0.623,
+   "rawProb": 0.649,
+   "edge": -0.035,
+   "score": 588,
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-28T17:01:15.086Z",
+   "updatedAt": "2026-10-29T00:19:30.740Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401892607:spread",
+   "eventId": "401892607",
+   "sport": "nhl",
+   "sportName": "NHL",
+   "espn": "hockey/nhl",
+   "market": "spread",
+   "start": "2026-10-30T00:00Z",
+   "matchup": "NYI @ MIN",
+   "home": "MIN",
+   "away": "NYI",
+   "label": "NYI +1.5",
+   "side": "away",
+   "line": 1.5,
+   "odds": -162,
+   "prob": 0.597,
+   "rawProb": 0.624,
+   "edge": -0.021,
+   "score": 510,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": []
+   },
+   "recordedAt": "2026-10-29T00:19:30.740Z",
+   "updatedAt": "2026-10-29T00:19:30.740Z",
    "status": "pending"
   },
   {
@@ -286,13 +314,13 @@
    "rawProb": 0.7,
    "edge": -0.011,
    "score": 727,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-28T17:01:15.086Z",
+   "updatedAt": "2026-10-29T00:19:30.740Z",
    "status": "pending"
   },
   {
@@ -306,21 +334,21 @@
    "matchup": "OTT @ LA",
    "home": "LA",
    "away": "OTT",
-   "label": "OTT +1.5",
-   "side": "away",
+   "label": "LA +1.5",
+   "side": "home",
    "line": 1.5,
-   "odds": -265,
-   "prob": 0.704,
-   "rawProb": 0.727,
-   "edge": -0.022,
-   "score": 797,
-   "book": "Draft Kings",
+   "odds": -278,
+   "prob": 0.675,
+   "rawProb": 0.7,
+   "edge": -0.06,
+   "score": 727,
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-28T17:01:15.086Z",
+   "updatedAt": "2026-10-29T00:19:30.740Z",
    "status": "pending"
   },
   {
@@ -337,18 +365,18 @@
    "label": "Over 2.5",
    "side": "over",
    "line": 2.5,
-   "odds": -175,
-   "prob": 0.625,
-   "rawProb": 0.651,
-   "edge": -0.011,
-   "score": 594,
+   "odds": -170,
+   "prob": 0.623,
+   "rawProb": 0.649,
+   "edge": -0.007,
+   "score": 588,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-28T17:01:15.086Z",
+   "updatedAt": "2026-10-29T00:19:30.740Z",
    "status": "pending"
   },
   {
@@ -370,7 +398,7 @@
    "rawProb": 0.644,
    "edge": 0.093,
    "score": 594,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -378,7 +406,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T17:01:15.086Z",
+   "updatedAt": "2026-10-29T00:19:30.740Z",
    "status": "pending"
   },
   {
@@ -392,15 +420,15 @@
    "matchup": "MICH @ RUTG",
    "home": "RUTG",
    "away": "MICH",
-   "label": "RUTG +14",
+   "label": "RUTG +14.5",
    "side": "home",
-   "line": 14,
-   "odds": -110,
-   "prob": 0.59,
-   "rawProb": 0.617,
-   "edge": 0.066,
-   "score": 502,
-   "book": "Draft Kings",
+   "line": 14.5,
+   "odds": -108,
+   "prob": 0.591,
+   "rawProb": 0.618,
+   "edge": 0.072,
+   "score": 507,
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -408,7 +436,7 @@
     ]
    },
    "recordedAt": "2026-10-28T17:01:15.086Z",
-   "updatedAt": "2026-10-28T17:01:15.086Z",
+   "updatedAt": "2026-10-29T00:19:30.740Z",
    "status": "pending"
   },
   {
@@ -425,18 +453,49 @@
    "label": "CRY +1.5",
    "side": "away",
    "line": 1.5,
-   "odds": -190,
-   "prob": 0.601,
-   "rawProb": 0.628,
-   "edge": -0.054,
-   "score": 522,
+   "odds": -185,
+   "prob": 0.603,
+   "rawProb": 0.63,
+   "edge": -0.046,
+   "score": 529,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T17:01:15.086Z",
+   "updatedAt": "2026-10-29T00:19:30.740Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401869846:total",
+   "eventId": "401869846",
+   "sport": "ncaaf",
+   "sportName": "CFB",
+   "espn": "football/college-football",
+   "market": "total",
+   "start": "2026-10-31T22:30Z",
+   "matchup": "APP @ GASO",
+   "home": "GASO",
+   "away": "APP",
+   "label": "Under 56.5",
+   "side": "under",
+   "line": 56.5,
+   "odds": -112,
+   "prob": 0.601,
+   "rawProb": 0.628,
+   "edge": 0.073,
+   "score": 539,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Conservative play-calling",
+     "Conservative play-calling"
+    ]
+   },
+   "recordedAt": "2026-10-29T00:19:30.740Z",
+   "updatedAt": "2026-10-29T00:19:30.740Z",
    "status": "pending"
   },
   {
@@ -458,13 +517,13 @@
    "rawProb": 0.628,
    "edge": 0.066,
    "score": 538,
-   "book": "Draft Kings",
+   "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-28T17:01:15.086Z",
+   "updatedAt": "2026-10-29T00:19:30.740Z",
    "status": "pending"
   }
  ]
