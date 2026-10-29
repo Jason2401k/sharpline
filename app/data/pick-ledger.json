@@ -200,7 +200,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-29T19:11:02.208Z",
+   "updatedAt": "2026-10-29T19:13:50.137Z",
    "status": "pending"
   },
   {
@@ -228,7 +228,7 @@
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-29T19:11:02.208Z",
+   "updatedAt": "2026-10-29T19:13:50.137Z",
    "status": "pending"
   },
   {
@@ -262,7 +262,7 @@
     ]
    },
    "recordedAt": "2026-10-29T17:27:49.343Z",
-   "updatedAt": "2026-10-29T19:11:02.208Z",
+   "updatedAt": "2026-10-29T19:13:50.137Z",
    "status": "pending"
   },
   {
@@ -292,11 +292,11 @@
    "factors": {
     "sharp": false,
     "notes": [
-     "Defense rank 26/32"
+     "Defense rank 27/32"
     ]
    },
    "recordedAt": "2026-10-29T17:27:49.343Z",
-   "updatedAt": "2026-10-29T19:11:02.208Z",
+   "updatedAt": "2026-10-29T19:13:50.137Z",
    "status": "pending"
   },
   {
@@ -330,7 +330,7 @@
     ]
    },
    "recordedAt": "2026-10-29T17:25:30.265Z",
-   "updatedAt": "2026-10-29T19:11:02.208Z",
+   "updatedAt": "2026-10-29T19:13:50.137Z",
    "status": "pending"
   }
  ]
