@@ -22,6 +22,7 @@ import { fetchSplits, mergeSbdSplits, sbdSupports } from './sources/sbd.js';
 import { loadKenpom, findKenpom } from './sources/kenpom.js';
 import { getJson } from './sources/http.js';
 import { fetchPropLines, fetchRosters, fetchAllTeamIds, fetchGamelog, fetchDefenseVsPosition, ASSUMED_ODDS } from './sources/espn-props.js';
+import { fetchNflTeamProfiles } from './sources/nfl-teams.js';
 
 const env = process.env;
 const demoCache = new Map();
@@ -91,11 +92,13 @@ export async function getBoard(sportId) {
     }
   }
   // NFL player props from ESPN (DraftKings lines, player game logs, defense vs position).
-  let propPlayers = new Map();
+  let propPlayers = new Map(), nflTeams = null;
   if (sport.id === 'nfl' && sources.lines === 'live' && !env.ODDS_API_KEY && env.LIVE_ESPN !== '0') {
     try {
       const r = await buildNflProps(games);
       rawProps = r.props; propPlayers = r.players;
+      // League-wide offense/defense profiles for the Concentrated Breakdown.
+      nflTeams = await fetchNflTeamProfiles(r.dvp).catch((e) => { sources.errors.push(`NFL team profiles couldn't be loaded (${e.message}).`); return null; });
       sources.props = 'live';
       sources.propsProvider = 'DraftKings via ESPN';
       sources.propsNote = `ESPN publishes prop lines but not prices, so ${ASSUMED_ODDS} is assumed on both sides. Defense ranks use ${r.gamesCounted} completed games this season.`;
@@ -179,7 +182,7 @@ export async function getBoard(sportId) {
     })
     .sort((a, b) => (b.model?.edge ?? -1) - (a.model?.edge ?? -1));
 
-  const board = { sport, sources, updated: new Date().toISOString(), games: outGames, unpriced, props, injuries };
+  const board = { sport, sources, updated: new Date().toISOString(), games: outGames, unpriced, props, injuries, ...(nflTeams ? { nflTeams } : {}) };
   boardCache.set(sportId, { board, expires: Date.now() + BOARD_TTL });
   return board;
 }
@@ -242,7 +245,7 @@ async function buildNflProps(games) {
       defense: dvp[opp]?.[`${who.pos}:${l.stat}`] || null,
     });
   }
-  return { props, players, gamesCounted };
+  return { props, players, gamesCounted, dvp };
 }
 
 // Calibration learned from the pick ledger (re-read when the file changes).

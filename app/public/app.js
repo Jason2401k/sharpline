@@ -46,6 +46,7 @@ function renderNav(active) {
   const link = (s) => `<a class="nav-link tier${s.tier} ${active === s.id ? 'active' : ''}" href="#${s.id}">${s.short}</a>`;
   document.getElementById('sportsNav').innerHTML = `
     <a class="nav-link ${active === 'home' ? 'active' : ''}" href="#picks">Top Picks</a>
+    <a class="nav-link ${active === 'breakdown' ? 'active' : ''}" href="#breakdown" title="Concentrated Breakdown: one NFL game, analyzed">Breakdown</a>
     <span class="nav-sep"></span>${by(1).map(link).join('')}
     <span class="nav-sep"></span>${by(2).map(link).join('')}
     <span class="nav-sep"></span>${by(3).map(link).join('')}
@@ -76,6 +77,7 @@ async function route() {
     if (!a) { renderNav('home'); await homeView(); }
     else if (a === 'injuries') { renderNav('injuries'); await allInjuriesView(); }
     else if (a === 'record') { renderNav('record'); await recordView(); }
+    else if (a === 'breakdown') { renderNav('breakdown'); await breakdownView(b); }
     else if (state.sports.find((s) => s.id === a)) { renderNav(a); await sportView(a, b || 'lines'); }
     else { location.hash = '#picks'; }
   } catch (e) {
@@ -586,8 +588,10 @@ function repoFromLocation() {
 
 function updatedLabel(text) {
   const el = document.getElementById('refreshStatus');
-  if (text) { el.textContent = text; return; }
+  const btn = document.getElementById('refreshBtn');
+  if (text) { el.textContent = text; btn.title = text; return; }
   el.textContent = siteInfo?.builtAt ? `Updated ${ago(siteInfo.builtAt)}` : '';
+  btn.title = `${el.textContent ? `${el.textContent}. ` : ''}Pull fresh games, lines, splits and injuries, and grade finished picks`;
 }
 
 function showRefreshPanel(repo, error) {
@@ -674,3 +678,116 @@ async function reloadData(msg) {
   if (msg) setTimeout(() => updatedLabel(), 4000);
 }
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// ---------------------------------------------------------------- concentrated breakdown (NFL)
+const OFF_ROWS = [
+  ['Scoring', 'points', 'pointsAllowed'],
+  ['Passing', 'passYds', 'QB:pass_yds'],
+  ['Passing TDs', null, 'QB:pass_tds'],
+  ['Rushing', 'rushYds', 'RB:rush_yds'],
+  ['Wide receivers', null, 'WR:rec_yds'],
+  ['Tight ends', null, 'TE:rec_yds'],
+  ['RB catches', null, 'RB:receptions'],
+  ['Pass protection', 'sacksTaken', 'sacks'],
+  ['Ball security', 'giveaways', 'takeaways'],
+  ['3rd downs', 'thirdDown', null],
+  ['Red zone', 'redZone', null],
+];
+
+async function breakdownView(eventId) {
+  const b = await board('nfl');
+  renderBanner(b.sources);
+  const games = b.games;
+  if (!games.length) { app.innerHTML = `<h1>Concentrated Breakdown</h1><div class="card empty">No NFL games with lines right now.</div>`; return; }
+  const g = games.find((x) => x.id === `espn-${eventId}`) || games.find((x) => !x.live) || games[0];
+  const T = b.nflTeams || {};
+  const away = T[g.away.abbr], home = T[g.home.abbr];
+  const props = b.props.filter((p) => p.gameId === g.id);
+  app.innerHTML = `
+    <div class="page-head"><div><h1>Concentrated Breakdown</h1><div class="muted small">One NFL game, broken down: both offenses against both defenses, and the player props most likely to go over or under.</div></div>
+      <select id="bd-game" aria-label="Pick a game">${games.map((x) => `<option value="${esc(x.id.slice(5))}" ${x.id === g.id ? 'selected' : ''}>${esc(x.away.abbr)} @ ${esc(x.home.abbr)} · ${x.live ? 'LIVE' : fmtTime(x.start)}</option>`).join('')}</select>
+    </div>
+    <section class="section">${gameCard(g, b.sport)}</section>
+    ${away && home ? `<div class="grid grid-2 section">${matchupPanel(g.away, away, g.home, home)}${matchupPanel(g.home, home, g.away, away)}</div>` : '<div class="card empty">Team stats are not available for this game.</div>'}
+    <section class="section">
+      <div class="section-head"><h2>Players to watch</h2><span class="muted small">Projection from recent games, adjusted for this defense. Lines: ${esc(b.sources.propsProvider || '—')}, −110 assumed.</span></div>
+      ${props.length ? `<div class="grid grid-2">${[g.away, g.home].map((t) => playersPanel(t, props.filter((p) => p.team === t.abbr), g)).join('')}</div>` : '<div class="card empty">No player props posted for this game yet.</div>'}
+    </section>
+    <section class="section">${injuryCard((g.injuries || []).filter((i) => i.status !== 'Active'), b.sources.injuries, `Injuries · ${g.away.abbr} & ${g.home.abbr}`)}</section>`;
+  document.getElementById('bd-game').addEventListener('change', (e) => { location.hash = `#breakdown-${e.target.value}`; });
+  app.querySelectorAll('[data-prop-toggle]').forEach((row) => row.addEventListener('click', () => {
+    const d = row.nextElementSibling; d.hidden = !d.hidden;
+  }));
+}
+
+// Good-for-the-offense colouring: a strong offense rank, or a weak defense rank.
+function rankPill(stat, favorsOffense) {
+  if (!stat) return '<span class="muted">—</span>';
+  const cls = favorsOffense == null ? '' : favorsOffense ? 'adv' : 'dis';
+  return `<span class="num">${stat.value}</span> <span class="rank ${cls}" data-tip="Rank ${stat.rank} of ${stat.of}">#${stat.rank}</span>`;
+}
+
+function matchupPanel(offTeam, O, defTeam, D) {
+  const good = (s) => s && s.rank <= Math.round(s.of * 0.33);
+  const bad = (s) => s && s.rank > Math.round(s.of * 0.67);
+  const rows = OFF_ROWS.map(([label, ok, dk]) => {
+    const o = ok ? O.offense[ok] : null, d = dk ? D.defense[dk] : null;
+    if (!o && !d) return '';
+    return `<tr><td>${label}</td><td class="r">${rankPill(o, o ? (good(o) ? true : bad(o) ? false : null) : null)}</td><td class="r">${rankPill(d, d ? (bad(d) ? true : good(d) ? false : null) : null)}</td></tr>`;
+  }).join('');
+  const notes = matchupEdges(offTeam.abbr, O, defTeam.abbr, D);
+  return `<section class="card pad">
+    <h3>${esc(offTeam.abbr)} offense vs ${esc(defTeam.abbr)} defense</h3>
+    <table class="mini" style="margin-top:8px"><thead><tr><th></th><th class="r">${esc(offTeam.abbr)} offense</th><th class="r">${esc(defTeam.abbr)} allows</th></tr></thead><tbody>${rows}</tbody></table>
+    <p class="muted small" style="margin:6px 0 10px">Per game, ranked 1–32 (1 = best for that team). <span class="rank adv">green</span> favors ${esc(offTeam.abbr)}'s offense, <span class="rank dis">red</span> favors ${esc(defTeam.abbr)}'s defense.</p>
+    <ul class="notes">${notes.map((n) => `<li class="note"><b>${esc(n.title)}</b><span class="impact">${n.good ? `Edge ${esc(offTeam.abbr)}` : `Edge ${esc(defTeam.abbr)}`}</span><div>${esc(n.text)}</div></li>`).join('') || `<li class="note">No glaring mismatches. ${esc(offTeam.abbr)}'s offense and ${esc(defTeam.abbr)}'s defense look evenly matched.</li>`}</ul>
+  </section>`;
+}
+
+function matchupEdges(o, O, d, D) {
+  const out = [];
+  const top = (s, f = 0.33) => s && s.rank <= Math.round(s.of * f);
+  const bottom = (s, f = 0.67) => s && s.rank > Math.round(s.of * f);
+  const pair = (title, off, def, goodText, badText) => {
+    if (top(off) && bottom(def)) out.push({ title, good: true, text: goodText });
+    else if (bottom(off) && top(def)) out.push({ title, good: false, text: badText });
+  };
+  const OF = O.offense, DF = D.defense;
+  pair('Scoring', OF.points, DF.pointsAllowed, `${o} scores ${OF.points?.value} a game (#${OF.points?.rank}) and ${d} allows ${DF.pointsAllowed?.value} (#${DF.pointsAllowed?.rank}). Points should come easily.`, `${o} scores only ${OF.points?.value} a game (#${OF.points?.rank}) against a ${d} defense allowing ${DF.pointsAllowed?.value} (#${DF.pointsAllowed?.rank}).`);
+  pair('Passing game', OF.passYds, DF['QB:pass_yds'], `${o} throws for ${OF.passYds?.value} yards a game (#${OF.passYds?.rank}) and ${d} gives up ${DF['QB:pass_yds']?.value} to QBs (#${DF['QB:pass_yds']?.rank} of ${DF['QB:pass_yds']?.of}). Lean toward ${o} passing overs.`, `${o}'s passing game (#${OF.passYds?.rank}) runs into a ${d} defense that's #${DF['QB:pass_yds']?.rank} against QBs. Passing unders are worth a look.`);
+  pair('Run game', OF.rushYds, DF['RB:rush_yds'], `${o} runs for ${OF.rushYds?.value} a game (#${OF.rushYds?.rank}) and ${d} allows ${DF['RB:rush_yds']?.value} to RBs (#${DF['RB:rush_yds']?.rank}). Lean toward ${o} rushing overs.`, `${o}'s run game (#${OF.rushYds?.rank}) faces a ${d} front that's #${DF['RB:rush_yds']?.rank} against RBs.`);
+  for (const [k, who] of [['WR:rec_yds', 'wide receivers'], ['TE:rec_yds', 'tight ends'], ['RB:receptions', 'running backs in the passing game']]) {
+    const s = DF[k];
+    if (bottom(s, 0.78)) out.push({ title: `Soft spot: ${who}`, good: true, text: `${d} allows ${s.value} ${k.endsWith('receptions') ? 'catches' : 'yards'} a game to ${who} (#${s.rank} of ${s.of}). ${o}'s ${who.split(' ')[0] === 'running' ? 'backs' : who} get a boost.` });
+    else if (top(s, 0.16)) out.push({ title: `Tough spot: ${who}`, good: false, text: `${d} is #${s.rank} against ${who}, allowing just ${s.value} a game.` });
+  }
+  if (top(DF.sacks, 0.25) && bottom(OF.sacksTaken)) out.push({ title: 'Pressure', good: false, text: `${d} averages ${DF.sacks.value} sacks (#${DF.sacks.rank}) and ${o} gives up ${OF.sacksTaken.value} a game (#${OF.sacksTaken.rank}). Expect drive-killing sacks.` });
+  if (top(DF.takeaways, 0.25) && bottom(OF.giveaways)) out.push({ title: 'Turnovers', good: false, text: `${d} forces ${DF.takeaways.value} takeaways a game (#${DF.takeaways.rank}) and ${o} turns it over ${OF.giveaways.value} times a game (#${OF.giveaways.rank}).` });
+  return out;
+}
+
+function playersPanel(team, props, g) {
+  const strong = props.filter((p) => p.model && p.model.score >= STRONG).sort((a, b) => b.model.score - a.model.score);
+  const rest = props.filter((p) => p.model && p.model.score < STRONG).sort((a, b) => b.model.score - a.model.score);
+  const none = props.filter((p) => !p.model);
+  const row = (p, muted) => {
+    const m = p.model;
+    return `<tr class="row ${muted ? 'dim' : ''}" data-prop-toggle>
+        <td><b>${esc(p.player)}</b> <span class="muted small">${esc(p.pos)}</span>${m.injury ? ` <span class="status status-${esc(m.injury.status).replace(/\s/g, '-')}">${esc(m.injury.status)}</span>` : ''}<div class="muted small">${esc(p.statLabel)} ${p.line}</div></td>
+        <td class="c"><span class="lean ${m.lean}">${m.lean}</span></td>
+        <td class="r num">${m.projection}</td>
+        <td class="c num">${m.hits}/${m.games}</td>
+        <td class="small">${m.dvp ? `#${m.dvp.rank} vs ${esc(p.pos)}` : '—'}</td>
+        <td class="c">${m.cautions?.length ? `<span class="status status-Questionable" data-tip="${esc(m.cautions.join('; '))}">Held back</span>` : scoreBadge(m.score, true)}</td>
+      </tr><tr class="detail" hidden><td colspan="6">${propDetail(p)}</td></tr>`;
+  };
+  const head = '<thead><tr><th>Player · prop</th><th class="c">Lean</th><th class="r">Proj.</th><th class="c">L10</th><th>Defense</th><th class="c">Conf.</th></tr></thead>';
+  return `<section class="card pad">
+    <h3>${esc(team.abbr)} <span class="muted small">${esc(team.name)}</span></h3>
+    <h4 class="sub">Most likely to hit</h4>
+    ${strong.length ? `<div class="table-wrap"><table class="props bd">${head}<tbody>${strong.map((p) => row(p, false)).join('')}</tbody></table></div>` : '<p class="muted small">No strong leans for this team right now.</p>'}
+    ${rest.length ? `<details class="why" style="margin-top:10px"><summary>Other leans (${rest.length}, under ${STRONG})</summary><div class="table-wrap"><table class="props bd">${head}<tbody>${rest.map((p) => row(p, true)).join('')}</tbody></table></div></details>` : ''}
+    ${none.length ? `<p class="muted small" style="margin-top:8px">${none.length} more prop${none.length === 1 ? '' : 's'} without enough game history to project.</p>` : ''}
+    <p class="muted small" style="margin-top:6px">Click a player for his game log and full breakdown.</p>
+  </section>`;
+}
