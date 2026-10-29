@@ -192,7 +192,7 @@
    "rawProb": 0.644,
    "edge": 0.076,
    "score": 537,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -200,7 +200,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-29T17:43:20.538Z",
+   "updatedAt": "2026-10-29T17:45:22.135Z",
    "status": "pending"
   },
   {
@@ -222,13 +222,13 @@
    "rawProb": 0.628,
    "edge": 0.049,
    "score": 509,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": true,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-29T17:43:20.538Z",
+   "updatedAt": "2026-10-29T17:45:22.135Z",
    "status": "pending"
   },
   {
@@ -250,19 +250,19 @@
    "stat": "carries",
    "statLabel": "Rush Attempts",
    "odds": -110,
-   "prob": 0.6,
-   "rawProb": 0.644,
-   "edge": 0.076,
-   "score": 537,
+   "prob": 0.597,
+   "rawProb": 0.641,
+   "edge": 0.073,
+   "score": 527,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": [
-     "Defense rank 23/32"
+     "Defense rank 21/32"
     ]
    },
    "recordedAt": "2026-10-29T17:27:49.343Z",
-   "updatedAt": "2026-10-29T17:43:20.538Z",
+   "updatedAt": "2026-10-29T17:45:22.135Z",
    "status": "pending"
   },
   {
@@ -284,10 +284,10 @@
    "stat": "receptions",
    "statLabel": "Receptions",
    "odds": -110,
-   "prob": 0.606,
-   "rawProb": 0.649,
-   "edge": 0.082,
-   "score": 557,
+   "prob": 0.605,
+   "rawProb": 0.648,
+   "edge": 0.081,
+   "score": 554,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
@@ -296,7 +296,7 @@
     ]
    },
    "recordedAt": "2026-10-29T17:27:49.343Z",
-   "updatedAt": "2026-10-29T17:43:20.538Z",
+   "updatedAt": "2026-10-29T17:45:22.135Z",
    "status": "pending"
   },
   {
@@ -318,10 +318,10 @@
    "stat": "completions",
    "statLabel": "Completions",
    "odds": -110,
-   "prob": 0.596,
-   "rawProb": 0.64,
-   "edge": 0.072,
-   "score": 523,
+   "prob": 0.593,
+   "rawProb": 0.637,
+   "edge": 0.069,
+   "score": 512,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
@@ -330,7 +330,7 @@
     ]
    },
    "recordedAt": "2026-10-29T17:25:30.265Z",
-   "updatedAt": "2026-10-29T17:43:20.538Z",
+   "updatedAt": "2026-10-29T17:45:22.135Z",
    "status": "pending"
   }
  ]
