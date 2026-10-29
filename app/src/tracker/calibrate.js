@@ -86,7 +86,7 @@ export function summarize(ledger, sportNames = {}) {
     overall: tally(graded),
     pending: picks.filter((p) => p.status === 'pending').length,
     bySport: by((p) => p.sport, (k) => sportNames[k] || k),
-    byMarket: by((p) => p.market, (k) => (k === 'spread' ? 'Spreads' : 'Totals')),
+    byMarket: by((p) => p.market, (k) => ({ spread: 'Spreads', total: 'Totals', prop: 'Player props' }[k] || k)),
     byBand: by((p) => band(p.score), (k) => k).sort((a, b) => a.key.localeCompare(b.key)),
     buckets,
     learning: { global: { n: cal.global.n, shift: round3(cal.global.shift), at60: round3(sigmoid(logit(0.6) + cal.global.shift)) }, groups: learned, priorPicks: PRIOR_PICKS },

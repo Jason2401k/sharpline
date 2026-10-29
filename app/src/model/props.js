@@ -9,10 +9,16 @@
 
 import { mean, stdev, clamp, round, normCdf, impliedProb, expectedValue, grade, shrinkToMarket } from './math.js';
 
-const PASS_STATS = new Set(['pass_yds', 'pass_tds', 'rec_yds', 'receptions']);
-const RUSH_STATS = new Set(['rush_yds']);
+const PASS_STATS = new Set(['pass_yds', 'pass_tds', 'completions', 'rec_yds', 'receptions']);
+const RUSH_STATS = new Set(['rush_yds', 'carries']);
 const LOW_COUNT = new Set(['pass_tds', 'threes', 'assists', 'receptions']);
 const INJURY_PENALTY = { Questionable: 0.15, Doubtful: 0.5, 'Day-To-Day': 0.1, Probable: 0.03 };
+// Lines this small are decided by a single play; don't rate them as strong.
+const MIN_LINE = { pass_yds: 120, completions: 10, pass_tds: 0.5, rush_yds: 15, carries: 4, rec_yds: 15, receptions: 1.5 };
+const MIN_GAMES = 4;
+// A line this far from the player's own history usually means his role just changed (injury,
+// depth chart) — something game logs can't see — so the model's "edge" there isn't trusted.
+const ROLE_BAND = [0.65, 1.55];
 
 export function projectProp({ prop, player, defense, game, leagueTotal, injury }) {
   const logs = player.logs[prop.stat] || [];
@@ -69,7 +75,15 @@ export function projectProp({ prop, player, defense, game, leagueTotal, injury }
     0, 1,
   );
 
+  // Reasons this prop can't be rated strong, however big the edge looks.
+  const cautions = [];
+  if (logs.length < MIN_GAMES) cautions.push(`only ${logs.length} games this season`);
+  if (MIN_LINE[prop.stat] != null && prop.line < MIN_LINE[prop.stat]) cautions.push('line too small to trust (one play decides it)');
+  const ratio = baseline > 0 ? prop.line / baseline : Infinity;
+  if (ratio > ROLE_BAND[1] || ratio < ROLE_BAND[0]) cautions.push(`line is ${ratio > 1 ? 'well above' : 'well below'} his average (${round(baseline, 1)}), which usually means his role just changed`);
+
   return {
+    cautions,
     projection: round(projection, 1),
     baseline: round(baseline, 1),
     l5: round(l5, 1), l10: round(l10, 1), season: round(season, 1),

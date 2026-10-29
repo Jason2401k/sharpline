@@ -1,7 +1,7 @@
 // SharpLine frontend: hash-routed single page, no build step.
 
 const app = document.getElementById('app');
-const state = { sports: [], boards: new Map(), picks: null, injuries: null, propSort: { key: 'edge', dir: -1 }, propFilter: { stat: '', lean: '', min: '0', q: '' }, openProp: null };
+const state = { sports: [], boards: new Map(), picks: null, injuries: null, propSort: { key: 'grade', dir: -1 }, propFilter: { stat: '', lean: '', min: '0', q: '', tossups: false }, openProp: null };
 
 // ---------------------------------------------------------------- utils
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -272,11 +272,13 @@ function propsView(b, el) {
   const stats = [...new Set(b.props.map((p) => p.statLabel))];
   const f = state.propFilter;
   el.innerHTML = `
-    <p class="muted" style="margin-top:0">The projection blends the player's last 5 games, last 10 and season average. It then adjusts for <b>how the opponent's defense handles the position</b>, plus game pace and expected game script. The result is compared with the book line and juice. Click any row for the game log and breakdown.</p>
+    <p class="muted" style="margin-top:0">The projection blends the player's last 5 games, last 10 and season average. It then adjusts for <b>how the opponent's defense handles the position</b> (yards and catches it allows per game, ranked 1–${b.props.find((p) => p.model?.dvp)?.model.dvp.teams || 32}), plus game pace and expected game script. Click any row for the game log and breakdown.</p>
+    ${b.sources.propsProvider ? `<p class="muted small" style="margin-top:-6px">Lines: ${esc(b.sources.propsProvider)}. ${esc(b.sources.propsNote || '')}</p>` : ''}
     <div class="filters">
       <input type="search" id="pf-q" placeholder="Search player or team" value="${esc(f.q)}">
       <select id="pf-stat"><option value="">All markets</option>${stats.map((s) => `<option ${f.stat === s ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select>
       <select id="pf-lean"><option value="">Over &amp; Under</option><option ${f.lean === 'Over' ? 'selected' : ''}>Over</option><option ${f.lean === 'Under' ? 'selected' : ''}>Under</option></select>
+      <label class="small" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="pf-toss" ${f.tossups ? 'checked' : ''}> Show toss-ups</label>
       <select id="pf-min"><option value="0">Any edge</option>${[0.03, 0.05, 0.08, 0.12].map((v) => `<option value="${v}" ${f.min === String(v) ? 'selected' : ''}>Edge ≥ ${v * 100}%</option>`).join('')}</select>
     </div>
     <div class="card table-wrap"><table class="props"><thead><tr>
@@ -288,6 +290,7 @@ function propsView(b, el) {
   el.querySelector('#pf-stat').addEventListener('change', (e) => { f.stat = e.target.value; rerender(); });
   el.querySelector('#pf-lean').addEventListener('change', (e) => { f.lean = e.target.value; rerender(); });
   el.querySelector('#pf-min').addEventListener('change', (e) => { f.min = e.target.value; rerender(); });
+  el.querySelector('#pf-toss').addEventListener('change', (e) => { f.tossups = e.target.checked; rerender(); });
   el.querySelectorAll('th[data-sort]').forEach((th) => th.addEventListener('click', () => {
     const k = th.dataset.sort;
     state.propSort = { key: k, dir: state.propSort.key === k ? -state.propSort.dir : -1 };
@@ -309,9 +312,9 @@ function propRows(b) {
     edge: (p) => p.model?.edge ?? -1, hit: (p) => p.model?.hitRate ?? -1, dvp: (p) => p.model?.dvp ? p.model.dvp.rank / p.model.dvp.teams : -1, grade: (p) => p.model?.score ?? -1,
   }[state.propSort.key];
   const list = b.props
-    .filter((p) => (!q || `${p.player} ${p.team} ${p.opp}`.toLowerCase().includes(q)) && (!f.stat || p.statLabel === f.stat) && (!f.lean || p.model?.lean === f.lean) && (p.model?.edge ?? -1) >= Number(f.min))
+    .filter((p) => (f.tossups || (p.model?.score ?? 0) >= STRONG) && (!q || `${p.player} ${p.team} ${p.opp}`.toLowerCase().includes(q)) && (!f.stat || p.statLabel === f.stat) && (!f.lean || p.model?.lean === f.lean) && (p.model?.edge ?? -1) >= Number(f.min))
     .sort((x, y) => { const a = key(x), c = key(y); return (a > c ? 1 : a < c ? -1 : 0) * state.propSort.dir; });
-  if (!list.length) return `<tr><td colspan="9" class="empty">No props match these filters.</td></tr>`;
+  if (!list.length) return `<tr><td colspan="9" class="empty">${f.tossups ? 'No props match these filters.' : `No props score ${STRONG}+ with these filters. Tick “Show toss-ups” to see the rest.`}</td></tr>`;
   return list.map((p) => {
     const m = p.model;
     const row = `<tr class="row" data-id="${esc(p.id)}">
@@ -344,7 +347,7 @@ function propDetail(p) {
   return `<div class="prop-detail">
     <div>
       <h3>Last ${m.last10.length} games vs. the line (${p.line})</h3>
-      ${gameLogChart(m.last10, p.line, m.lean)}
+      ${gameLogChart(m.last10, p.line, m.lean, m.recent)}
       <div class="chart-legend"><span><i style="background:var(--hit)"></i>${m.lean} hit</span><span><i style="background:var(--miss)"></i>Miss</span><span><i style="background:none;border-top:2px dashed var(--text-2);height:0;border-radius:0"></i>Book line</span></div>
     </div>
     <div>
@@ -363,13 +366,15 @@ function propDetail(p) {
         <span>Expected value / unit</span><span class="num ${m.ev > 0 ? 'pos' : 'neg'}">${m.ev > 0 ? '+' : ''}${m.ev.toFixed(3)}</span>
       </div>
       <p class="small" style="color:var(--text-2);margin:0">${esc(m.summary)}</p>
+      ${m.cautions?.length ? `<p class="small" style="margin:8px 0 0"><span class="status status-Questionable">Not rated strong</span> ${esc(m.cautions.join('; '))}.</p>` : ''}
     </div>
   </div>`;
 }
 
 // Bar chart, most recent game on the right. Bars anchored to baseline, 4px rounded tops.
-function gameLogChart(values, line, lean) {
+function gameLogChart(values, line, lean, recent) {
   const vals = [...values].reverse();
+  const games = recent ? [...recent].reverse() : null; // { date, opp } per game, oldest first
   const W = 520, H = 170, padL = 34, padB = 22, padT = 10;
   const max = Math.max(line, ...vals) * 1.15 || 1;
   const bw = (W - padL - 8) / vals.length;
@@ -378,11 +383,12 @@ function gameLogChart(values, line, lean) {
   const bars = vals.map((v, i) => {
     const hit = lean === 'Over' ? v > line : v < line;
     const x = padL + i * bw + bw * 0.18, w = bw * 0.64, top = y(v), h = Math.max(1, H - padB - top);
-    const label = i === vals.length - 1 ? 'Last game' : `${vals.length - i} games ago`;
+    const g = games?.[i];
+    const label = g?.opp ? `vs ${g.opp}, ${new Date(g.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}` : i === vals.length - 1 ? 'Last game' : `${vals.length - i} games ago`;
     return `<g class="bar-g" data-tip="${label}: ${v} (${hit ? lean + ' hit' : 'miss'})">
       <rect x="${x - bw * 0.18}" y="${padT}" width="${bw}" height="${H - padT - padB}" fill="transparent"/>
       <path d="M${x},${H - padB} V${top + 4} q0,-4 4,-4 h${w - 8} q4,0 4,4 V${H - padB} Z" fill="var(${hit ? '--hit' : '--miss'})"/>
-      <text x="${x + w / 2}" y="${H - 6}" text-anchor="middle" font-size="10" fill="var(--muted)">${i === vals.length - 1 ? 'L1' : ''}</text>
+      <text x="${x + w / 2}" y="${H - 6}" text-anchor="middle" font-size="10" fill="var(--muted)">${g?.opp ? esc(g.opp) : i === vals.length - 1 ? 'L1' : ''}</text>
     </g>`;
   }).join('');
   return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Game log: ${vals.join(', ')}; line ${line}">
@@ -493,13 +499,13 @@ async function recordView() {
     const list = r.picks.filter((p) => !f || (f === 'pending' ? p.status === 'pending' : p.status !== 'pending'));
     body.innerHTML = list.length ? list.map((p) => `<tr>
       <td class="muted">${fmtTime(p.start)}</td>
-      <td><b>${esc(p.label)}</b><div class="muted small">${esc(p.sportName)} · ${p.market === 'spread' ? 'Spread' : 'Total'}${p.factors?.sharp ? ' · sharp $ agreed' : ''}</div></td>
+      <td><b>${esc(p.label)}</b><div class="muted small">${esc(p.sportName)} · ${{ spread: 'Spread', total: 'Total', prop: 'Player prop' }[p.market] || p.market}${p.factors?.sharp ? ' · sharp $ agreed' : ''}</div></td>
       <td>${esc(p.matchup)}</td>
       <td class="r num">${fmtOdds(p.odds)}</td>
       <td class="c">${scoreBadge(p.score, true)}</td>
       <td class="r num">${pct(p.prob)}</td>
       <td class="c">${resultPill(p.status)}</td>
-      <td class="r num">${p.final ? `${esc(p.away)} ${p.final.away}–${p.final.home} ${esc(p.home)}` : '—'}</td>
+      <td class="r num">${p.market === 'prop' && p.actual != null ? `${p.actual} ${esc(p.statLabel || '')}` : p.final ? `${esc(p.away)} ${p.final.away}–${p.final.home} ${esc(p.home)}` : '—'}</td>
       <td class="r num ${p.units > 0 ? 'pos' : p.units < 0 ? 'neg' : 'muted'}">${p.units == null ? '—' : money(p.units)}</td>
     </tr>`).join('') : '<tr><td colspan="9" class="empty">No picks here yet.</td></tr>';
   };
@@ -543,7 +549,7 @@ function learnedPanel(r) {
   const line = (g) => {
     const dir = g.shift < -0.005 ? 'lowered' : g.shift > 0.005 ? 'raised' : 'unchanged';
     const exp = g.expected != null ? ` (won ${g.wins} vs ${g.expected * g.n >= 0 ? (g.expected * g.n).toFixed(1) : '—'} expected)` : '';
-    return `<li class="note"><b>${esc(g.sportName)} ${g.market === 'spread' ? 'spreads' : 'totals'}</b><span class="impact">${g.n} graded</span><div>Win chances ${dir}${dir === 'unchanged' ? '' : `: a 60% call now reads <b>${pct(g.at60)}</b>`}${exp}.</div></li>`;
+    return `<li class="note"><b>${esc(g.sportName)} ${{ spread: 'spreads', total: 'totals', prop: 'player props' }[g.market] || g.market}</b><span class="impact">${g.n} graded</span><div>Win chances ${dir}${dir === 'unchanged' ? '' : `: a 60% call now reads <b>${pct(g.at60)}</b>`}${exp}.</div></li>`;
   };
   return `<h2>What the model has learned</h2>
     <p class="muted small" style="margin:4px 0 10px">After each refresh the model compares its win chances with real results, per sport and market, and corrects future picks. Corrections stay small until a group has about ${L.priorPicks} graded picks, so one bad week can't swing it.</p>

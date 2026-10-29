@@ -27,6 +27,6 @@ export const PROP_MARKETS = {
 };
 
 export const STAT_LABELS = {
-  pass_yds: 'Passing Yds', pass_tds: 'Passing TDs', rush_yds: 'Rushing Yds', rec_yds: 'Receiving Yds', receptions: 'Receptions',
+  pass_yds: 'Passing Yds', pass_tds: 'Passing TDs', completions: 'Completions', rush_yds: 'Rushing Yds', carries: 'Rush Attempts', rec_yds: 'Receiving Yds', receptions: 'Receptions',
   points: 'Points', rebounds: 'Rebounds', assists: 'Assists', threes: '3-Pointers Made',
 };

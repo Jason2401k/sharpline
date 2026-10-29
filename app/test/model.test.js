@@ -175,3 +175,18 @@ test('top 10: ranked by confidence, toss-ups and overpriced plays excluded', asy
   const p = buildPicks([{ sport: SPORTS.find((s) => s.id === 'nfl'), props: [], games: [mk(1, 700, 0.08), mk(2, 900, -0.01), mk(3, 450, 0.1), mk(4, 800, 0.05)] }]);
   assert.deepEqual(p.top.map((c) => c.score), [800, 700]);
 });
+
+test('prop guards: role changes, tiny lines and thin samples are flagged', async () => {
+  const { projectProp } = await import('../src/model/props.js');
+  const base = { stat: 'rush_yds', overOdds: -110, underOdds: -110 };
+  const player = (logs) => ({ team: 'AAA', pos: 'RB', logs: { rush_yds: logs } });
+  const g = { home: { abbr: 'AAA' }, away: { abbr: 'BBB' }, spread: { line: -3 }, total: { line: 44.5 } };
+  const backup = projectProp({ prop: { ...base, line: 55.5 }, player: player([12, 8, 20, 15, 10, 9]), game: g, leagueTotal: 44.5 });
+  assert.ok(backup.cautions.some((c) => /role/.test(c)), 'line far above history = role change');
+  const tiny = projectProp({ prop: { ...base, line: 6.5 }, player: player([5, 8, 4, 7, 6]), game: g, leagueTotal: 44.5 });
+  assert.ok(tiny.cautions.some((c) => /too small/.test(c)));
+  const thin = projectProp({ prop: { ...base, line: 70.5 }, player: player([75, 66, 80]), game: g, leagueTotal: 44.5 });
+  assert.ok(thin.cautions.some((c) => /3 games/.test(c)));
+  const normal = projectProp({ prop: { ...base, line: 70.5 }, player: player([75, 66, 80, 71, 62, 90]), game: g, leagueTotal: 44.5 });
+  assert.deepEqual(normal.cautions, []);
+});

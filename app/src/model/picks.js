@@ -24,12 +24,12 @@ export function buildPicks(boards, { limit = 6 } = {}) {
     }
     for (const pr of b.props) {
       const m = pr.model;
-      if (!m) continue;
+      if (!m || pr.live) continue;
       cands.push({
         id: `${b.sport.id}:prop:${pr.id}`, sport: b.sport.id, sportName: b.sport.short, tier: b.sport.tier, type: 'Prop',
         label: `${pr.player} ${m.lean} ${pr.line} ${pr.statLabel}`, matchup: pr.matchup, odds: m.odds,
         prob: m.prob, edge: m.edge, ev: m.ev, grade: m.grade, confidence: m.confidence, score: m.score, sharp: false,
-        injury: m.injury, reason: m.summary, weight: w,
+        injury: m.injury, reason: m.summary, weight: w, start: pr.start,
       });
     }
   }

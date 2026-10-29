@@ -10,7 +10,7 @@ import { analyzeGame } from './model/game.js';
 import { projectProp } from './model/props.js';
 import { publicSignals } from './model/public.js';
 import { buildPicks } from './model/picks.js';
-import { confidenceScore, impliedProb, expectedValue, round } from './model/math.js';
+import { confidenceScore, impliedProb, expectedValue, round, STRONG_SCORE } from './model/math.js';
 import { loadLedger, ledgerPath } from './tracker/ledger.js';
 import { buildCalibration, summarize } from './tracker/calibrate.js';
 import fs from 'node:fs';
@@ -21,6 +21,7 @@ import { abbrFor } from './sources/odds-api.js';
 import { fetchSplits, mergeSbdSplits, sbdSupports } from './sources/sbd.js';
 import { loadKenpom, findKenpom } from './sources/kenpom.js';
 import { getJson } from './sources/http.js';
+import { fetchPropLines, fetchRosters, fetchAllTeamIds, fetchGamelog, fetchDefenseVsPosition, ASSUMED_ODDS } from './sources/espn-props.js';
 
 const env = process.env;
 const demoCache = new Map();
@@ -89,6 +90,20 @@ export async function getBoard(sportId) {
       sources.errors.push(`ESPN team stats couldn't be reached, so the model is off (${e.message}).`);
     }
   }
+  // NFL player props from ESPN (DraftKings lines, player game logs, defense vs position).
+  let propPlayers = new Map();
+  if (sport.id === 'nfl' && sources.lines === 'live' && !env.ODDS_API_KEY && env.LIVE_ESPN !== '0') {
+    try {
+      const r = await buildNflProps(games);
+      rawProps = r.props; propPlayers = r.players;
+      sources.props = 'live';
+      sources.propsProvider = 'DraftKings via ESPN';
+      sources.propsNote = `ESPN publishes prop lines but not prices, so ${ASSUMED_ODDS} is assumed on both sides. Defense ranks use ${r.gamesCounted} completed games this season.`;
+    } catch (e) {
+      sources.errors.push(`NFL player props couldn't be loaded (${e.message}).`);
+    }
+  }
+
   if (env.LIVE_INJURIES !== '0') {
     try {
       const live = await fetchInjuries(sport);
@@ -138,14 +153,28 @@ export async function getBoard(sportId) {
   const props = rawProps
     .filter((p) => injuryByPlayer.get(p.player)?.status !== 'Out')
     .map((p) => {
-      const player = showDemo ? d.players.find((x) => x.id === p.playerId || x.name === p.player) : null;
+      const player = showDemo ? d.players.find((x) => x.id === p.playerId || x.name === p.player) : propPlayers.get(p.playerId);
       const game = outGames.find((g) => g.id === p.gameId);
-      const model = player ? projectProp({ prop: p, player, defense: p.defense, game, leagueTotal: params.leagueTotal[sport.id], injury: injuryByPlayer.get(p.player) }) : null;
-      if (model) model.score = confidenceScore(model.prob, { edge: model.edge, games: model.games, injury: model.injury });
+      const model = player && !game?.live ? projectProp({ prop: p, player, defense: p.defense, game, leagueTotal: params.leagueTotal[sport.id], injury: injuryByPlayer.get(p.player) }) : null;
+      if (model) {
+        // Apply what the tracker has learned about props, then score.
+        model.preCal = model.prob;
+        const shift = calibration().shift(sport.id, 'prop');
+        if (shift) {
+          model.prob = round(calibration().adjust(sport.id, 'prop', model.prob), 3);
+          model.edge = round(model.prob - impliedProb(model.odds), 3);
+          model.ev = round(expectedValue(model.prob, model.odds), 3);
+        }
+        model.score = confidenceScore(model.prob, { edge: model.edge, games: model.games, injury: model.injury });
+        // Role changes, tiny lines and thin samples can't be rated strong (kept below STRONG_SCORE).
+        if (model.cautions?.length) model.score = Math.min(model.score, STRONG_SCORE - 1);
+        if (player.games) model.recent = player.games.slice(0, model.last10.length);
+      }
       return {
         id: p.id, player: p.player, team: p.team || player?.team, pos: p.pos || player?.pos, opp: p.opp || player?.opp,
-        stat: p.stat, statLabel: STAT_LABELS[p.stat] || p.stat, line: p.line, overOdds: p.overOdds, underOdds: p.underOdds, book: p.book,
-        gameId: p.gameId, matchup: game ? `${game.away.abbr} @ ${game.home.abbr}` : '', model,
+        stat: p.stat, statLabel: STAT_LABELS[p.stat] || p.stat, line: p.line, open: p.open, overOdds: p.overOdds, underOdds: p.underOdds, book: p.book,
+        playerId: p.playerId, gameId: p.gameId, start: game?.start, live: Boolean(game?.live),
+        matchup: game ? `${game.away.abbr} @ ${game.home.abbr}` : '', model,
       };
     })
     .sort((a, b) => (b.model?.edge ?? -1) - (a.model?.edge ?? -1));
@@ -183,6 +212,37 @@ function attachKenpom(teams, sources) {
 
 export async function getAllBoards() {
   return Promise.all(SPORTS.map((s) => getBoard(s.id)));
+}
+
+// Prop lines for upcoming NFL games + each player's game log + defense vs position.
+async function buildNflProps(games) {
+  const upcoming = games.filter((g) => !g.live && String(g.id).startsWith('espn-'));
+  const lines = await fetchPropLines(upcoming.map((g) => g.id.slice(5)));
+  const rosters = await fetchRosters(await fetchAllTeamIds());
+  const { dvp, gamesCounted } = await fetchDefenseVsPosition(rosters);
+  const ids = [...new Set(lines.map((l) => l.athleteId))];
+  const logs = new Map();
+  let i = 0;
+  await Promise.all(Array.from({ length: 8 }, async () => {
+    while (i < ids.length) { const id = ids[i++]; logs.set(id, await fetchGamelog(id).catch(() => null)); }
+  }));
+  const players = new Map();
+  const props = [];
+  for (const l of lines) {
+    const who = rosters.get(l.athleteId);
+    const g = upcoming.find((x) => x.id === `espn-${l.eventId}`);
+    if (!who || !g) continue;
+    const opp = who.team === g.home.abbr ? g.away.abbr : who.team === g.away.abbr ? g.home.abbr : null;
+    if (!opp) continue;
+    const log = logs.get(l.athleteId);
+    if (log && !players.has(l.athleteId)) players.set(l.athleteId, { name: who.name, team: who.team, pos: who.pos, logs: log.logs, games: log.games });
+    props.push({
+      id: `${g.id}:${l.athleteId}:${l.stat}`, playerId: l.athleteId, player: who.name, team: who.team, pos: who.pos, opp,
+      stat: l.stat, line: l.line, open: l.open, overOdds: ASSUMED_ODDS, underOdds: ASSUMED_ODDS, book: 'DraftKings', gameId: g.id,
+      defense: dvp[opp]?.[`${who.pos}:${l.stat}`] || null,
+    });
+  }
+  return { props, players, gamesCounted };
 }
 
 // Calibration learned from the pick ledger (re-read when the file changes).

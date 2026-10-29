@@ -7,6 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { getJson } from '../sources/http.js';
 import { profitPerUnit, STRONG_SCORE } from '../model/math.js';
+import { boxLines } from '../sources/espn-props.js';
 
 export const MIN_SCORE = STRONG_SCORE; // same cutoff as the old 250 on the original scale
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -63,6 +64,30 @@ export function recordPicks(ledger, boards, now = new Date()) {
         existing ? updated++ : added++;
       }
     }
+    // Player props, same rules: logged before kickoff while they score MIN_SCORE+.
+    for (const pr of b.props || []) {
+      const g = b.games.find((x) => x.id === pr.gameId);
+      if (!g || !String(g.id).startsWith('espn-') || !pr.playerId) continue;
+      if (g.live || Date.parse(g.start) <= t) continue;
+      const id = `${g.id}:prop:${pr.playerId}:${pr.stat}`;
+      const existing = byId.get(id);
+      const m = pr.model;
+      if (!m || m.score < MIN_SCORE) {
+        if (existing?.status === 'pending') { byId.delete(id); removed++; }
+        continue;
+      }
+      if (existing && existing.status !== 'pending') continue;
+      byId.set(id, {
+        id, eventId: g.id.slice(5), sport: b.sport.id, sportName: b.sport.short, espn: b.sport.espn, market: 'prop',
+        start: g.start, matchup: `${g.away.abbr} @ ${g.home.abbr}`, home: g.home.abbr, away: g.away.abbr,
+        label: `${pr.player} ${m.lean} ${pr.line} ${pr.statLabel}`, side: m.lean.toLowerCase(), line: pr.line,
+        athleteId: pr.playerId, player: pr.player, stat: pr.stat, statLabel: pr.statLabel,
+        odds: m.odds, prob: m.prob, rawProb: m.preCal ?? m.prob, edge: m.edge, score: m.score, book: pr.book || null,
+        factors: { sharp: false, notes: m.dvp ? [`Defense rank ${m.dvp.rank}/${m.dvp.teams}`] : [] },
+        recordedAt: existing?.recordedAt || now.toISOString(), updatedAt: now.toISOString(), status: 'pending',
+      });
+      existing ? updated++ : added++;
+    }
   }
   ledger.picks = [...byId.values()];
   return { added, updated, removed };
@@ -88,6 +113,16 @@ export async function gradePicks(ledger, now = new Date(), fetchJson = (u) => ge
     const home = score('home'), away = score('away');
     if (!Number.isFinite(home) || !Number.isFinite(away)) continue;
     p.final = { home, away };
+    if (p.market === 'prop') {
+      // Graded from the player's box-score line; a player who didn't record a stat line is void.
+      const v = boxLines(sum).get(String(p.athleteId))?.stats?.[p.stat];
+      if (!Number.isFinite(v)) {
+        Object.assign(p, { status: 'void', units: 0, gradedAt: now.toISOString(), note: 'No stat line (did not play)' });
+        graded++;
+        continue;
+      }
+      p.actual = v;
+    }
     p.status = gradeOne(p, home, away);
     p.units = p.status === 'win' ? round2(profitPerUnit(p.odds)) : p.status === 'loss' ? -1 : 0;
     p.gradedAt = now.toISOString();
@@ -98,7 +133,8 @@ export async function gradePicks(ledger, now = new Date(), fetchJson = (u) => ge
 
 export function gradeOne(p, home, away) {
   let diff;
-  if (p.market === 'spread') diff = (p.side === 'home' ? home - away : away - home) + p.line;
+  if (p.market === 'prop') diff = p.side === 'over' ? p.actual - p.line : p.line - p.actual;
+  else if (p.market === 'spread') diff = (p.side === 'home' ? home - away : away - home) + p.line;
   else diff = p.side === 'over' ? home + away - p.line : p.line - (home + away);
   return diff > 0 ? 'win' : diff < 0 ? 'loss' : 'push';
 }
