@@ -192,7 +192,7 @@
    "rawProb": 0.644,
    "edge": 0.076,
    "score": 537,
-   "book": "DraftKings",
+   "book": "Draft Kings",
    "factors": {
     "sharp": false,
     "notes": [
@@ -200,7 +200,7 @@
     ]
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-29T23:01:45.286Z",
+   "updatedAt": "2026-10-30T17:12:27.421Z",
    "status": "pending"
   },
   {
@@ -218,17 +218,17 @@
    "side": "away",
    "line": 20.5,
    "odds": -115,
-   "prob": 0.584,
-   "rawProb": 0.628,
-   "edge": 0.049,
-   "score": 509,
-   "book": "DraftKings",
+   "prob": 0.585,
+   "rawProb": 0.629,
+   "edge": 0.05,
+   "score": 513,
+   "book": "Draft Kings",
    "factors": {
     "sharp": true,
     "notes": []
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
-   "updatedAt": "2026-10-29T23:01:45.286Z",
+   "updatedAt": "2026-10-30T17:12:27.421Z",
    "status": "pending"
   },
   {
@@ -262,7 +262,7 @@
     ]
    },
    "recordedAt": "2026-10-29T23:01:45.286Z",
-   "updatedAt": "2026-10-29T23:01:45.286Z",
+   "updatedAt": "2026-10-30T17:12:27.421Z",
    "status": "pending"
   },
   {
@@ -296,7 +296,7 @@
     ]
    },
    "recordedAt": "2026-10-29T23:01:45.286Z",
-   "updatedAt": "2026-10-29T23:01:45.286Z",
+   "updatedAt": "2026-10-30T17:12:27.421Z",
    "status": "pending"
   },
   {
@@ -310,18 +310,18 @@
    "matchup": "LAC @ LAR",
    "home": "LAR",
    "away": "LAC",
-   "label": "Kyren Williams Over 58.5 Rushing Yds",
+   "label": "Kyren Williams Over 57.5 Rushing Yds",
    "side": "over",
-   "line": 58.5,
+   "line": 57.5,
    "athleteId": "4430737",
    "player": "Kyren Williams",
    "stat": "rush_yds",
    "statLabel": "Rushing Yds",
    "odds": -110,
-   "prob": 0.591,
-   "rawProb": 0.635,
-   "edge": 0.067,
-   "score": 505,
+   "prob": 0.596,
+   "rawProb": 0.64,
+   "edge": 0.072,
+   "score": 523,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
@@ -330,7 +330,7 @@
     ]
    },
    "recordedAt": "2026-10-29T19:15:22.619Z",
-   "updatedAt": "2026-10-29T23:01:45.286Z",
+   "updatedAt": "2026-10-30T17:12:27.421Z",
    "status": "pending"
   }
  ]
