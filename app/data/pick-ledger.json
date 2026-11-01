@@ -275,7 +275,14 @@
    },
    "recordedAt": "2026-11-01T15:13:52.009Z",
    "updatedAt": "2026-11-01T15:13:52.009Z",
-   "status": "pending"
+   "status": "loss",
+   "final": {
+    "home": 30,
+    "away": 33
+   },
+   "actual": 9,
+   "units": -1,
+   "gradedAt": "2026-11-01T22:29:54.641Z"
   },
   {
    "id": "espn-401873026:prop:3043078:carries",
@@ -309,7 +316,14 @@
    },
    "recordedAt": "2026-10-29T23:01:45.286Z",
    "updatedAt": "2026-11-01T15:13:52.009Z",
-   "status": "pending"
+   "status": "loss",
+   "final": {
+    "home": 36,
+    "away": 10
+   },
+   "actual": 11,
+   "units": -1,
+   "gradedAt": "2026-11-01T22:29:54.641Z"
   },
   {
    "id": "espn-401873026:prop:4429615:receptions",
@@ -343,65 +357,14 @@
    },
    "recordedAt": "2026-10-29T23:01:45.286Z",
    "updatedAt": "2026-11-01T15:13:52.009Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401866457:spread",
-   "eventId": "401866457",
-   "sport": "ncaaf",
-   "sportName": "CFB",
-   "espn": "football/college-football",
-   "market": "spread",
-   "start": "2026-11-05T00:00Z",
-   "matchup": "TOL @ SAC",
-   "home": "SAC",
-   "away": "TOL",
-   "label": "SAC +27.5",
-   "side": "home",
-   "line": 27.5,
-   "odds": -110,
-   "prob": 0.598,
-   "rawProb": 0.643,
-   "edge": 0.074,
-   "score": 530,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": [
-     "4th-down aggression"
-    ]
+   "status": "loss",
+   "final": {
+    "home": 36,
+    "away": 10
    },
-   "recordedAt": "2026-11-01T15:13:52.009Z",
-   "updatedAt": "2026-11-01T15:13:52.009Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401878760:spread",
-   "eventId": "401878760",
-   "sport": "epl",
-   "sportName": "Soccer",
-   "espn": "soccer/eng.1",
-   "market": "spread",
-   "start": "2026-11-07T15:00Z",
-   "matchup": "HUL @ ARS",
-   "home": "ARS",
-   "away": "HUL",
-   "label": "HUL +2.5",
-   "side": "away",
-   "line": 2.5,
-   "odds": -170,
-   "prob": 0.651,
-   "rawProb": 0.694,
-   "edge": 0.021,
-   "score": 671,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": []
-   },
-   "recordedAt": "2026-11-01T15:13:52.009Z",
-   "updatedAt": "2026-11-01T15:13:52.009Z",
-   "status": "pending"
+   "actual": 0,
+   "units": -1,
+   "gradedAt": "2026-11-01T22:29:54.641Z"
   }
  ]
 }
