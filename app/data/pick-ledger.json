@@ -201,7 +201,13 @@
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
    "updatedAt": "2026-10-30T17:12:27.421Z",
-   "status": "pending"
+   "status": "win",
+   "final": {
+    "home": 13,
+    "away": 35
+   },
+   "units": 0.91,
+   "gradedAt": "2026-11-01T15:13:38.976Z"
   },
   {
    "id": "espn-401856737:spread",
@@ -229,6 +235,46 @@
    },
    "recordedAt": "2026-10-28T01:41:04.954Z",
    "updatedAt": "2026-10-30T17:12:27.421Z",
+   "status": "loss",
+   "final": {
+    "home": 31,
+    "away": 3
+   },
+   "units": -1,
+   "gradedAt": "2026-11-01T15:13:38.976Z"
+  },
+  {
+   "id": "espn-401873024:prop:4870808:carries",
+   "eventId": "401873024",
+   "sport": "nfl",
+   "sportName": "NFL",
+   "espn": "football/nfl",
+   "market": "prop",
+   "start": "2026-11-01T18:00Z",
+   "matchup": "ARI @ DAL",
+   "home": "DAL",
+   "away": "ARI",
+   "label": "Jeremiyah Love Over 9.5 Rush Attempts",
+   "side": "over",
+   "line": 9.5,
+   "athleteId": "4870808",
+   "player": "Jeremiyah Love",
+   "stat": "carries",
+   "statLabel": "Rush Attempts",
+   "odds": -110,
+   "prob": 0.601,
+   "rawProb": 0.647,
+   "edge": 0.077,
+   "score": 511,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Defense rank 29/32"
+    ]
+   },
+   "recordedAt": "2026-11-01T15:13:52.009Z",
+   "updatedAt": "2026-11-01T15:13:52.009Z",
    "status": "pending"
   },
   {
@@ -250,10 +296,10 @@
    "stat": "carries",
    "statLabel": "Rush Attempts",
    "odds": -110,
-   "prob": 0.597,
+   "prob": 0.594,
    "rawProb": 0.641,
-   "edge": 0.073,
-   "score": 527,
+   "edge": 0.07,
+   "score": 516,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
@@ -262,7 +308,7 @@
     ]
    },
    "recordedAt": "2026-10-29T23:01:45.286Z",
-   "updatedAt": "2026-10-30T17:12:27.421Z",
+   "updatedAt": "2026-11-01T15:13:52.009Z",
    "status": "pending"
   },
   {
@@ -284,44 +330,10 @@
    "stat": "receptions",
    "statLabel": "Receptions",
    "odds": -110,
-   "prob": 0.605,
+   "prob": 0.602,
    "rawProb": 0.648,
-   "edge": 0.081,
-   "score": 554,
-   "book": "DraftKings",
-   "factors": {
-    "sharp": false,
-    "notes": [
-     "Defense rank 27/32"
-    ]
-   },
-   "recordedAt": "2026-10-29T23:01:45.286Z",
-   "updatedAt": "2026-10-30T17:12:27.421Z",
-   "status": "pending"
-  },
-  {
-   "id": "espn-401873032:prop:4430737:rush_yds",
-   "eventId": "401873032",
-   "sport": "nfl",
-   "sportName": "NFL",
-   "espn": "football/nfl",
-   "market": "prop",
-   "start": "2026-11-01T21:05Z",
-   "matchup": "LAC @ LAR",
-   "home": "LAR",
-   "away": "LAC",
-   "label": "Kyren Williams Over 57.5 Rushing Yds",
-   "side": "over",
-   "line": 57.5,
-   "athleteId": "4430737",
-   "player": "Kyren Williams",
-   "stat": "rush_yds",
-   "statLabel": "Rushing Yds",
-   "odds": -110,
-   "prob": 0.596,
-   "rawProb": 0.64,
-   "edge": 0.072,
-   "score": 523,
+   "edge": 0.078,
+   "score": 544,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
@@ -329,8 +341,66 @@
      "Defense rank 26/32"
     ]
    },
-   "recordedAt": "2026-10-29T19:15:22.619Z",
-   "updatedAt": "2026-10-30T17:12:27.421Z",
+   "recordedAt": "2026-10-29T23:01:45.286Z",
+   "updatedAt": "2026-11-01T15:13:52.009Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401866457:spread",
+   "eventId": "401866457",
+   "sport": "ncaaf",
+   "sportName": "CFB",
+   "espn": "football/college-football",
+   "market": "spread",
+   "start": "2026-11-05T00:00Z",
+   "matchup": "TOL @ SAC",
+   "home": "SAC",
+   "away": "TOL",
+   "label": "SAC +27.5",
+   "side": "home",
+   "line": 27.5,
+   "odds": -110,
+   "prob": 0.598,
+   "rawProb": 0.643,
+   "edge": 0.074,
+   "score": 530,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "4th-down aggression"
+    ]
+   },
+   "recordedAt": "2026-11-01T15:13:52.009Z",
+   "updatedAt": "2026-11-01T15:13:52.009Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401878760:spread",
+   "eventId": "401878760",
+   "sport": "epl",
+   "sportName": "Soccer",
+   "espn": "soccer/eng.1",
+   "market": "spread",
+   "start": "2026-11-07T15:00Z",
+   "matchup": "HUL @ ARS",
+   "home": "ARS",
+   "away": "HUL",
+   "label": "HUL +2.5",
+   "side": "away",
+   "line": 2.5,
+   "odds": -170,
+   "prob": 0.651,
+   "rawProb": 0.694,
+   "edge": 0.021,
+   "score": 671,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": []
+   },
+   "recordedAt": "2026-11-01T15:13:52.009Z",
+   "updatedAt": "2026-11-01T15:13:52.009Z",
    "status": "pending"
   }
  ]
