@@ -4,6 +4,8 @@ import assert from 'node:assert/strict';
 
 process.env.LIVE_INJURIES = '0';
 process.env.LIVE_ESPN = '0';
+// Never read the real pick record: its learned adjustments would change these results.
+process.env.LEDGER_PATH = `${process.env.TMPDIR || '/tmp'}/sharpline-test-ledger-${process.pid}-missing.json`;
 delete process.env.SHOW_DEMO;
 delete process.env.ODDS_API_KEY;
 

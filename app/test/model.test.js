@@ -10,6 +10,8 @@ import { fetchInjuries } from '../src/sources/espn.js';
 
 process.env.LIVE_INJURIES = '0';
 process.env.LIVE_ESPN = '0';
+// Never read the real pick record: its learned adjustments would change these results.
+process.env.LEDGER_PATH = `${process.env.TMPDIR || '/tmp'}/sharpline-test-ledger-${process.pid}-missing.json`;
 process.env.SHOW_DEMO = '1';
 const nfl = SPORTS.find((s) => s.id === 'nfl');
 const ncaab = SPORTS.find((s) => s.id === 'ncaab');
