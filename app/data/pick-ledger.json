@@ -365,6 +365,74 @@
    "actual": 0,
    "units": -1,
    "gradedAt": "2026-11-01T22:29:54.641Z"
+  },
+  {
+   "id": "espn-401873043:prop:4697815:carries",
+   "eventId": "401873043",
+   "sport": "nfl",
+   "sportName": "NFL",
+   "espn": "football/nfl",
+   "market": "prop",
+   "start": "2026-11-08T18:00Z",
+   "matchup": "LAR @ WSH",
+   "home": "WSH",
+   "away": "LAR",
+   "label": "Rachaad White Under 11.5 Rush Attempts",
+   "side": "under",
+   "line": 11.5,
+   "athleteId": "4697815",
+   "player": "Rachaad White",
+   "stat": "carries",
+   "statLabel": "Rush Attempts",
+   "odds": -110,
+   "prob": 0.626,
+   "rawProb": 0.696,
+   "edge": 0.102,
+   "score": 623,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Defense rank 13/32"
+    ]
+   },
+   "recordedAt": "2026-11-05T06:40:34.879Z",
+   "updatedAt": "2026-11-05T06:40:34.879Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401873047:prop:4890973:rec_yds",
+   "eventId": "401873047",
+   "sport": "nfl",
+   "sportName": "NFL",
+   "espn": "football/nfl",
+   "market": "prop",
+   "start": "2026-11-08T21:25Z",
+   "matchup": "LV @ SF",
+   "home": "SF",
+   "away": "LV",
+   "label": "Ashton Jeanty Over 35.5 Receiving Yds",
+   "side": "over",
+   "line": 35.5,
+   "athleteId": "4890973",
+   "player": "Ashton Jeanty",
+   "stat": "rec_yds",
+   "statLabel": "Receiving Yds",
+   "odds": -110,
+   "prob": 0.602,
+   "rawProb": 0.674,
+   "edge": 0.078,
+   "score": 544,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Defense rank 32/32"
+    ]
+   },
+   "recordedAt": "2026-11-05T06:40:34.879Z",
+   "updatedAt": "2026-11-05T06:40:34.879Z",
+   "status": "pending"
   }
  ]
 }
