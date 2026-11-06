@@ -385,19 +385,19 @@
    "stat": "carries",
    "statLabel": "Rush Attempts",
    "odds": -110,
-   "prob": 0.625,
-   "rawProb": 0.695,
-   "edge": 0.101,
-   "score": 620,
+   "prob": 0.626,
+   "rawProb": 0.696,
+   "edge": 0.102,
+   "score": 623,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
     "notes": [
-     "Defense rank 14/32"
+     "Defense rank 13/32"
     ]
    },
    "recordedAt": "2026-11-05T06:40:34.879Z",
-   "updatedAt": "2026-11-06T04:33:36.505Z",
+   "updatedAt": "2026-11-06T20:25:45.251Z",
    "status": "pending"
   },
   {
@@ -411,18 +411,18 @@
    "matchup": "LV @ SF",
    "home": "SF",
    "away": "LV",
-   "label": "Ashton Jeanty Over 36.5 Receiving Yds",
+   "label": "Ashton Jeanty Over 37.5 Receiving Yds",
    "side": "over",
-   "line": 36.5,
+   "line": 37.5,
    "athleteId": "4890973",
    "player": "Ashton Jeanty",
    "stat": "rec_yds",
    "statLabel": "Receiving Yds",
    "odds": -110,
-   "prob": 0.598,
-   "rawProb": 0.67,
-   "edge": 0.074,
-   "score": 530,
+   "prob": 0.593,
+   "rawProb": 0.666,
+   "edge": 0.069,
+   "score": 512,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
@@ -431,7 +431,7 @@
     ]
    },
    "recordedAt": "2026-11-05T06:40:34.879Z",
-   "updatedAt": "2026-11-06T04:33:36.505Z",
+   "updatedAt": "2026-11-06T20:25:45.251Z",
    "status": "pending"
   }
  ]
