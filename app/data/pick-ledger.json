@@ -377,18 +377,18 @@
    "matchup": "LAR @ WSH",
    "home": "WSH",
    "away": "LAR",
-   "label": "Rachaad White Under 11.5 Rush Attempts",
+   "label": "Rachaad White Under 10.5 Rush Attempts",
    "side": "under",
-   "line": 11.5,
+   "line": 10.5,
    "athleteId": "4697815",
    "player": "Rachaad White",
    "stat": "carries",
    "statLabel": "Rush Attempts",
    "odds": -110,
-   "prob": 0.626,
-   "rawProb": 0.696,
-   "edge": 0.102,
-   "score": 623,
+   "prob": 0.61,
+   "rawProb": 0.681,
+   "edge": 0.086,
+   "score": 571,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
@@ -397,7 +397,7 @@
     ]
    },
    "recordedAt": "2026-11-05T06:40:34.879Z",
-   "updatedAt": "2026-11-06T20:25:45.251Z",
+   "updatedAt": "2026-11-07T00:48:00.991Z",
    "status": "pending"
   },
   {
@@ -431,7 +431,7 @@
     ]
    },
    "recordedAt": "2026-11-05T06:40:34.879Z",
-   "updatedAt": "2026-11-06T20:25:45.251Z",
+   "updatedAt": "2026-11-07T00:48:00.991Z",
    "status": "pending"
   }
  ]
