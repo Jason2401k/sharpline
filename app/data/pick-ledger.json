@@ -393,11 +393,11 @@
    "factors": {
     "sharp": false,
     "notes": [
-     "Defense rank 13/32"
+     "Defense rank 14/32"
     ]
    },
    "recordedAt": "2026-11-05T06:40:34.879Z",
-   "updatedAt": "2026-11-07T00:48:37.981Z",
+   "updatedAt": "2026-11-07T00:53:37.565Z",
    "status": "pending"
   },
   {
@@ -431,7 +431,7 @@
     ]
    },
    "recordedAt": "2026-11-05T06:40:34.879Z",
-   "updatedAt": "2026-11-07T00:48:37.981Z",
+   "updatedAt": "2026-11-07T00:53:37.565Z",
    "status": "pending"
   }
  ]
