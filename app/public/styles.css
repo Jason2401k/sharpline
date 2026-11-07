@@ -321,3 +321,6 @@ tr.dim td { opacity: .72; }
 /* keep the nav readable now that it has more tabs */
 @media (max-width: 1440px) { .refresh-status { display: none; } }
 .nav-link { padding-left: 10px; padding-right: 10px; }
+
+.kenpom-strip { display: flex; gap: 10px; align-items: flex-start; margin-top: 10px; padding: 8px 10px; border-radius: 8px; background: var(--surface-2); font-size: 12.5px; line-height: 1.5; }
+.kenpom-strip .badge { flex-shrink: 0; margin-top: 1px; }

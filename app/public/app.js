@@ -200,6 +200,7 @@ function gameCard(g, sport, { compact = false } = {}) {
         <div class="model-cell"><div class="k">Model line</div><div class="v num">${g.home.abbr} ${fmtLine(a.modelSpread)} · ${a.modelTotal}</div></div>
         <div class="model-cell"><div class="k">Win prob</div><div class="v num">${g.away.abbr} ${pct(a.winProb.away)} · ${g.home.abbr} ${pct(a.winProb.home)}</div></div>
       </div>${a.sampleNote ? `<div class="muted small" style="margin-top:6px">ⓘ ${esc(a.sampleNote)} Not used for picks.</div>` : ''}` : `<div class="muted small" style="margin-top:8px">${esc(a.reason || 'No model for this matchup.')}</div>`}
+      ${sport.id === 'ncaab' ? kenpomStrip(g) : ''}
       <div class="game-foot">${pickChip(a.spreadPick) || pickChip(a.totalPick) ? `${pickChip(a.spreadPick)}${pickChip(a.totalPick)}` : a.available ? '<span class="chip" data-tip="No side scores 500+ in this game">No strong lean</span>' : ''}${sig}
         ${inj.length ? `<span class="chip" data-tip="${esc(inj.map((i) => `${i.player} (${i.team}) ${i.status}`).join(' · '))}">🩹 ${inj.length} injur${inj.length === 1 ? 'y' : 'ies'}</span>` : ''}
       </div>
@@ -208,6 +209,20 @@ function gameCard(g, sport, { compact = false } = {}) {
     </div>
     ${a.notes?.length ? `<div class="coaching" hidden>${coachingPanel(g, sport)}</div>` : ''}
   </article>`;
+}
+
+// College basketball: KenPom is always shown on the card, connected or not, so it never
+// silently disappears.
+function kenpomStrip(g) {
+  const c = g.analysis?.coaching;
+  const A = c?.away, H = c?.home;
+  const em = (x) => (x == null ? '—' : `${x >= 0 ? '+' : ''}${Number(x).toFixed(1)}`);
+  if (A?.kenpomRank != null || H?.kenpomRank != null) {
+    const side = (abbr, t) => (t?.kenpomRank != null ? `<b>${esc(abbr)}</b> #${t.kenpomRank} <span class="muted">AdjEM ${em(t.kenpomEM)} · O ${t.kenpomO ?? '—'} · D ${t.kenpomD ?? '—'} · T ${t.kenpomT ?? '—'}</span>` : `<b>${esc(abbr)}</b> <span class="muted">not in your KenPom file</span>`);
+    const note = g.analysis.notes?.find((n) => n.title === 'KenPom');
+    return `<div class="kenpom-strip"><span class="badge live">KenPom</span><div>${side(g.away.abbr, A)}<br>${side(g.home.abbr, H)}${note ? `<div class="small" style="margin-top:4px">${esc(note.text)}</div>` : ''}</div></div>`;
+  }
+  return `<div class="kenpom-strip"><span class="badge none">KenPom</span><div class="small muted">Not connected. KenPom ratings appear here, and drive 70% of this game's projection, once your KenPom export is added as the <code>KENPOM_CSV</code> secret on GitHub (Settings → Secrets and variables → Actions).</div></div>`;
 }
 
 function coachingPanel(g, sport) {
