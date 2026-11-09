@@ -398,7 +398,14 @@
    },
    "recordedAt": "2026-11-05T06:40:34.879Z",
    "updatedAt": "2026-11-08T07:19:49.549Z",
-   "status": "pending"
+   "status": "win",
+   "final": {
+    "home": 13,
+    "away": 20
+   },
+   "actual": 7,
+   "units": 0.91,
+   "gradedAt": "2026-11-09T01:11:42.496Z"
   },
   {
    "id": "espn-401873047:prop:4890973:rec_yds",
@@ -432,7 +439,14 @@
    },
    "recordedAt": "2026-11-05T06:40:34.879Z",
    "updatedAt": "2026-11-08T07:19:49.549Z",
-   "status": "pending"
+   "status": "loss",
+   "final": {
+    "home": 38,
+    "away": 17
+   },
+   "actual": -5,
+   "units": -1,
+   "gradedAt": "2026-11-09T01:11:42.496Z"
   }
  ]
 }
