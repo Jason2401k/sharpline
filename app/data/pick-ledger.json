@@ -447,6 +447,40 @@
    "actual": -5,
    "units": -1,
    "gradedAt": "2026-11-09T01:11:42.496Z"
+  },
+  {
+   "id": "espn-401873052:prop:4697815:carries",
+   "eventId": "401873052",
+   "sport": "nfl",
+   "sportName": "NFL",
+   "espn": "football/nfl",
+   "market": "prop",
+   "start": "2026-11-13T01:15Z",
+   "matchup": "WSH @ NYG",
+   "home": "NYG",
+   "away": "WSH",
+   "label": "Rachaad White Under 10.5 Rush Attempts",
+   "side": "under",
+   "line": 10.5,
+   "athleteId": "4697815",
+   "player": "Rachaad White",
+   "stat": "carries",
+   "statLabel": "Rush Attempts",
+   "odds": -110,
+   "prob": 0.623,
+   "rawProb": 0.695,
+   "edge": 0.099,
+   "score": 614,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Defense rank 10/32"
+    ]
+   },
+   "recordedAt": "2026-11-12T19:05:58.015Z",
+   "updatedAt": "2026-11-12T19:05:58.015Z",
+   "status": "pending"
   }
  ]
 }
