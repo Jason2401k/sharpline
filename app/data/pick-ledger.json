@@ -500,14 +500,14 @@
    "matchup": "PV @ OSU",
    "home": "OSU",
    "away": "PV",
-   "label": "PV +34.5",
+   "label": "PV +32.5",
    "side": "away",
-   "line": 34.5,
-   "odds": -108,
-   "prob": 0.61,
-   "rawProb": 0.695,
+   "line": 32.5,
+   "odds": -105,
+   "prob": 0.603,
+   "rawProb": 0.689,
    "edge": 0.091,
-   "score": 542,
+   "score": 521,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
@@ -517,7 +517,7 @@
     ]
    },
    "recordedAt": "2026-11-16T00:58:37.729Z",
-   "updatedAt": "2026-11-16T00:58:37.729Z",
+   "updatedAt": "2026-11-16T23:28:48.391Z",
    "status": "pending"
   },
   {
@@ -531,14 +531,14 @@
    "matchup": "CIT @ CLEM",
    "home": "CLEM",
    "away": "CIT",
-   "label": "CIT +23.5",
+   "label": "CIT +24.5",
    "side": "away",
-   "line": 23.5,
-   "odds": -108,
-   "prob": 0.61,
-   "rawProb": 0.695,
-   "edge": 0.091,
-   "score": 542,
+   "line": 24.5,
+   "odds": -105,
+   "prob": 0.607,
+   "rawProb": 0.692,
+   "edge": 0.095,
+   "score": 534,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
@@ -548,7 +548,7 @@
     ]
    },
    "recordedAt": "2026-11-16T00:58:37.729Z",
-   "updatedAt": "2026-11-16T00:58:37.729Z",
+   "updatedAt": "2026-11-16T23:28:48.391Z",
    "status": "pending"
   },
   {
@@ -562,14 +562,14 @@
    "matchup": "WIU @ MINN",
    "home": "MINN",
    "away": "WIU",
-   "label": "WIU +35.5",
+   "label": "WIU +33.5",
    "side": "away",
-   "line": 35.5,
-   "odds": -110,
-   "prob": 0.607,
-   "rawProb": 0.692,
-   "edge": 0.083,
-   "score": 531,
+   "line": 33.5,
+   "odds": -108,
+   "prob": 0.599,
+   "rawProb": 0.685,
+   "edge": 0.08,
+   "score": 506,
    "book": "DraftKings",
    "factors": {
     "sharp": false,
@@ -580,7 +580,133 @@
     ]
    },
    "recordedAt": "2026-11-16T00:58:37.729Z",
-   "updatedAt": "2026-11-16T00:58:37.729Z",
+   "updatedAt": "2026-11-16T23:28:48.391Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401909535:spread",
+   "eventId": "401909535",
+   "sport": "ncaab",
+   "sportName": "CBB",
+   "espn": "basketball/mens-college-basketball",
+   "market": "spread",
+   "start": "2026-11-18T00:00Z",
+   "matchup": "SHU @ PROV",
+   "home": "PROV",
+   "away": "SHU",
+   "label": "SHU +29.5",
+   "side": "away",
+   "line": 29.5,
+   "odds": -105,
+   "prob": 0.605,
+   "rawProb": 0.691,
+   "edge": 0.093,
+   "score": 527,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "3-point volume",
+     "Ball security"
+    ]
+   },
+   "recordedAt": "2026-11-16T23:28:48.391Z",
+   "updatedAt": "2026-11-16T23:28:48.391Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401921722:spread",
+   "eventId": "401921722",
+   "sport": "ncaab",
+   "sportName": "CBB",
+   "espn": "basketball/mens-college-basketball",
+   "market": "spread",
+   "start": "2026-11-18T00:00Z",
+   "matchup": "RID @ MIA",
+   "home": "MIA",
+   "away": "RID",
+   "label": "RID +42.5",
+   "side": "away",
+   "line": 42.5,
+   "odds": -110,
+   "prob": 0.603,
+   "rawProb": 0.689,
+   "edge": 0.079,
+   "score": 518,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Ball security"
+    ]
+   },
+   "recordedAt": "2026-11-16T23:28:48.391Z",
+   "updatedAt": "2026-11-16T23:28:48.391Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401906761:spread",
+   "eventId": "401906761",
+   "sport": "ncaab",
+   "sportName": "CBB",
+   "espn": "basketball/mens-college-basketball",
+   "market": "spread",
+   "start": "2026-11-18T00:30Z",
+   "matchup": "KENN @ ALA",
+   "home": "ALA",
+   "away": "KENN",
+   "label": "KENN +25.5",
+   "side": "away",
+   "line": 25.5,
+   "odds": -110,
+   "prob": 0.612,
+   "rawProb": 0.697,
+   "edge": 0.088,
+   "score": 547,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "3-point volume",
+     "Ball security",
+     "3-point volume",
+     "Ball security"
+    ]
+   },
+   "recordedAt": "2026-11-16T23:28:48.391Z",
+   "updatedAt": "2026-11-16T23:28:48.391Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401920426:spread",
+   "eventId": "401920426",
+   "sport": "ncaab",
+   "sportName": "CBB",
+   "espn": "basketball/mens-college-basketball",
+   "market": "spread",
+   "start": "2026-11-18T02:00Z",
+   "matchup": "ODU @ UVA",
+   "home": "UVA",
+   "away": "ODU",
+   "label": "ODU +27.5",
+   "side": "away",
+   "line": 27.5,
+   "odds": -108,
+   "prob": 0.605,
+   "rawProb": 0.691,
+   "edge": 0.086,
+   "score": 526,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Ball security",
+     "3-point volume",
+     "Ball security"
+    ]
+   },
+   "recordedAt": "2026-11-16T23:28:48.391Z",
+   "updatedAt": "2026-11-16T23:28:48.391Z",
    "status": "pending"
   }
  ]
