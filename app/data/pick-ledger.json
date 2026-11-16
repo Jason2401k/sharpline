@@ -480,6 +480,107 @@
    },
    "recordedAt": "2026-11-12T19:05:58.015Z",
    "updatedAt": "2026-11-12T19:06:31.300Z",
+   "status": "loss",
+   "final": {
+    "home": 21,
+    "away": 24
+   },
+   "actual": 11,
+   "units": -1,
+   "gradedAt": "2026-11-16T00:58:24.475Z"
+  },
+  {
+   "id": "espn-401916317:spread",
+   "eventId": "401916317",
+   "sport": "ncaab",
+   "sportName": "CBB",
+   "espn": "basketball/mens-college-basketball",
+   "market": "spread",
+   "start": "2026-11-16T23:30Z",
+   "matchup": "PV @ OSU",
+   "home": "OSU",
+   "away": "PV",
+   "label": "PV +34.5",
+   "side": "away",
+   "line": 34.5,
+   "odds": -108,
+   "prob": 0.61,
+   "rawProb": 0.695,
+   "edge": 0.091,
+   "score": 542,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Ball security",
+     "Ball security"
+    ]
+   },
+   "recordedAt": "2026-11-16T00:58:37.729Z",
+   "updatedAt": "2026-11-16T00:58:37.729Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401918075:spread",
+   "eventId": "401918075",
+   "sport": "ncaab",
+   "sportName": "CBB",
+   "espn": "basketball/mens-college-basketball",
+   "market": "spread",
+   "start": "2026-11-17T00:00Z",
+   "matchup": "CIT @ CLEM",
+   "home": "CLEM",
+   "away": "CIT",
+   "label": "CIT +23.5",
+   "side": "away",
+   "line": 23.5,
+   "odds": -108,
+   "prob": 0.61,
+   "rawProb": 0.695,
+   "edge": 0.091,
+   "score": 542,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "3-point volume",
+     "Ball security"
+    ]
+   },
+   "recordedAt": "2026-11-16T00:58:37.729Z",
+   "updatedAt": "2026-11-16T00:58:37.729Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401916307:spread",
+   "eventId": "401916307",
+   "sport": "ncaab",
+   "sportName": "CBB",
+   "espn": "basketball/mens-college-basketball",
+   "market": "spread",
+   "start": "2026-11-17T01:00Z",
+   "matchup": "WIU @ MINN",
+   "home": "MINN",
+   "away": "WIU",
+   "label": "WIU +35.5",
+   "side": "away",
+   "line": 35.5,
+   "odds": -110,
+   "prob": 0.607,
+   "rawProb": 0.692,
+   "edge": 0.083,
+   "score": 531,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "3-point volume",
+     "Ball security",
+     "Ball security"
+    ]
+   },
+   "recordedAt": "2026-11-16T00:58:37.729Z",
+   "updatedAt": "2026-11-16T00:58:37.729Z",
    "status": "pending"
   }
  ]
