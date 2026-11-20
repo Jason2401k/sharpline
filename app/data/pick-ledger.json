@@ -518,7 +518,13 @@
    },
    "recordedAt": "2026-11-16T00:58:37.729Z",
    "updatedAt": "2026-11-16T23:28:48.391Z",
-   "status": "pending"
+   "status": "win",
+   "final": {
+    "home": 86,
+    "away": 59
+   },
+   "units": 0.95,
+   "gradedAt": "2026-11-20T00:47:47.889Z"
   },
   {
    "id": "espn-401918075:spread",
@@ -549,7 +555,13 @@
    },
    "recordedAt": "2026-11-16T00:58:37.729Z",
    "updatedAt": "2026-11-16T23:28:48.391Z",
-   "status": "pending"
+   "status": "loss",
+   "final": {
+    "home": 87,
+    "away": 51
+   },
+   "units": -1,
+   "gradedAt": "2026-11-20T00:47:47.889Z"
   },
   {
    "id": "espn-401916307:spread",
@@ -581,7 +593,13 @@
    },
    "recordedAt": "2026-11-16T00:58:37.729Z",
    "updatedAt": "2026-11-16T23:28:48.391Z",
-   "status": "pending"
+   "status": "loss",
+   "final": {
+    "home": 99,
+    "away": 63
+   },
+   "units": -1,
+   "gradedAt": "2026-11-20T00:47:47.889Z"
   },
   {
    "id": "espn-401909535:spread",
@@ -612,7 +630,13 @@
    },
    "recordedAt": "2026-11-16T23:28:48.391Z",
    "updatedAt": "2026-11-16T23:28:48.391Z",
-   "status": "pending"
+   "status": "win",
+   "final": {
+    "home": 86,
+    "away": 67
+   },
+   "units": 0.95,
+   "gradedAt": "2026-11-20T00:47:47.889Z"
   },
   {
    "id": "espn-401921722:spread",
@@ -642,7 +666,13 @@
    },
    "recordedAt": "2026-11-16T23:28:48.391Z",
    "updatedAt": "2026-11-16T23:28:48.391Z",
-   "status": "pending"
+   "status": "loss",
+   "final": {
+    "home": 95,
+    "away": 48
+   },
+   "units": -1,
+   "gradedAt": "2026-11-20T00:47:47.889Z"
   },
   {
    "id": "espn-401906761:spread",
@@ -675,7 +705,13 @@
    },
    "recordedAt": "2026-11-16T23:28:48.391Z",
    "updatedAt": "2026-11-16T23:28:48.391Z",
-   "status": "pending"
+   "status": "win",
+   "final": {
+    "home": 109,
+    "away": 91
+   },
+   "units": 0.91,
+   "gradedAt": "2026-11-20T00:47:47.889Z"
   },
   {
    "id": "espn-401920426:spread",
@@ -707,6 +743,136 @@
    },
    "recordedAt": "2026-11-16T23:28:48.391Z",
    "updatedAt": "2026-11-16T23:28:48.391Z",
+   "status": "win",
+   "final": {
+    "home": 85,
+    "away": 65
+   },
+   "units": 0.93,
+   "gradedAt": "2026-11-20T00:47:47.889Z"
+  },
+  {
+   "id": "espn-401906867:spread",
+   "eventId": "401906867",
+   "sport": "ncaab",
+   "sportName": "CBB",
+   "espn": "basketball/mens-college-basketball",
+   "market": "spread",
+   "start": "2026-11-20T01:00Z",
+   "matchup": "SUU @ TEX",
+   "home": "TEX",
+   "away": "SUU",
+   "label": "SUU +35.5",
+   "side": "away",
+   "line": 35.5,
+   "odds": -105,
+   "prob": 0.612,
+   "rawProb": 0.692,
+   "edge": 0.1,
+   "score": 587,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": true,
+    "notes": []
+   },
+   "recordedAt": "2026-11-20T00:47:59.937Z",
+   "updatedAt": "2026-11-20T00:47:59.937Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401906852:spread",
+   "eventId": "401906852",
+   "sport": "ncaab",
+   "sportName": "CBB",
+   "espn": "basketball/mens-college-basketball",
+   "market": "spread",
+   "start": "2026-11-21T00:00Z",
+   "matchup": "CCU @ TENN",
+   "home": "TENN",
+   "away": "CCU",
+   "label": "CCU +29.5",
+   "side": "away",
+   "line": 29.5,
+   "odds": -118,
+   "prob": 0.6,
+   "rawProb": 0.681,
+   "edge": 0.059,
+   "score": 504,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Ball security",
+     "Ball security"
+    ]
+   },
+   "recordedAt": "2026-11-20T00:47:59.937Z",
+   "updatedAt": "2026-11-20T00:47:59.937Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401913529:spread",
+   "eventId": "401913529",
+   "sport": "ncaab",
+   "sportName": "CBB",
+   "espn": "basketball/mens-college-basketball",
+   "market": "spread",
+   "start": "2026-11-21T02:00Z",
+   "matchup": "EIU @ ILL",
+   "home": "ILL",
+   "away": "EIU",
+   "label": "EIU +51.5",
+   "side": "away",
+   "line": 51.5,
+   "odds": -112,
+   "prob": 0.619,
+   "rawProb": 0.698,
+   "edge": 0.091,
+   "score": 568,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "3-point volume",
+     "Ball security"
+    ]
+   },
+   "recordedAt": "2026-11-20T00:47:59.937Z",
+   "updatedAt": "2026-11-20T00:47:59.937Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401873067:prop:4361307:receptions",
+   "eventId": "401873067",
+   "sport": "nfl",
+   "sportName": "NFL",
+   "espn": "football/nfl",
+   "market": "prop",
+   "start": "2026-11-22T18:00Z",
+   "matchup": "ARI @ KC",
+   "home": "KC",
+   "away": "ARI",
+   "label": "Trey McBride Over 5.5 Receptions",
+   "side": "over",
+   "line": 5.5,
+   "athleteId": "4361307",
+   "player": "Trey McBride",
+   "stat": "receptions",
+   "statLabel": "Receptions",
+   "odds": -110,
+   "prob": 0.605,
+   "rawProb": 0.69,
+   "edge": 0.081,
+   "score": 554,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Defense rank 29/32"
+    ]
+   },
+   "recordedAt": "2026-11-20T00:47:59.937Z",
+   "updatedAt": "2026-11-20T00:47:59.937Z",
    "status": "pending"
   }
  ]
