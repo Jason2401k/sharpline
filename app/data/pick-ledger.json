@@ -777,7 +777,13 @@
    },
    "recordedAt": "2026-11-20T00:47:59.937Z",
    "updatedAt": "2026-11-20T00:47:59.937Z",
-   "status": "pending"
+   "status": "win",
+   "final": {
+    "home": 92,
+    "away": 68
+   },
+   "units": 0.95,
+   "gradedAt": "2026-11-24T07:00:42.050Z"
   },
   {
    "id": "espn-401906852:spread",
@@ -808,7 +814,13 @@
    },
    "recordedAt": "2026-11-20T00:47:59.937Z",
    "updatedAt": "2026-11-20T00:47:59.937Z",
-   "status": "pending"
+   "status": "win",
+   "final": {
+    "home": 78,
+    "away": 51
+   },
+   "units": 0.85,
+   "gradedAt": "2026-11-24T07:00:42.050Z"
   },
   {
    "id": "espn-401913529:spread",
@@ -839,7 +851,13 @@
    },
    "recordedAt": "2026-11-20T00:47:59.937Z",
    "updatedAt": "2026-11-20T00:47:59.937Z",
-   "status": "pending"
+   "status": "loss",
+   "final": {
+    "home": 114,
+    "away": 52
+   },
+   "units": -1,
+   "gradedAt": "2026-11-24T07:00:42.050Z"
   },
   {
    "id": "espn-401873067:prop:4361307:receptions",
@@ -873,6 +891,227 @@
    },
    "recordedAt": "2026-11-20T00:47:59.937Z",
    "updatedAt": "2026-11-20T00:47:59.937Z",
+   "status": "win",
+   "final": {
+    "home": 34,
+    "away": 7
+   },
+   "actual": 9,
+   "units": 0.91,
+   "gradedAt": "2026-11-24T07:00:42.050Z"
+  },
+  {
+   "id": "espn-401924877:spread",
+   "eventId": "401924877",
+   "sport": "ncaab",
+   "sportName": "CBB",
+   "espn": "basketball/mens-college-basketball",
+   "market": "spread",
+   "start": "2026-11-24T23:00Z",
+   "matchup": "SHU @ RUTG",
+   "home": "RUTG",
+   "away": "SHU",
+   "label": "SHU +23.5",
+   "side": "away",
+   "line": 23.5,
+   "odds": -115,
+   "prob": 0.615,
+   "rawProb": 0.686,
+   "edge": 0.08,
+   "score": 554,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": []
+   },
+   "recordedAt": "2026-11-24T07:00:53.756Z",
+   "updatedAt": "2026-11-24T07:00:53.756Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401906774:spread",
+   "eventId": "401906774",
+   "sport": "ncaab",
+   "sportName": "CBB",
+   "espn": "basketball/mens-college-basketball",
+   "market": "spread",
+   "start": "2026-11-25T00:00Z",
+   "matchup": "MILW @ FLA",
+   "home": "FLA",
+   "away": "MILW",
+   "label": "MILW +35.5",
+   "side": "away",
+   "line": 35.5,
+   "odds": -112,
+   "prob": 0.625,
+   "rawProb": 0.695,
+   "edge": 0.097,
+   "score": 659,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": true,
+    "notes": [
+     "3-point volume",
+     "Ball security",
+     "Ball security"
+    ]
+   },
+   "recordedAt": "2026-11-24T07:00:53.756Z",
+   "updatedAt": "2026-11-24T07:00:53.756Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401916291:spread",
+   "eventId": "401916291",
+   "sport": "ncaab",
+   "sportName": "CBB",
+   "espn": "basketball/mens-college-basketball",
+   "market": "spread",
+   "start": "2026-11-25T00:00Z",
+   "matchup": "JAX @ IU",
+   "home": "IU",
+   "away": "JAX",
+   "label": "JAX +28.5",
+   "side": "away",
+   "line": 28.5,
+   "odds": -115,
+   "prob": 0.593,
+   "rawProb": 0.666,
+   "edge": 0.058,
+   "score": 510,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": []
+   },
+   "recordedAt": "2026-11-24T07:00:53.756Z",
+   "updatedAt": "2026-11-24T07:00:53.756Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401920727:spread",
+   "eventId": "401920727",
+   "sport": "ncaab",
+   "sportName": "CBB",
+   "espn": "basketball/mens-college-basketball",
+   "market": "spread",
+   "start": "2026-11-25T00:00Z",
+   "matchup": "UMBC @ IOWA",
+   "home": "IOWA",
+   "away": "UMBC",
+   "label": "UMBC +28.5",
+   "side": "away",
+   "line": 28.5,
+   "odds": -108,
+   "prob": 0.599,
+   "rawProb": 0.671,
+   "edge": 0.08,
+   "score": 506,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "3-point volume",
+     "Ball security",
+     "3-point volume",
+     "Ball security"
+    ]
+   },
+   "recordedAt": "2026-11-24T07:00:53.756Z",
+   "updatedAt": "2026-11-24T07:00:53.756Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401920889:spread",
+   "eventId": "401920889",
+   "sport": "ncaab",
+   "sportName": "CBB",
+   "espn": "basketball/mens-college-basketball",
+   "market": "spread",
+   "start": "2026-11-25T00:00Z",
+   "matchup": "UNH @ HALL",
+   "home": "HALL",
+   "away": "UNH",
+   "label": "UNH +21.5",
+   "side": "away",
+   "line": 21.5,
+   "odds": -108,
+   "prob": 0.613,
+   "rawProb": 0.684,
+   "edge": 0.094,
+   "score": 582,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Ball security",
+     "Ball security"
+    ]
+   },
+   "recordedAt": "2026-11-24T07:00:53.756Z",
+   "updatedAt": "2026-11-24T07:00:53.756Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401921777:spread",
+   "eventId": "401921777",
+   "sport": "ncaab",
+   "sportName": "CBB",
+   "espn": "basketball/mens-college-basketball",
+   "market": "spread",
+   "start": "2026-11-25T00:00Z",
+   "matchup": "COPP @ VILL",
+   "home": "VILL",
+   "away": "COPP",
+   "label": "COPP +32.5",
+   "side": "away",
+   "line": 32.5,
+   "odds": -110,
+   "prob": 0.609,
+   "rawProb": 0.68,
+   "edge": 0.085,
+   "score": 568,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Ball security"
+    ]
+   },
+   "recordedAt": "2026-11-24T07:00:53.756Z",
+   "updatedAt": "2026-11-24T07:00:53.756Z",
+   "status": "pending"
+  },
+  {
+   "id": "espn-401920709:spread",
+   "eventId": "401920709",
+   "sport": "ncaab",
+   "sportName": "CBB",
+   "espn": "basketball/mens-college-basketball",
+   "market": "spread",
+   "start": "2026-11-25T01:00Z",
+   "matchup": "LIP @ AUB",
+   "home": "AUB",
+   "away": "LIP",
+   "label": "LIP +24.5",
+   "side": "away",
+   "line": 24.5,
+   "odds": -115,
+   "prob": 0.609,
+   "rawProb": 0.68,
+   "edge": 0.074,
+   "score": 565,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Ball security",
+     "3-point volume",
+     "Ball security"
+    ]
+   },
+   "recordedAt": "2026-11-24T07:00:53.756Z",
+   "updatedAt": "2026-11-24T07:00:53.756Z",
    "status": "pending"
   }
  ]
