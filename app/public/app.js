@@ -200,7 +200,7 @@ function gameCard(g, sport, { compact = false } = {}) {
         <div class="model-cell"><div class="k">Model line</div><div class="v num">${g.home.abbr} ${fmtLine(a.modelSpread)} · ${a.modelTotal}</div></div>
         <div class="model-cell"><div class="k">Win prob</div><div class="v num">${g.away.abbr} ${pct(a.winProb.away)} · ${g.home.abbr} ${pct(a.winProb.home)}</div></div>
       </div>${a.sampleNote ? `<div class="muted small" style="margin-top:6px">ⓘ ${esc(a.sampleNote)} Not used for picks.</div>` : ''}` : `<div class="muted small" style="margin-top:8px">${esc(a.reason || 'No model for this matchup.')}</div>`}
-      ${sport.id === 'ncaab' ? kenpomStrip(g) : ''}
+      ${sport.id === 'ncaab' ? ratingsStrip(g) : ''}
       <div class="game-foot">${pickChip(a.spreadPick) || pickChip(a.totalPick) ? `${pickChip(a.spreadPick)}${pickChip(a.totalPick)}` : a.available ? '<span class="chip" data-tip="No side scores 500+ in this game">No strong lean</span>' : ''}${sig}
         ${inj.length ? `<span class="chip" data-tip="${esc(inj.map((i) => `${i.player} (${i.team}) ${i.status}`).join(' · '))}">🩹 ${inj.length} injur${inj.length === 1 ? 'y' : 'ies'}</span>` : ''}
       </div>
@@ -211,18 +211,31 @@ function gameCard(g, sport, { compact = false } = {}) {
   </article>`;
 }
 
-// College basketball: KenPom is always shown on the card, connected or not, so it never
-// silently disappears.
-function kenpomStrip(g) {
-  const c = g.analysis?.coaching;
-  const A = c?.away, H = c?.home;
-  const em = (x) => (x == null ? '—' : `${x >= 0 ? '+' : ''}${Number(x).toFixed(1)}`);
-  if (A?.kenpomRank != null || H?.kenpomRank != null) {
-    const side = (abbr, t) => (t?.kenpomRank != null ? `<b>${esc(abbr)}</b> #${t.kenpomRank} <span class="muted">AdjEM ${em(t.kenpomEM)} · O ${t.kenpomO ?? '—'} · D ${t.kenpomD ?? '—'} · T ${t.kenpomT ?? '—'}</span>` : `<b>${esc(abbr)}</b> <span class="muted">not in your KenPom file</span>`);
-    const note = g.analysis.notes?.find((n) => n.title === 'KenPom');
-    return `<div class="kenpom-strip"><span class="badge live">KenPom</span><div>${side(g.away.abbr, A)}<br>${side(g.home.abbr, H)}${note ? `<div class="small" style="margin-top:4px">${esc(note.text)}</div>` : ''}</div></div>`;
-  }
-  return `<div class="kenpom-strip"><span class="badge none">KenPom</span><div class="small muted">Not connected. KenPom ratings appear here, and drive 70% of this game's projection, once your KenPom export is added as the <code>KENPOM_CSV</code> secret on GitHub (Settings → Secrets and variables → Actions).</div></div>`;
+// College basketball ratings edge, always shown on every game: KenPom and Torvik ratings, their
+// average, the difference between the teams, and that difference minus the spread.
+function ratingsStrip(g) {
+  const r = g.ratingsEdge;
+  if (!r) return '';
+  const em = (x) => (x == null ? '<span class="muted">—</span>' : `${x >= 0 ? '+' : ''}${x.toFixed(1)}`);
+  const kpConnected = r.home.kenpom != null || r.away.kenpom != null;
+  const row = (abbr, t) => `<tr><td><b>${esc(abbr)}</b></td><td class="r num">${em(t.kenpom)}</td><td class="r num">${em(t.torvik)}</td><td class="r num"><b>${em(t.avg)}</b></td></tr>`;
+  const fav = (homeLine) => (homeLine == null ? '—' : homeLine === 0 ? 'Pick\'em' : homeLine < 0 ? `${esc(g.home.abbr)} ${homeLine}` : `${esc(g.away.abbr)} ${-homeLine}`);
+  const sp = r.spread;
+  const spText = sp ? `${fav(sp.homeLine)} <span class="muted">(${esc(sp.source)}${sp.source === 'Polymarket' ? `, ${Math.round(sp.price * 100)}¢` : sp.note ? `, ${esc(sp.note)}` : ''})</span>` : '<span class="muted">no spread</span>';
+  const diffText = r.diff == null ? '<span class="muted">needs both teams rated</span>' : r.diff === 0 ? 'Even' : `${esc(r.diff > 0 ? g.home.abbr : g.away.abbr)} +${Math.abs(r.diff).toFixed(1)}`;
+  const size = r.value == null ? 0 : Math.abs(r.value);
+  const cls = size >= 8 ? 'edge-big' : size >= 4 ? 'edge-mid' : '';
+  const valueText = r.value == null ? '<span class="muted">—</span>' : r.value === 0 ? '0.0 (no edge)' : `<span class="edge-num ${cls}">${size.toFixed(1)}</span> → <b>${esc(r.favors === 'home' ? g.home.abbr : g.away.abbr)}</b>`;
+  return `<div class="ratings-strip">
+    <table class="mini"><thead><tr><th>Ratings</th><th class="r">KenPom</th><th class="r">Torvik</th><th class="r">Average</th></tr></thead>
+      <tbody>${row(g.away.abbr, r.away)}${row(g.home.abbr, r.home)}</tbody></table>
+    <div class="ratings-math">
+      <div><span class="muted">Rating difference</span> ${diffText}</div>
+      <div><span class="muted">Spread</span> ${spText}</div>
+      <div class="ratings-result" data-tip="Rating difference minus the spread, raw: ratings are points per 100 possessions, spreads are points per game"><span class="muted">Difference minus spread</span> ${valueText}</div>
+    </div>
+    ${kpConnected ? '' : '<div class="muted small">KenPom not connected, so the average uses Torvik only. Add your KenPom export as the KENPOM_CSV secret on GitHub to include it.</div>'}
+  </div>`;
 }
 
 function coachingPanel(g, sport) {

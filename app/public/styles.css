@@ -324,3 +324,12 @@ tr.dim td { opacity: .72; }
 
 .kenpom-strip { display: flex; gap: 10px; align-items: flex-start; margin-top: 10px; padding: 8px 10px; border-radius: 8px; background: var(--surface-2); font-size: 12.5px; line-height: 1.5; }
 .kenpom-strip .badge { flex-shrink: 0; margin-top: 1px; }
+
+/* college basketball ratings edge */
+.ratings-strip { margin-top: 10px; padding: 10px 12px; border-radius: 8px; background: var(--surface-2); display: grid; gap: 8px; font-size: 12.5px; }
+.ratings-strip table.mini td, .ratings-strip table.mini th { padding: 3px 6px; }
+.ratings-math { display: grid; gap: 3px; }
+.ratings-result { font-size: 13.5px; }
+.edge-num { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 800; padding: 1px 6px; border-radius: 5px; background: var(--surface); }
+.edge-num.edge-mid { background: var(--info-bg); color: var(--info-ink); }
+.edge-num.edge-big { background: var(--ok-bg); color: var(--ok-ink); }

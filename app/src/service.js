@@ -20,6 +20,8 @@ import { fetchSchedule, fetchStandings, buildLiveTeams } from './sources/espn-li
 import { abbrFor } from './sources/odds-api.js';
 import { fetchSplits, mergeSbdSplits, sbdSupports } from './sources/sbd.js';
 import { loadKenpom, findKenpom } from './sources/kenpom.js';
+import { fetchTorvik } from './sources/torvik.js';
+import { fetchPolymarketCbb, matchPolymarket } from './sources/polymarket.js';
 import { getJson } from './sources/http.js';
 import { fetchPropLines, fetchRosters, fetchAllTeamIds, fetchGamelog, fetchDefenseVsPosition, ASSUMED_ODDS } from './sources/espn-props.js';
 import { fetchNflTeamProfiles } from './sources/nfl-teams.js';
@@ -85,7 +87,7 @@ export async function getBoard(sportId) {
     try {
       teams = await buildLiveTeams(sport, games);
       sources.profiles = 'live';
-      if (sport.id === 'ncaab') attachKenpom(teams, sources);
+      if (sport.id === 'ncaab') { attachKenpom(teams, sources); await attachRatingsEdge(games, sources); }
     } catch (e) {
       sources.profiles = 'none';
       sources.errors.push(`ESPN team stats couldn't be reached, so the model is off (${e.message}).`);
@@ -193,6 +195,40 @@ async function mergeSplits(sport, games) {
   for (const g of games) {
     const row = rows.find((r) => [g.home.name, g.home.abbr].includes(r.home) && [g.away.name, g.away.abbr].includes(r.away));
     if (row) g.public = { spread: row.spread, total: row.total, moneyline: row.moneyline };
+  }
+}
+
+// College basketball ratings edge, on every game:
+//   average rating = mean of KenPom AdjEM and Torvik AdjEM (whichever are available)
+//   difference     = home average - away average (raw, points per 100 possessions)
+//   edge           = difference - the spread the home team is favored by (Polymarket when its
+//                    market is tradeable, otherwise DraftKings). Positive favors home.
+async function attachRatingsEdge(games, sources) {
+  let kp = null, tv = null, pm = new Map();
+  try { kp = loadKenpom(); } catch { /* reported by attachKenpom */ }
+  try { tv = await fetchTorvik(); sources.torvik = { status: 'live', teams: tv.count }; }
+  catch (e) { sources.torvik = { status: 'none' }; sources.errors.push(`Torvik ratings couldn't be loaded (${e.message}).`); }
+  try {
+    const events = await fetchPolymarketCbb();
+    pm = matchPolymarket(games, events);
+    sources.polymarket = { status: 'live', listed: [...pm.values()].length, tradeable: [...pm.values()].filter((x) => x.spread).length };
+  } catch (e) { sources.polymarket = { status: 'none' }; sources.errors.push(`Polymarket couldn't be reached (${e.message}).`); }
+  const r1 = (x) => (x == null ? null : Math.round(x * 10) / 10);
+  for (const g of games) {
+    const side = (t) => {
+      const k = kp ? findKenpom(kp, t)?.adjEM ?? null : null;
+      const v = tv ? findKenpom(tv, t)?.adjEM ?? null : null;
+      const have = [k, v].filter((x) => x != null);
+      return { kenpom: r1(k), torvik: r1(v), avg: have.length ? r1(have.reduce((a, b) => a + b, 0) / have.length) : null, sources: have.length };
+    };
+    const home = side(g.home), away = side(g.away);
+    const poly = pm.get(g.id);
+    const spread = poly?.spread
+      ? { homeLine: poly.spread.homeLine, source: 'Polymarket', price: poly.spread.price, bid: poly.spread.bid, ask: poly.spread.ask, liquidity: poly.spread.liquidity }
+      : g.spread ? { homeLine: g.spread.line, source: 'DraftKings', note: poly ? 'Polymarket spread not tradeable' : 'not on Polymarket' } : null;
+    const diff = home.avg != null && away.avg != null ? r1(home.avg - away.avg) : null;
+    const value = diff != null && spread ? r1(diff + spread.homeLine) : null;
+    g.ratingsEdge = { home, away, diff, spread, value, favors: value == null || value === 0 ? null : value > 0 ? 'home' : 'away' };
   }
 }
 

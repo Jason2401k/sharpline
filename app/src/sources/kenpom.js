@@ -51,8 +51,10 @@ const ALIAS = {
   smu: 'southernmethodist', tcu: 'texaschristian', ucf: 'centralflorida', unlv: 'nevadalasvegas', lsu: 'louisianastate',
   byu: 'brighamyoung', usc: 'southerncalifornia', ncst: 'northcarolinast', miami: 'miamifl', utep: 'texaselpaso',
   appst: 'appalachianst', mcneese: 'mcneesest', olemissrebels: 'mississippi', ul: 'louisianalafayette',
+  selouisiana: 'southeasternlouisiana', uic: 'illinoischicago', ulmonroe: 'louisianamonroe', kansascity: 'umkc',
+  samhouston: 'samhoustonst',
 };
-const key = (s) => String(s || '').toLowerCase().replace(/&/g, 'and').replace(/\bstate\b/g, 'st').replace(/\bsaint\b/g, 'st').replace(/[^a-z0-9]/g, '');
+const key = (s) => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/&/g, 'and').replace(/\bstate\b/g, 'st').replace(/\bsaint\b/g, 'st').replace(/[^a-z0-9]/g, '');
 
 export function findKenpom(kp, team) {
   if (!kp) return null;
