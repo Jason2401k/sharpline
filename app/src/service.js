@@ -206,7 +206,7 @@ async function mergeSplits(sport, games) {
 async function attachRatingsEdge(games, sources) {
   let kp = null, tv = null, pm = new Map();
   try { kp = loadKenpom(); } catch { /* reported by attachKenpom */ }
-  try { tv = await fetchTorvik(); sources.torvik = { status: 'live', teams: tv.count }; }
+  try { tv = await fetchTorvik(); sources.torvik = { status: tv.from === 'live' ? 'live' : 'saved', teams: tv.count, asOf: tv.asOf }; }
   catch (e) { sources.torvik = { status: 'none' }; sources.errors.push(`Torvik ratings couldn't be loaded (${e.message}).`); }
   try {
     const events = await fetchPolymarketCbb();
@@ -228,7 +228,7 @@ async function attachRatingsEdge(games, sources) {
       : g.spread ? { homeLine: g.spread.line, source: 'DraftKings', note: poly ? 'Polymarket spread not tradeable' : 'not on Polymarket' } : null;
     const diff = home.avg != null && away.avg != null ? r1(home.avg - away.avg) : null;
     const value = diff != null && spread ? r1(diff + spread.homeLine) : null;
-    g.ratingsEdge = { home, away, diff, spread, value, favors: value == null || value === 0 ? null : value > 0 ? 'home' : 'away' };
+    g.ratingsEdge = { home, away, diff, spread, value, favors: value == null || value === 0 ? null : value > 0 ? 'home' : 'away', torvikAsOf: tv?.asOf || null };
   }
 }
 

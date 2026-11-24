@@ -2,14 +2,31 @@
 // this file in robots.txt; its .json files are disallowed). Adjusted efficiencies are points per
 // 100 possessions, opponent-adjusted, like KenPom's.
 
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { getText } from './http.js';
+
+// barttorvik.com blocks GitHub's servers, so the refresh job falls back to a copy saved in the
+// repo (data/torvik.csv). `npm run update:torvik` refreshes that copy from a normal connection.
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+export const torvikCachePath = () => process.env.TORVIK_CSV || path.join(ROOT, 'data', 'torvik.csv');
+export const torvikUrl = (now = new Date()) => `https://barttorvik.com/${torvikSeason(now)}_team_results.csv`;
 
 // A season is named for the year it ends: November 2026 is the 2027 season.
 export const torvikSeason = (now = new Date()) => now.getUTCFullYear() + (now.getUTCMonth() >= 6 ? 1 : 0);
 
+// Live download first; if that fails, the saved copy (with its date).
 export async function fetchTorvik(now = new Date()) {
-  const csv = await getText(`https://barttorvik.com/${torvikSeason(now)}_team_results.csv`, { ttlMs: 6 * 60 * 60 * 1000 });
-  return parseTorvik(csv);
+  try {
+    const csv = await getText(torvikUrl(now), { ttlMs: 6 * 60 * 60 * 1000 });
+    return { ...parseTorvik(csv), from: 'live', asOf: now.toISOString() };
+  } catch (e) {
+    const file = torvikCachePath();
+    if (!fs.existsSync(file)) throw e;
+    const t = parseTorvik(fs.readFileSync(file, 'utf8'));
+    return { ...t, from: 'saved copy', asOf: fs.readFileSync(`${file}.date`, 'utf8').trim() || null, liveError: e.message };
+  }
 }
 
 export function parseTorvik(csv) {

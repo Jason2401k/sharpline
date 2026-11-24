@@ -9,7 +9,8 @@
     "dev": "node --watch server.js",
     "test": "node --test test/*.test.js",
     "build:static": "node scripts/build-static.js",
-    "check:snapshot": "node scripts/check-snapshot.js"
+    "check:snapshot": "node scripts/check-snapshot.js",
+    "update:torvik": "node scripts/update-torvik.js"
   },
   "engines": { "node": ">=18" },
   "license": "UNLICENSED",

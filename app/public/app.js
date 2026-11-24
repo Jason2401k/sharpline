@@ -234,6 +234,7 @@ function ratingsStrip(g) {
       <div><span class="muted">Spread</span> ${spText}</div>
       <div class="ratings-result" data-tip="Rating difference minus the spread, raw: ratings are points per 100 possessions, spreads are points per game"><span class="muted">Difference minus spread</span> ${valueText}</div>
     </div>
+    ${r.torvikAsOf ? `<div class="muted small">Torvik ratings as of ${new Date(r.torvikAsOf).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}.</div>` : ''}
     ${kpConnected ? '' : '<div class="muted small">KenPom not connected, so the average uses Torvik only. Add your KenPom export as the KENPOM_CSV secret on GitHub to include it.</div>'}
   </div>`;
 }
