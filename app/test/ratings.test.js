@@ -51,3 +51,10 @@ test('rating names: accents and ESPN short names match Torvik', async () => {
     assert.equal(findKenpom(tv, { location: loc })?.name, want, loc);
   }
 });
+
+test('Southeast Missouri: KenPom drops "St.", Torvik keeps it; both match', async () => {
+  const { findKenpom } = await import('../src/sources/kenpom.js');
+  const t = { location: 'Southeast Missouri State', name: 'Southeast Missouri State Redhawks' };
+  assert.equal(findKenpom({ teams: [{ name: 'Southeast Missouri' }] }, t)?.name, 'Southeast Missouri');
+  assert.equal(findKenpom({ teams: [{ name: 'Southeast Missouri St.' }] }, t)?.name, 'Southeast Missouri St.');
+});
