@@ -12,4 +12,4 @@ KenPom doesn't allow automated access, so the site reads ratings you export your
    (Settings → Secrets and variables → Actions). Each refresh uses it. Update the secret every week or two.
 
 When both teams in a game have KenPom ratings, KenPom makes up 70% of the college basketball model.
-The file is git-ignored because it's subscription data.
+The current KenPom ratings are saved here as data/kenpom.csv (committed at the owner's request). To update them, replace this file with a new export. A KENPOM_CSV secret, if set, overrides it during refreshes.
