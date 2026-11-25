@@ -899,6 +899,36 @@
    "actual": 9,
    "units": 0.91,
    "gradedAt": "2026-11-24T07:00:42.050Z"
+  },
+  {
+   "id": "espn-401909720:spread",
+   "eventId": "401909720",
+   "sport": "ncaab",
+   "sportName": "CBB",
+   "espn": "basketball/mens-college-basketball",
+   "market": "spread",
+   "start": "2026-11-25T23:00Z",
+   "matchup": "UALB @ SYR",
+   "home": "SYR",
+   "away": "UALB",
+   "label": "UALB +26.5",
+   "side": "away",
+   "line": 26.5,
+   "odds": -105,
+   "prob": 0.599,
+   "rawProb": 0.671,
+   "edge": 0.087,
+   "score": 536,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Ball security"
+    ]
+   },
+   "recordedAt": "2026-11-25T07:30:08.280Z",
+   "updatedAt": "2026-11-25T07:30:08.280Z",
+   "status": "pending"
   }
  ]
 }
