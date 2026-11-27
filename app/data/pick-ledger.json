@@ -928,6 +928,46 @@
    },
    "recordedAt": "2026-11-25T07:30:08.280Z",
    "updatedAt": "2026-11-25T07:30:08.280Z",
+   "status": "win",
+   "final": {
+    "home": 74,
+    "away": 53
+   },
+   "units": 0.95,
+   "gradedAt": "2026-11-27T01:04:41.041Z"
+  },
+  {
+   "id": "espn-401873092:prop:4361307:receptions",
+   "eventId": "401873092",
+   "sport": "nfl",
+   "sportName": "NFL",
+   "espn": "football/nfl",
+   "market": "prop",
+   "start": "2026-11-29T21:25Z",
+   "matchup": "WSH @ ARI",
+   "home": "ARI",
+   "away": "WSH",
+   "label": "Trey McBride Over 6.5 Receptions",
+   "side": "over",
+   "line": 6.5,
+   "athleteId": "4361307",
+   "player": "Trey McBride",
+   "stat": "receptions",
+   "statLabel": "Receptions",
+   "odds": -110,
+   "prob": 0.592,
+   "rawProb": 0.667,
+   "edge": 0.068,
+   "score": 509,
+   "book": "DraftKings",
+   "factors": {
+    "sharp": false,
+    "notes": [
+     "Defense rank 30/32"
+    ]
+   },
+   "recordedAt": "2026-11-27T01:04:56.073Z",
+   "updatedAt": "2026-11-27T01:04:56.073Z",
    "status": "pending"
   }
  ]
